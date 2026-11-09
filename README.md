@@ -7,7 +7,7 @@ Proyek ini berfokus pada pengembangan sistem berbasis web yang terintegrasi deng
 - Muhamad Azizan Hakim (NIM: 25076100)
 - Muhammad sulthan zaky (NIM: 25076104)
 
-berikut prototipe awal sementara dari perancangan website kami berdua :
+berikut prototipe awal sementara dari perancangan website kami berdua (ini kami berdua yang bikin ya bukk ><):
 
 1. prototype1.jpeg
 2. prototype2.jpeg
