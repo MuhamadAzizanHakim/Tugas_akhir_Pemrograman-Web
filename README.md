@@ -2,6 +2,28 @@
 
 Proyek ini berfokus pada pengembangan sistem berbasis web yang terintegrasi dengan database, yang mencakup tiga sistem utama: aplikasi Kasir, aplikasi Gudang, dan aplikasi Admin.
 
+# Struktur Proyek
+
+```text
+.
+├── index.html
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── app.js
+└── prototype awal/
+    ├── prototype1.jpeg
+    └── prototype2.jpeg
+```
+
+- `index.html` berisi struktur halaman.
+- `assets/css/style.css` berisi gaya khusus aplikasi.
+- `assets/js/app.js` berisi data, logika, dan interaksi aplikasi.
+- `prototype awal/` menyimpan gambar rancangan awal.
+
+Untuk menjalankan versi saat ini, buka `index.html` di browser. Tailwind CSS, Lucide, dan Google Fonts masih dimuat melalui CDN sehingga memerlukan koneksi internet.
+
 #Nama nama anggota kelompok terdiri dari
 
 - Muhamad Azizan Hakim (NIM: 25076100)
