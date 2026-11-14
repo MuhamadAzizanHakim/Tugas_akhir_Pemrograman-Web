@@ -1,0 +1,336 @@
+/* Zero-scroll single-viewport Apple studio surface */
+html,
+body {
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f2f4f8;
+  color: #0f172a;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Plus Jakarta Sans", "Inter", sans-serif;
+}
+
+/* Authentic Apple Glassmorphism (visionOS / macOS frosted glass) */
+.apple-glass-card {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(42px) saturate(190%);
+  -webkit-backdrop-filter: blur(42px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.45),
+    0 32px 72px -16px rgba(15, 23, 42, 0.13),
+    0 10px 28px -8px rgba(15, 23, 42, 0.06);
+}
+
+.apple-glass-pill {
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 24px -6px rgba(15, 23, 42, 0.08);
+}
+
+/* Recessed Frosted Glass Inputs */
+.glass-input-field {
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1.5px 3px rgba(15, 23, 42, 0.05),
+    0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-input-field:hover {
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.glass-input-field:focus {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: #0071e3;
+  box-shadow:
+    0 0 0 4px rgba(0, 113, 227, 0.16),
+    inset 0 1px 2px rgba(15, 23, 42, 0.03);
+  outline: none;
+}
+
+/* Strictly Vertical Bottom-to-Top 1-Second (1000ms) Popup Animations */
+@keyframes leftPhonePopUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 110vh, 0) rotate(-18deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(-18deg);
+  }
+}
+
+@keyframes rightPhonePopUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 110vh, 0) rotate(18deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(18deg);
+  }
+}
+
+@keyframes glassCardPopUp {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate3d(0, 36px, 0);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-left-phone-entrance {
+  opacity: 0;
+  transform: translate3d(0, 110vh, 0) rotate(-18deg);
+  animation: leftPhonePopUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0ms
+    forwards;
+}
+
+.animate-right-phone-entrance {
+  opacity: 0;
+  transform: translate3d(0, 110vh, 0) rotate(18deg);
+  animation: rightPhonePopUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 100ms
+    forwards;
+}
+
+.animate-glass-card-entrance {
+  opacity: 0;
+  animation: glassCardPopUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 50ms
+    forwards;
+}
+
+/* Inner Glass Display + Subtle Diagonal Screen Glare Overlay */
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 36px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+.phone-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.08) 34%,
+    rgba(255, 255, 255, 0) 56%
+  );
+  z-index: 20;
+}
+
+/* Subtle editorial dot-grid texture on the background canvas */
+.editorial-grid-bg {
+  background-image: radial-gradient(#cbd5e1 0.85px, transparent 0.85px);
+  background-size: 26px 26px;
+}
+
+/* Elevated Login Card multi-layered shadow */
+.login-card-shadow {
+  box-shadow:
+    0 28px 64px -16px rgba(15, 23, 42, 0.09),
+    0 8px 24px -6px rgba(15, 23, 42, 0.05),
+    0 1px 3px 0 rgba(15, 23, 42, 0.03);
+}
+
+/* Horizontal shake animation for validation feedback */
+@keyframes cardShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  18% {
+    transform: translateX(-8px);
+  }
+  36% {
+    transform: translateX(7px);
+  }
+  54% {
+    transform: translateX(-5px);
+  }
+  72% {
+    transform: translateX(4px);
+  }
+  90% {
+    transform: translateX(-2px);
+  }
+}
+
+.animate-shake {
+  animation: cardShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* GPU-accelerated parallax layers */
+.parallax-phone {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Realistic 3D Smartphone Hardware Chassis — Right Phone (Metallic Graphite/Titanium) */
+.phone-chassis-right {
+  position: relative;
+  border-radius: 48px;
+  background: linear-gradient(
+    145deg,
+    #272a30 0%,
+    #111317 48%,
+    #1e2126 100%
+  );
+  padding: 12px;
+  box-shadow:
+    4px 2px 0px #5c6370,
+    8px 4px 0px #3d424b,
+    12px 6px 0px #23262c,
+    15px 8px 0px #121417,
+    -22px 34px 68px rgba(15, 23, 42, 0.18),
+    -6px 12px 24px rgba(15, 23, 42, 0.1),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.22);
+}
+
+.phone-chassis-right::before {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 132px;
+  width: 4px;
+  height: 50px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, #6e7582, #383c44, #5d636e);
+}
+
+.phone-chassis-right::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 204px;
+  width: 4px;
+  height: 82px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, #6e7582, #383c44, #5d636e);
+}
+
+/* Realistic 3D Smartphone Hardware Chassis — Left Phone (Metallic Silver-Titanium) */
+.phone-chassis-left {
+  position: relative;
+  border-radius: 48px;
+  background: linear-gradient(
+    215deg,
+    #2b2e35 0%,
+    #121418 50%,
+    #22252b 100%
+  );
+  padding: 12px;
+  box-shadow:
+    -4px 2px 0px #8f96a3,
+    -8px 4px 0px #5d636e,
+    -12px 6px 0px #363a42,
+    -15px 8px 0px #181a1f,
+    22px 36px 70px rgba(15, 23, 42, 0.2),
+    6px 14px 26px rgba(15, 23, 42, 0.11),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.26);
+}
+
+.phone-chassis-left::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 138px;
+  width: 4px;
+  height: 48px;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(180deg, #9ca3af, #555b66, #878e9b);
+}
+
+.phone-chassis-left::after {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 206px;
+  width: 4px;
+  height: 80px;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(180deg, #9ca3af, #555b66, #878e9b);
+}
+
+/* Inner Glass Display */
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 36px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+/* Punch-hole camera */
+.punch-hole {
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #2b3545 0%,
+    #090a0c 65%,
+    #000000 100%
+  );
+  box-shadow: inset 0 0 1.5px rgba(255, 255, 255, 0.35);
+}
+
+/* PIN Box visual masking when "Sembunyikan PIN" is active */
+.pin-masked {
+  -webkit-text-security: disc;
+  text-security: disc;
+}
+
+/* Optional dark background removal for custom uploaded phone images */
+.blend-screen-mode {
+  mix-blend-mode: darken;
+  border-radius: 36px;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f6f8;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
