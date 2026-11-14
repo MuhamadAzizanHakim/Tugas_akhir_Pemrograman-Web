@@ -7,19 +7,23 @@ Proyek ini berfokus pada pengembangan sistem berbasis web yang terintegrasi deng
 ```text
 .
 ├── index.html
+├── admin.html
 ├── assets/
 │   ├── css/
+│   │   ├── landing.css
 │   │   └── style.css
 │   └── js/
+│       ├── landing.js
 │       └── app.js
 └── prototype awal/
     ├── prototype1.jpeg
     └── prototype2.jpeg
 ```
 
-- `index.html` berisi struktur halaman.
-- `assets/css/style.css` berisi gaya khusus aplikasi.
-- `assets/js/app.js` berisi data, logika, dan interaksi aplikasi.
+- `index.html` berisi halaman utama TeduhAlam.
+- `admin.html` berisi halaman panel admin.
+- `assets/css/landing.css` dan `assets/js/landing.js` berisi gaya dan interaksi halaman utama.
+- `assets/css/style.css` dan `assets/js/app.js` berisi gaya dan logika panel admin.
 - `prototype awal/` menyimpan gambar rancangan awal.
 
 Untuk menjalankan versi saat ini, buka `index.html` di browser. Tailwind CSS, Lucide, dan Google Fonts masih dimuat melalui CDN sehingga memerlukan koneksi internet.
