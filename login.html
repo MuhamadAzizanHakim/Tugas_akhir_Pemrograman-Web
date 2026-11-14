@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masuk ke Portal — Apple Glass &amp; Dual-Phone Pop-Up</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans, Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: [
+                "-apple-system",
+                "BlinkMacSystemFont",
+                '"SF Pro Display"',
+                '"Plus Jakarta Sans"',
+                "Inter",
+                "sans-serif",
+              ],
+              sans: [
+                "-apple-system",
+                "BlinkMacSystemFont",
+                '"SF Pro Text"',
+                '"Inter"',
+                "sans-serif",
+              ],
+              mono: ['"JetBrains Mono"', "monospace"],
+            },
+            colors: {
+              studioBg: "#F2F4F8",
+              slateInk: "#0F172A",
+              appleBlue: "#0071E3",
+              appleBlueHover: "#0062C4",
+              emeraldVerify: "#10B981",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="./assets/css/login.css" />
+  </head>
+  <body
+    class="bg-studioBg text-slateInk selection:bg-appleBlue selection:text-white"
+  >
+    <!-- =======================================================================
+       ZERO-SCROLL SINGLE VIEWPORT STAGE (100dvh, overflow: hidden)
+  ======================================================================== -->
+    <div
+      id="viewport-stage"
+      class="relative w-full h-[100dvh] overflow-hidden bg-[#F2F4F8] flex items-center justify-center px-4 sm:px-6"
+    >
+      <!-- Ambient Apple Studio Mesh Light Blobs behind the Center Glass Card -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <!-- Cool Apple Sky Blue Radial Glow -->
+        <div
+          class="absolute top-[14%] left-[26%] w-[440px] h-[440px] rounded-full blur-[95px]"
+          style="
+            background: radial-gradient(
+              circle,
+              rgba(56, 142, 255, 0.24) 0%,
+              rgba(56, 142, 255, 0) 70%
+            );
+          "
+        ></div>
+        <!-- Soft Lavender / Periwinkle Radial Glow -->
+        <div
+          class="absolute bottom-[12%] right-[24%] w-[460px] h-[460px] rounded-full blur-[100px]"
+          style="
+            background: radial-gradient(
+              circle,
+              rgba(167, 139, 250, 0.22) 0%,
+              rgba(167, 139, 250, 0) 70%
+            );
+          "
+        ></div>
+        <!-- Warm Pearl / Rose Highlight Blob -->
+        <div
+          class="absolute top-[38%] left-[44%] -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full blur-[85px]"
+          style="
+            background: radial-gradient(
+              circle,
+              rgba(255, 228, 214, 0.55) 0%,
+              rgba(255, 255, 255, 0) 72%
+            );
+          "
+        ></div>
+      </div>
+
+      <!-- =====================================================================
+         TOP MINIMAL APPLE GLASS BAR + REPLAY ANIMATION BUTTON
+    ====================================================================== -->
+      <header
+        class="absolute top-0 left-0 right-0 z-30 max-w-[1440px] mx-auto px-4 sm:px-8 py-4 sm:py-5 flex items-center justify-between pointer-events-none"
+      >
+        <div
+          class="pointer-events-auto apple-glass-pill inline-flex items-center gap-2.5 rounded-full px-3.5 py-1.5"
+        >
+          <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+          <span
+            class="font-display font-semibold text-[13px] tracking-tight text-[#0F172A]"
+          >
+            Portal Keamanan
+          </span>
+          <span class="hidden sm:inline text-[11.5px] text-slate-500">
+            • Enkripsi End-to-End
+          </span>
+        </div>
+
+        <button
+          id="replay-animation-btn"
+          type="button"
+          class="pointer-events-auto apple-glass-pill hover:bg-white/90 active:scale-[0.97] inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-[#0F172A] transition-all cursor-pointer"
+        >
+          <svg
+            class="w-3.5 h-3.5 text-[#0071E3]"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.1"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          <span>Replay Animasi</span>
+        </button>
+      </header>
+
+      <!-- =====================================================================
+         LEFT ANGLED FLAGSHIP SMARTPHONE (-18deg resting angle)
+         Pops up from bottom-left on load + gentle continuous idle float
+    ====================================================================== -->
+      <div
+        id="left-phone-wrapper"
+        class="animate-left-phone-entrance pointer-events-none lg:pointer-events-auto z-10 opacity-35 sm:opacity-55 lg:opacity-100 scale-[0.58] sm:scale-[0.76] lg:scale-[0.92] xl:scale-100 w-[320px] h-[655px] xl:w-[342px] xl:h-[700px] absolute left-[-125px] sm:left-[-55px] lg:left-[3vw] xl:left-[6.5vw] bottom-[-75px] sm:bottom-[-40px] lg:bottom-auto lg:top-[16vh]"
+      >
+        <img
+          id="left-custom-img"
+          alt="Pratinjau HP Kiri"
+          class="hidden w-full h-full object-contain drop-shadow-2xl select-none"
+        />
+
+        <!-- Titanium Hardware + Google Health Sleep Report UI -->
+        <div
+          id="left-built-in-phone"
+          class="phone-chassis-left w-full h-full select-none"
+        >
+          <div
+            class="phone-screen flex flex-col justify-between bg-[#F6F8FC] text-[#0F172A]"
+          >
+            <div>
+              <!-- Status Bar + Punch Hole -->
+              <div
+                class="relative flex items-center justify-between px-6 pt-3.5 pb-1.5 text-[11px] font-semibold text-[#0F172A]"
+              >
+                <span>9:30</span>
+                <div
+                  class="punch-hole absolute left-1/2 -translate-x-1/2 top-3"
+                ></div>
+                <div class="flex items-center gap-1.5">
+                  <svg
+                    class="w-3.5 h-3"
+                    viewBox="0 0 16 12"
+                    fill="currentColor"
+                  >
+                    <rect x="1" y="8" width="2.2" height="4" rx="0.6" />
+                    <rect x="4.6" y="6" width="2.2" height="6" rx="0.6" />
+                    <rect x="8.2" y="3.5" width="2.2" height="8.5" rx="0.6" />
+                    <rect x="11.8" y="1" width="2.2" height="11" rx="0.6" />
+                  </svg>
+                  <div
+                    class="w-4 h-2.5 rounded-[3px] border border-[#0F172A] p-[1.5px] flex items-center"
+                  >
+                    <div class="w-full h-full bg-[#0F172A] rounded-[1px]"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Google Health Top Bar -->
+              <div class="px-5 pt-1 pb-2.5 flex items-center justify-between">
+                <span
+                  class="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9.5px] font-semibold text-slate-600 border border-slate-200/70"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  96%
+                </span>
+                <span
+                  class="font-display text-[14px] font-semibold text-[#0F172A] tracking-tight"
+                >
+                  Google Health
+                </span>
+                <div
+                  class="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-400 text-white text-[9.5px] font-bold flex items-center justify-center"
+                >
+                  GH
+                </div>
+              </div>
+
+              <!-- Sleep Report Content -->
+              <div class="px-4 space-y-2.5">
+                <!-- Spotlight & Narrative Card -->
+                <div
+                  class="rounded-2xl bg-white p-3.5 border border-slate-200/75 shadow-2xs"
+                >
+                  <div class="flex items-center gap-1.5">
+                    <span
+                      class="rounded-full bg-indigo-50 px-2 py-0.5 text-[9px] font-semibold text-indigo-700"
+                    >
+                      Spotlight
+                    </span>
+                    <span
+                      class="rounded-full bg-purple-50 px-2 py-0.5 text-[9px] font-semibold text-purple-700"
+                    >
+                      Premium coach
+                    </span>
+                  </div>
+                  <h2
+                    class="mt-2 font-display text-[14px] font-bold text-[#0F172A] leading-snug"
+                  >
+                    A fragmented and restless night
+                  </h2>
+                  <p class="mt-1 text-[10px] text-slate-500 leading-relaxed">
+                    It looks like your sleep was broken up by over 9
+                    interruptions, leading to nearly 2 hours of time spent
+                    awake.
+                  </p>
+                </div>
+
+                <!-- Dual Metric Cards: Sleep Score & Sleep Duration -->
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div
+                    class="rounded-2xl bg-white p-3 border border-slate-200/75 shadow-2xs"
+                  >
+                    <div class="text-[10px] font-medium text-slate-500">
+                      Sleep score
+                    </div>
+                    <div
+                      class="mt-0.5 font-display text-2xl font-bold text-[#0F172A]"
+                    >
+                      68
+                    </div>
+                    <div
+                      class="mt-1 inline-block rounded-full bg-amber-100/80 px-2 py-0.5 text-[8.5px] font-semibold text-amber-800"
+                    >
+                      Less than ideal
+                    </div>
+                  </div>
+
+                  <div
+                    class="rounded-2xl bg-white p-3 border border-slate-200/75 shadow-2xs"
+                  >
+                    <div class="text-[10px] font-medium text-slate-500">
+                      Sleep duration
+                    </div>
+                    <div
+                      class="mt-0.5 font-display text-[21px] font-bold text-[#0F172A] leading-8"
+                    >
+                      8h 04m
+                    </div>
+                    <div
+                      class="mt-1 inline-block rounded-full bg-emerald-100/80 px-2 py-0.5 text-[8.5px] font-semibold text-emerald-800"
+                    >
+                      Goal met
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Awake / REM / Light / Deep Sleep Stage Timeline Bars -->
+                <div
+                  class="rounded-2xl bg-white p-3 border border-slate-200/75 shadow-2xs space-y-2"
+                >
+                  <div>
+                    <div
+                      class="flex justify-between text-[9.5px] font-semibold text-slate-700 mb-1"
+                    >
+                      <span>Awake • 1h 32m</span>
+                    </div>
+                    <div
+                      class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden flex gap-0.5 p-0.5"
+                    >
+                      <div
+                        class="h-full w-[22%] rounded-full bg-rose-500"
+                      ></div>
+                      <div
+                        class="h-full w-[6%] rounded-full bg-rose-300 ml-3"
+                      ></div>
+                      <div
+                        class="h-full w-[9%] rounded-full bg-rose-500 ml-4"
+                      ></div>
+                      <div
+                        class="h-full w-[7%] rounded-full bg-rose-400 ml-auto"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="flex justify-between text-[9.5px] font-semibold text-slate-700 mb-1"
+                    >
+                      <span>REM • 1h 01m</span>
+                    </div>
+                    <div
+                      class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden flex gap-1 p-0.5"
+                    >
+                      <div
+                        class="h-full w-[14%] rounded-full bg-sky-400 ml-6"
+                      ></div>
+                      <div
+                        class="h-full w-[18%] rounded-full bg-sky-500 ml-5"
+                      ></div>
+                      <div
+                        class="h-full w-[12%] rounded-full bg-sky-400 ml-auto mr-3"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="flex justify-between text-[9.5px] font-semibold text-slate-700 mb-1"
+                    >
+                      <span>Light • 4h 20m</span>
+                    </div>
+                    <div
+                      class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden flex gap-1 p-0.5"
+                    >
+                      <div
+                        class="h-full w-[26%] rounded-full bg-blue-500 ml-3"
+                      ></div>
+                      <div
+                        class="h-full w-[30%] rounded-full bg-blue-600 ml-3"
+                      ></div>
+                      <div
+                        class="h-full w-[16%] rounded-full bg-blue-500 ml-auto"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="flex justify-between text-[9.5px] font-semibold text-slate-700 mb-1"
+                    >
+                      <span>Deep • 1h 53m</span>
+                    </div>
+                    <div
+                      class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden flex gap-1 p-0.5"
+                    >
+                      <div
+                        class="h-full w-[24%] rounded-full bg-indigo-700 ml-4"
+                      ></div>
+                      <div
+                        class="h-full w-[16%] rounded-full bg-indigo-600 ml-7"
+                      ></div>
+                      <div
+                        class="h-full w-[10%] rounded-full bg-indigo-700 ml-auto mr-2"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="pt-0.5 flex items-center justify-between text-[8.5px] font-mono text-slate-400"
+                  >
+                    <span>11:35 PM</span>
+                    <span>3:35 AM</span>
+                    <span>8:21 AM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="px-4 pb-2.5 pt-2 bg-white border-t border-slate-100">
+              <div
+                class="grid grid-cols-4 items-center text-center text-[9px] font-medium text-slate-400"
+              >
+                <div>Today</div>
+                <div>Fitness</div>
+                <div
+                  class="mx-auto rounded-full bg-blue-100/90 px-2.5 py-0.5 text-[#0071E3] font-semibold"
+                >
+                  Sleep
+                </div>
+                <div>Health</div>
+              </div>
+              <div class="mt-2 flex justify-center">
+                <div class="w-24 h-1 rounded-full bg-slate-900/80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+         RIGHT ANGLED FLAGSHIP SMARTPHONE (+18deg resting angle)
+         Pops up vertically from bottom to top (100ms–1000ms) + live auth sync
+    ====================================================================== -->
+      <div
+        id="right-phone-wrapper"
+        class="animate-right-phone-entrance pointer-events-none lg:pointer-events-auto z-10 opacity-35 sm:opacity-55 lg:opacity-100 scale-[0.58] sm:scale-[0.76] lg:scale-[0.92] xl:scale-100 w-[320px] h-[655px] xl:w-[342px] xl:h-[700px] absolute right-[-125px] sm:right-[-55px] lg:right-[3vw] xl:right-[6.5vw] top-[-55px] sm:top-[-25px] lg:top-[8vh]"
+      >
+        <img
+          id="right-custom-img"
+          alt="Pratinjau HP Kanan"
+          class="hidden w-full h-full object-contain drop-shadow-2xl select-none"
+        />
+
+        <!-- Titanium Hardware + Clean White Conversational Assistant UI -->
+        <div
+          id="right-built-in-phone"
+          class="phone-chassis-right w-full h-full select-none"
+        >
+          <div
+            class="phone-screen flex flex-col justify-between bg-[#F9FAFB] text-[#0F172A]"
+          >
+            <div>
+              <!-- Status Bar + Punch Hole -->
+              <div
+                class="relative flex items-center justify-between px-6 pt-3.5 pb-2 text-[11px] font-semibold text-[#0F172A]"
+              >
+                <span>09:41</span>
+                <div
+                  class="punch-hole absolute left-1/2 -translate-x-1/2 top-3"
+                ></div>
+                <div class="flex items-center gap-1.5">
+                  <svg
+                    class="w-3.5 h-3"
+                    viewBox="0 0 16 12"
+                    fill="currentColor"
+                  >
+                    <rect x="1" y="8" width="2.2" height="4" rx="0.6" />
+                    <rect x="4.6" y="6" width="2.2" height="6" rx="0.6" />
+                    <rect x="8.2" y="3.5" width="2.2" height="8.5" rx="0.6" />
+                    <rect x="11.8" y="1" width="2.2" height="11" rx="0.6" />
+                  </svg>
+                  <div
+                    class="w-4 h-2.5 rounded-[3px] border border-[#0F172A] p-[1.5px] flex items-center"
+                  >
+                    <div class="w-full h-full bg-[#0F172A] rounded-[1px]"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Conversational Assistant Header -->
+              <div
+                class="px-5 pt-2 pb-3 bg-white border-b border-slate-100 flex items-center justify-between"
+              >
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-7 h-7 rounded-full bg-blue-50 text-[#0071E3] flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2
+                      class="font-display text-[13.5px] font-semibold text-[#0F172A] leading-tight"
+                    >
+                      Google Health Coach
+                    </h2>
+                    <div class="text-[10px] text-slate-500">
+                      Keamanan &amp; Autentikasi Sesi
+                    </div>
+                  </div>
+                </div>
+                <span
+                  id="right-phone-live-pill"
+                  class="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[9.5px] font-semibold text-amber-700 transition-colors duration-300"
+                >
+                  <span
+                    id="right-phone-live-dot"
+                    class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"
+                  ></span>
+                  <span id="right-phone-live-badge-text">Menunggu</span>
+                </span>
+              </div>
+
+              <!-- Conversational Chat Thread (Updates live as user fills PIN & Password) -->
+              <div class="p-4 space-y-3">
+                <!-- User Prompt Bubble -->
+                <div class="flex justify-end">
+                  <div
+                    class="max-w-[82%] rounded-2xl rounded-tr-sm bg-[#F1F5F9] px-3.5 py-2.5 text-[11px] text-[#0F172A] leading-relaxed"
+                  >
+                    Verifikasi akses masuk ke portal menggunakan PIN 6-digit dan
+                    kata sandi.
+                  </div>
+                </div>
+
+                <!-- Assistant Dynamic Response Bubble -->
+                <div class="flex items-start gap-2">
+                  <div
+                    id="right-assistant-avatar"
+                    class="w-6 h-6 rounded-full bg-[#0071E3] text-white flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-300"
+                  >
+                    <svg
+                      class="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  </div>
+
+                  <div
+                    id="right-assistant-bubble"
+                    class="flex-1 rounded-2xl rounded-tl-sm bg-[#1E293B] text-white p-3.5 shadow-sm transition-all duration-300"
+                  >
+                    <div
+                      id="right-assistant-title"
+                      class="font-display text-[12px] font-semibold text-white"
+                    >
+                      Menunggu 6-Digit PIN
+                    </div>
+                    <p
+                      id="right-assistant-message"
+                      class="mt-1 text-[11px] text-slate-200 leading-relaxed"
+                    >
+                      Silakan masukkan 6 digit angka PIN keamanan Anda pada
+                      kartu kaca di tengah layar.
+                    </p>
+
+                    <!-- Live Checklist Progress Inside Assistant Bubble -->
+                    <div
+                      class="mt-3 pt-2.5 border-t border-white/15 space-y-1.5 text-[10px]"
+                    >
+                      <div class="flex items-center justify-between">
+                        <span class="text-slate-300">1. PIN 6-Digit</span>
+                        <span
+                          id="right-step-pin"
+                          class="font-mono font-semibold text-amber-300"
+                          >0 / 6 digit</span
+                        >
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span class="text-slate-300">2. Kata Sandi</span>
+                        <span
+                          id="right-step-pass"
+                          class="font-mono font-semibold text-slate-300"
+                          >Belum diisi</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Session Token Pill Card -->
+                <div
+                  class="rounded-2xl bg-white p-3 border border-slate-200/80 flex items-center justify-between text-[10.5px]"
+                >
+                  <span class="text-slate-500">Status Sesi</span>
+                  <span
+                    id="right-session-id"
+                    class="font-mono font-semibold text-[#0F172A]"
+                    >#MENUNGGU-PIN</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Assistant Input Strip -->
+            <div class="px-4 pb-3 pt-2 bg-white border-t border-slate-100">
+              <div
+                class="rounded-full bg-slate-100 px-3.5 py-2 flex items-center justify-between text-[10.5px] text-slate-400"
+              >
+                <span>Tersinkronisasi dengan kartu login...</span>
+                <span class="w-2 h-2 rounded-full bg-[#0071E3]"></span>
+              </div>
+              <div class="mt-2.5 flex justify-center">
+                <div class="w-24 h-1 rounded-full bg-slate-900/80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+         CENTER APPLE GLASSMORPHISM LOGIN CARD ("Glass Glass Apple")
+    ====================================================================== -->
+      <main
+        id="login-card"
+        class="animate-glass-card-entrance apple-glass-card relative z-20 w-full max-w-[420px] rounded-[32px] p-6 sm:p-8"
+      >
+        <!-- Minimal Header with Frosted Glass Lock Emblem -->
+        <div class="text-center">
+          <div
+            id="card-shield-badge"
+            class="mx-auto w-12 h-12 rounded-2xl bg-white/80 border border-white shadow-sm text-[#0F172A] flex items-center justify-center transition-all duration-300"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          </div>
+
+          <h1
+            class="mt-4 font-display text-[1.6rem] sm:text-[1.72rem] font-bold tracking-[-0.025em] text-[#0F172A]"
+          >
+            Masuk ke Portal
+          </h1>
+          <p class="mt-1 text-[13.5px] text-slate-600 leading-relaxed">
+            Masukkan 6-digit PIN dan kata sandi Anda
+          </p>
+        </div>
+
+        <!-- Validation Error Alert Box (Hidden by default) -->
+        <div
+          id="form-error-banner"
+          role="alert"
+          class="hidden mt-4 rounded-2xl bg-rose-500/12 border border-rose-400/40 backdrop-blur-md px-3.5 py-2.5 text-[12px] text-rose-800 flex items-center gap-2"
+        >
+          <svg
+            class="w-4 h-4 text-rose-600 shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span id="form-error-text" class="font-medium leading-snug"></span>
+        </div>
+
+        <!-- ===================================================================
+           LOGIN FORM VIEW (6-DIGIT PIN MASKED BY DEFAULT + KATA SANDI)
+      ==================================================================== -->
+        <form id="login-form" novalidate class="mt-5 space-y-4">
+          <!-- 1. 6-DIGIT PIN SECTION -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label
+                for="pin-0"
+                class="text-[12.5px] font-semibold text-[#0F172A]"
+              >
+                PIN Keamanan (6 Digit)
+              </label>
+              <button
+                id="toggle-pin-visibility"
+                type="button"
+                class="inline-flex items-center gap-1 text-[12px] font-medium text-[#0071E3] hover:text-[#0062C4] transition cursor-pointer"
+              >
+                <span id="toggle-pin-label">Tampilkan PIN</span>
+              </button>
+            </div>
+
+            <div
+              id="pin-boxes-container"
+              class="grid grid-cols-6 gap-2 sm:gap-2.5"
+              role="group"
+              aria-label="Masukkan 6-digit PIN keamanan"
+            >
+              <input
+                id="pin-0"
+                type="password"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="1"
+                autocomplete="one-time-code"
+                aria-label="Digit PIN 1"
+                class="pin-digit-input glass-input-field w-full aspect-square rounded-2xl text-center font-mono text-lg sm:text-xl font-bold text-[#0F172A]"
+              />
+              <input
+                id="pin-1"
+                type="password"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="1"
+                aria-label="Digit PIN 2"
+                class="pin-digit-input glass-input-field w-full aspect-square rounded-2xl text-center font-mono text-lg sm:text-xl font-bold text-[#0F172A]"
+              />
+              <input
+                id="pin-2"
+                type="password"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="1"
+                aria-label="Digit PIN 3"
+                class="pin-digit-input glass-input-field w-full aspect-square rounded-2xl text-center font-mono text-lg sm:text-xl font-bold text-[#0F172A]"
+              />
+              <input
+                id="pin-3"
+                type="password"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="1"
+                aria-label="Digit PIN 4"
+                class="pin-digit-input glass-input-field w-full aspect-square rounded-2xl text-center font-mono text-lg sm:text-xl font-bold text-[#0F172A]"
+              />
+              <input
+                id="pin-4"
+                type="password"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="1"
+                aria-label="Digit PIN 5"
+                class="pin-digit-input glass-input-field w-full aspect-square rounded-2xl text-center font-mono text-lg sm:text-xl font-bold text-[#0F172A]"
+              />
+              <input
+                id="pin-5"
+                type="password"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="1"
+                aria-label="Digit PIN 6"
+                class="pin-digit-input glass-input-field w-full aspect-square rounded-2xl text-center font-mono text-lg sm:text-xl font-bold text-[#0F172A]"
+              />
+            </div>
+          </div>
+
+          <!-- 2. PASSWORD INPUT ("Kata Sandi") -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label
+                for="password-input"
+                class="text-[12.5px] font-semibold text-[#0F172A]"
+              >
+                Kata Sandi
+              </label>
+              <span
+                id="caps-lock-warning"
+                class="hidden items-center gap-1 rounded-full bg-amber-500/15 border border-amber-400/40 px-2 py-0.5 text-[10.5px] font-semibold text-amber-800"
+              >
+                Caps Lock aktif
+              </span>
+            </div>
+
+            <div class="relative">
+              <div
+                class="pointer-events-none absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                  />
+                </svg>
+              </div>
+
+              <input
+                id="password-input"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Masukkan kata sandi (min. 8 karakter)"
+                class="glass-input-field w-full rounded-2xl pl-10 pr-11 py-3 text-[13.5px] text-[#0F172A] placeholder:text-slate-400"
+              />
+
+              <button
+                id="toggle-password-btn"
+                type="button"
+                aria-label="Tampilkan atau sembunyikan kata sandi"
+                class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-[#0F172A] transition cursor-pointer"
+              >
+                <svg
+                  id="eye-open-icon"
+                  class="w-4.5 h-4.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                <svg
+                  id="eye-closed-icon"
+                  class="hidden w-4.5 h-4.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick-fill Demo Data Link -->
+          <div class="flex items-center justify-between text-[12px]">
+            <button
+              id="fill-demo-btn"
+              type="button"
+              class="inline-flex items-center gap-1 font-medium text-[#0071E3] hover:text-[#0062C4] hover:underline underline-offset-2 transition cursor-pointer"
+            >
+              <span>Isi Data Demo</span>
+            </button>
+            <span class="text-slate-500">Min. 8 karakter sandi</span>
+          </div>
+
+          <!-- Primary Apple-style Dark/Accent Pill Button ("Masuk") -->
+          <button
+            id="submit-login-btn"
+            type="submit"
+            class="w-full rounded-full bg-[#0F172A] hover:bg-[#1E293B] active:scale-[0.985] text-white font-display font-semibold text-[14.5px] py-3.5 px-6 shadow-lg shadow-slate-900/15 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <svg
+              id="submit-spinner"
+              class="hidden animate-spin w-4 h-4 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              ></path>
+            </svg>
+            <span id="submit-btn-text">Masuk</span>
+          </button>
+        </form>
+
+        <!-- ===================================================================
+           AUTHENTICATED SESSION VIEW (Shown on successful login)
+      ==================================================================== -->
+        <div id="authenticated-view" class="hidden mt-5 space-y-4">
+          <div class="rounded-2xl bg-white/70 border border-emerald-200/90 p-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-full bg-[#10B981] text-white flex items-center justify-center shrink-0 shadow-xs"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div
+                  class="text-[11px] font-semibold uppercase tracking-wider text-emerald-700"
+                >
+                  Terverifikasi
+                </div>
+                <h2 class="font-display text-[15px] font-bold text-[#0F172A]">
+                  Sesi Portal Aktif
+                </h2>
+              </div>
+            </div>
+
+            <div
+              class="mt-3.5 pt-3 border-t border-slate-200/70 space-y-1.5 text-[12px]"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Token Sesi</span>
+                <span
+                  id="session-token-code"
+                  class="font-mono font-semibold text-[#0F172A]"
+                  >SES-94B2-71F0-ID</span
+                >
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Autentikasi</span>
+                <span class="font-medium text-emerald-700"
+                  >PIN 6-Digit + Sandi</span
+                >
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Waktu Masuk</span>
+                <span id="session-login-time" class="font-mono text-slate-700"
+                  >Baru saja</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="logout-reset-btn"
+            type="button"
+            class="w-full rounded-full bg-[#0F172A] hover:bg-[#1E293B] active:scale-[0.985] text-white font-display font-semibold text-[14px] py-3.5 px-6 shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Keluar / Ulangi</span>
+          </button>
+        </div>
+      </main>
+
+      <!-- =====================================================================
+         BOTTOM-RIGHT UNOBTRUSIVE GLASS PILL BUTTON ("Ganti Gambar HP")
+    ====================================================================== -->
+      <div class="fixed bottom-4 right-4 z-40 flex flex-col items-end">
+        <div
+          id="asset-panel"
+          class="hidden mb-2.5 w-72 apple-glass-card rounded-2xl p-4 text-xs text-[#0F172A]"
+        >
+          <div class="font-display font-semibold text-sm text-[#0F172A]">
+            Ganti Gambar Mockup HP
+          </div>
+          <p class="mt-1 text-[11px] text-slate-600 leading-snug">
+            Unggah gambar layar HP lokal untuk mengganti pratinjau perangkat
+            kiri atau kanan:
+          </p>
+
+          <div class="mt-3 space-y-2.5">
+            <label class="block">
+              <span class="font-medium text-slate-700"
+                >HP Kiri (Analitik):</span
+              >
+              <input
+                id="upload-left-phone"
+                type="file"
+                accept="image/*"
+                class="mt-1 block w-full text-[11px] text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:text-[11px] file:font-medium file:bg-blue-50 file:text-[#0071E3] hover:file:bg-blue-100 cursor-pointer"
+              />
+            </label>
+
+            <label class="block">
+              <span class="font-medium text-slate-700"
+                >HP Kanan (Asisten):</span
+              >
+              <input
+                id="upload-right-phone"
+                type="file"
+                accept="image/*"
+                class="mt-1 block w-full text-[11px] text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:text-[11px] file:font-medium file:bg-blue-50 file:text-[#0071E3] hover:file:bg-blue-100 cursor-pointer"
+              />
+            </label>
+
+            <label
+              class="flex items-center gap-2 pt-1 cursor-pointer select-none"
+            >
+              <input
+                id="blend-toggle"
+                type="checkbox"
+                class="rounded accent-[#0071E3]"
+              />
+              <span class="text-[11px] text-slate-600"
+                >Mode blend latar gelap (darken)</span
+              >
+            </label>
+
+            <button
+              id="reset-phones-btn"
+              type="button"
+              class="w-full mt-1 rounded-full bg-white/80 hover:bg-white py-1.5 text-[11px] font-medium text-[#0F172A] border border-white transition cursor-pointer"
+            >
+              Reset ke Tampilan Bawaan
+            </button>
+          </div>
+        </div>
+
+        <button
+          id="toggle-asset-panel"
+          type="button"
+          class="apple-glass-pill hover:bg-white/90 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12px] font-medium text-slate-700 transition cursor-pointer"
+        >
+          <svg
+            class="w-3.5 h-3.5 text-[#0071E3]"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          <span>Ganti Gambar HP</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+       POP-UP ENTRANCE REPLAY + APPLE GLASS PIN/PASSWORD + LIVE PHONE SYNC
+  ======================================================================== -->
+    <script src="./assets/js/login.js"></script>
+  </body>
+</html>
