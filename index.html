@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Pemesanan Tenda Alahan</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              emerald: {
+                50: "#ECFDF5",
+                100: "#D1FAE5",
+                500: "#10B981",
+                600: "#059669",
+                700: "#047857",
+                800: "#065F46",
+                900: "#064E3B",
+              },
+              slate: {
+                850: "#172033",
+                900: "#0F172A",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body
+    class="bg-[#F8FAFC] text-slate-800 antialiased selection:bg-emerald-600 selection:text-white"
+  >
+    <div class="min-h-screen flex flex-col lg:flex-row">
+      <!-- Mobile Sidebar Backdrop -->
+      <div
+        id="sidebar-backdrop"
+        onclick="toggleSidebar(false)"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity"
+      ></div>
+
+      <!-- Sidebar Navigation (#0F172A) -->
+      <aside
+        id="sidebar"
+        class="fixed lg:sticky top-0 left-0 z-40 h-screen w-72 bg-[#0F172A] text-slate-300 flex flex-col border-r border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shrink-0"
+      >
+        <!-- Brand Header -->
+        <div
+          class="p-6 border-b border-slate-800/80 flex items-center justify-between"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-950/50"
+            >
+              <i data-lucide="tent" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span
+                class="block text-white font-bold text-base tracking-tight leading-tight"
+                >Tenda Alahan</span
+              >
+              <span
+                class="block text-[11px] font-medium text-emerald-400 tracking-wide uppercase mt-0.5"
+                >Admin &amp; Katalog</span
+              >
+            </div>
+          </div>
+          <button
+            onclick="toggleSidebar(false)"
+            class="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+            aria-label="Tutup Menu"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav
+          class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto"
+          aria-label="Menu Utama Admin"
+        >
+          <p
+            class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500"
+          >
+            Manajemen Utama
+          </p>
+
+          <button
+            onclick="navigate('upload')"
+            data-nav="upload"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="upload-cloud" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Upload &amp; Tambah Tenda</span>
+            <span
+              class="ml-auto text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300"
+              >Utama</span
+            >
+          </button>
+
+          <button
+            onclick="navigate('katalog')"
+            data-nav="katalog"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Katalog Unit Tenda</span>
+            <span
+              id="sidebar-catalog-count"
+              class="ml-auto text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300"
+              >3</span
+            >
+          </button>
+
+          <button
+            onclick="navigate('dashboard')"
+            data-nav="dashboard"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Dashboard Ringkasan</span>
+          </button>
+
+          <p
+            class="px-3 pt-5 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500"
+          >
+            Operasional Sewa
+          </p>
+
+          <button
+            onclick="navigate('pesanan')"
+            data-nav="pesanan"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="clipboard-check" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Pesanan &amp; Verifikasi DP</span>
+            <span
+              id="sidebar-pending-dp"
+              class="ml-auto text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300"
+              >2</span
+            >
+          </button>
+
+          <button
+            onclick="navigate('laporan')"
+            data-nav="laporan"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="wallet" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Laporan Keuangan</span>
+          </button>
+        </nav>
+
+        <!-- Footer Info Card in Sidebar -->
+        <div
+          class="p-4 m-4 rounded-2xl bg-slate-800/60 border border-slate-700/60"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-9 h-9 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm"
+            >
+              TA
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-semibold text-white truncate">
+                Admin Alahan Camp
+              </p>
+              <p class="text-xs text-slate-400 truncate">
+                Alahan Panjang, Kab. Solok
+              </p>
+            </div>
+          </div>
+          <div
+            class="mt-3 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs"
+          >
+            <span class="text-slate-400 flex items-center gap-1.5">
+              <span
+                class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"
+              ></span>
+              Katalog Online
+            </span>
+            <span class="text-emerald-400 font-medium">Aktif</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Workspace -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Top Header Bar -->
+        <header
+          class="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-[#E2E8F0] px-4 sm:px-6 lg:px-8 py-4"
+        >
+          <div
+            class="max-w-7xl mx-auto flex items-center justify-between gap-4"
+          >
+            <div class="flex items-center gap-3 min-w-0">
+              <button
+                onclick="toggleSidebar(true)"
+                class="lg:hidden p-2.5 rounded-xl border border-[#E2E8F0] text-slate-700 hover:bg-slate-50"
+                aria-label="Buka Menu"
+              >
+                <i data-lucide="menu" class="w-5 h-5"></i>
+              </button>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <h1
+                    id="header-title"
+                    class="text-lg sm:text-xl font-bold text-slate-900 truncate"
+                  >
+                    Upload &amp; Tambah Tenda
+                  </h1>
+                  <span
+                    class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  >
+                    Pemesanan Tenda Alahan
+                  </span>
+                </div>
+                <p
+                  id="header-subtitle"
+                  class="text-xs sm:text-sm text-slate-500 truncate mt-0.5"
+                >
+                  Unggah foto unit tenda, atur harga sewa, dan susun deskripsi
+                  promosi untuk pelanggan.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5 shrink-0">
+              <button
+                id="header-quick-add-btn"
+                onclick="navigate('upload')"
+                class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-sm transition-all cursor-pointer"
+              >
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Tambah Tenda</span>
+              </button>
+              <div
+                class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-[#E2E8F0] text-xs font-medium text-slate-600"
+              >
+                <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i>
+                <span id="current-date-label">Sabtu, 14 Nov 2026</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dynamic Page Container -->
+        <main
+          id="main-content"
+          class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto"
+        >
+          <!-- Rendered dynamically by JavaScript -->
+        </main>
+      </div>
+    </div>
+
+    <!-- Custom Modal Overlay (Confirmation & Proof Preview - Never uses alert/confirm) -->
+    <div
+      id="custom-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+    >
+      <div
+        id="custom-modal-card"
+        class="bg-white border border-[#E2E8F0] rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-all"
+      >
+        <!-- Modal inner content injected via JS -->
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div
+      id="toast-container"
+      class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"
+    ></div>
+
+    <script src="./assets/js/app.js"></script>
+  </body>
+</html>
