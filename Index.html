@@ -1,751 +1,1783 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>teduhalam.id - Sewa Tenda & Peralatan Camping Modern</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Inter & Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <!-- Font Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    },
-                    colors: {
-                        'brand-green': '#1B4332',
-                        'brand-dark': '#0F291E',
-                        'brand-sand': '#F5F2EB',
-                        'brand-orange': '#D96B27',
-                        'brand-orange-hover': '#B85519',
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', "sans-serif"],
+            },
+            colors: {
+              "brand-green": "#1B4332",
+              "brand-dark": "#0C2118",
+              "brand-sand": "#F6F4EF",
+              "brand-orange": "#D96B27",
+              "brand-orange-hover": "#B85519",
+            },
+          },
+        },
+      };
     </script>
     <style>
-        body {
-            background-color: #FAF8F5;
-            color: #0F291E;
-        }
-        .card-shadow {
-            box-shadow: 0 10px 30px -5px rgba(15, 41, 30, 0.08);
-        }
+      body {
+        color: #0c2118;
+        /* Latar belakang pemandangan pegunungan langsung untuk seluruh halaman (Fixed Parallax) */
+        background-image:
+          linear-gradient(
+            to bottom,
+            rgba(247, 245, 240, 0.72),
+            rgba(242, 246, 243, 0.8)
+          ),
+          url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=85");
+        background-size: cover;
+        background-position: center top;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+      }
+
+      /* Efek Glossy / Glassmorphism Transparan agar Pemandangan Gunung Terlihat di Baliknya */
+      .glossy-panel {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.72) 0%,
+          rgba(255, 255, 255, 0.45) 100%
+        );
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        box-shadow:
+          0 20px 40px -15px rgba(12, 33, 24, 0.16),
+          inset 0 1px 1px rgba(255, 255, 255, 0.95);
+      }
+
+      .glossy-dark {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.22) 0%,
+          rgba(255, 255, 255, 0.08) 100%
+        );
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        box-shadow:
+          0 15px 35px -10px rgba(0, 0, 0, 0.35),
+          inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      }
+
+      .glossy-pill {
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.82),
+          rgba(255, 255, 255, 0.5)
+        );
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow:
+          0 4px 15px -3px rgba(12, 33, 24, 0.09),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+        transition: all 0.25s ease;
+      }
+
+      .glossy-pill:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.75)
+        );
+        box-shadow:
+          0 8px 20px -4px rgba(27, 67, 50, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 1);
+      }
+
+      .glossy-pill-active {
+        background: linear-gradient(
+          135deg,
+          #23533e 0%,
+          #143326 100%
+        ) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.35) !important;
+        box-shadow:
+          0 8px 20px -4px rgba(27, 67, 50, 0.4),
+          inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+      }
+
+      .glossy-card {
+        background: linear-gradient(
+          160deg,
+          rgba(255, 255, 255, 0.78) 0%,
+          rgba(255, 255, 255, 0.52) 100%
+        );
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+        box-shadow:
+          0 12px 32px -8px rgba(12, 33, 24, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+
+      .btn-glossy-orange {
+        background: linear-gradient(135deg, #e87a35 0%, #c85b19 100%);
+        box-shadow:
+          0 8px 20px -4px rgba(217, 107, 39, 0.45),
+          inset 0 1px 1px rgba(255, 255, 255, 0.45);
+      }
+      .btn-glossy-orange:hover {
+        background: linear-gradient(135deg, #f08542 0%, #b85113 100%);
+        transform: translateY(-1px);
+      }
+
+      /* Susun semua kartu tenda (blok 1 - 6) berjejer ke samping dalam 1 baris */
+      div:has(> .product-card) {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 1.5rem !important;
+        padding-top: 12px !important;
+        padding-bottom: 16px !important;
+        scroll-behavior: smooth;
+      }
+
+      /* Tampilan bilah geser (scrollbar) horizontal agar rapi */
+      div:has(> .product-card)::-webkit-scrollbar {
+        height: 8px;
+      }
+      div:has(> .product-card)::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+      }
+      div:has(> .product-card)::-webkit-scrollbar-thumb {
+        background: rgba(27, 67, 50, 0.45);
+        border-radius: 999px;
+      }
+      div:has(> .product-card)::-webkit-scrollbar-thumb:hover {
+        background: rgba(27, 67, 50, 0.75);
+      }
+
+      /* Lebar tiap kartu tetap proporsional + efek timbul saat disentuh kursor */
+      .product-card {
+        min-width: 280px !important;
+        max-width: 285px !important;
+        flex-shrink: 0 !important;
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.3s ease !important;
+      }
+      .product-card:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 20px 35px -10px rgba(27, 67, 50, 0.22) !important;
+      }
+      .product-card img {
+        transition: transform 0.5s ease !important;
+      }
+      .product-card:hover img {
+        transform: scale(1.06) !important;
+      }
     </style>
-</head>
-<body class="antialiased text-brand-dark flex flex-col min-h-screen">
-
-    <!-- NAVBAR -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-brand-green/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <a href="#" class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center text-white shadow-sm">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3L2 21h20L12 3zm0 5.5L17.5 19h-11L12 8.5z"/>
-                        </svg>
-                    </div>
-                    <span class="text-2xl font-extrabold tracking-tight text-brand-green">
-                        teduhalam<span class="text-brand-orange">.id</span>
-                    </span>
-                </a>
-
-                <!-- Menu Desktop -->
-                <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-gray-700">
-                    <a href="#katalog" class="hover:text-brand-orange transition">Sewa Tenda</a>
-                    <a href="#cara-kerja" class="hover:text-brand-orange transition">Cara Sewa</a>
-                    <a href="#simulator" class="hover:text-brand-orange transition">Simulator Paket</a>
-                    <a href="#destinasi" class="hover:text-brand-orange transition">Spot Kemping</a>
-                    <a href="#faq" class="hover:text-brand-orange transition">FAQ</a>
-                </nav>
-
-                <!-- Tombol Aksi Kanan -->
-                <div class="flex items-center gap-2.5">
-                    <!-- Tombol Login Admin -->
-                    <button onclick="bukaModalAdmin()" class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-green hover:text-brand-orange transition px-3 sm:px-4 py-2.5 rounded-xl border border-brand-green/25 hover:border-brand-orange bg-brand-sand/40">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                        <span>Login Admin</span>
-                    </button>
-
-                    <!-- Tombol Jadi Mitra -->
-                    <a href="#mitra" class="hidden sm:inline-flex text-sm font-bold text-brand-green border border-brand-green px-4 py-2.5 rounded-xl hover:bg-brand-green hover:text-white transition">
-                        Jadi Mitra
-                    </a>
-
-                    <!-- Tombol CTA Utama -->
-                    <a href="#katalog" class="text-xs sm:text-sm font-bold bg-brand-orange hover:bg-brand-orange-hover text-white px-4 sm:px-5 py-2.5 rounded-xl shadow-md transition">
-                        Sewa Sekarang
-                    </a>
-                </div>
+  </head>
+  <body class="antialiased text-brand-dark flex flex-col min-h-screen">
+    <!-- NAVBAR CLEAN & GLOSSY -->
+    <header
+      class="sticky top-0 z-40 bg-white/75 backdrop-blur-xl border-b border-white/70 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20 gap-4">
+          <!-- Logo -->
+          <a href="#" class="flex items-center gap-2.5 shrink-0">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-brand-green to-brand-dark rounded-xl flex items-center justify-center text-white shadow-md ring-1 ring-white/30"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2.2"
+                  d="M12 3L2 21h20L12 3zm0 5.5L17.5 19h-11L12 8.5z"
+                />
+              </svg>
             </div>
+            <span
+              class="text-xl sm:text-2xl font-extrabold tracking-tight text-brand-green whitespace-nowrap"
+            >
+              teduhalam<span class="text-brand-orange">.id</span>
+            </span>
+          </a>
+
+          <!-- Menu Desktop -->
+          <nav
+            class="hidden lg:flex items-center gap-6 text-sm font-semibold text-gray-800 whitespace-nowrap"
+          >
+            <a href="#katalog" class="hover:text-brand-orange transition"
+              >Sewa Tenda</a
+            >
+            <a href="#cara-kerja" class="hover:text-brand-orange transition"
+              >Cara Sewa</a
+            >
+            <a href="#simulator" class="hover:text-brand-orange transition"
+              >Simulator Paket</a
+            >
+            <a href="#destinasi" class="hover:text-brand-orange transition"
+              >Spot Kemping</a
+            >
+            <a href="#faq" class="hover:text-brand-orange transition">FAQ</a>
+          </nav>
+
+          <!-- Tombol Aksi Kanan -->
+          <div
+            class="flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap"
+          >
+            <button
+              onclick="bukaModalAdmin()"
+              class="glossy-pill flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-green hover:text-brand-orange px-3.5 py-2.5 rounded-xl"
+            >
+              <svg
+                class="w-4 h-4 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+              <span>Login Admin</span>
+            </button>
+
+            <a
+              href="#mitra"
+              class="hidden sm:inline-flex glossy-pill text-sm font-bold text-brand-green px-4 py-2.5 rounded-xl hover:text-brand-orange"
+            >
+              Jadi Mitra
+            </a>
+
+            <a
+              href="#katalog"
+              class="btn-glossy-orange text-xs sm:text-sm font-bold text-white px-4 sm:px-5 py-2.5 rounded-xl transition"
+            >
+              Sewa Sekarang
+            </a>
+          </div>
         </div>
+      </div>
     </header>
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION DENGAN LATAR PEMANDANGAN PEGUNUNGAN & TENDA -->
     <section class="relative bg-brand-dark text-white overflow-hidden">
-        <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1920&q=80" alt="Suasana Camping Malam" class="w-full h-full object-cover opacity-40">
-            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent"></div>
-        </div>
+      <div class="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1920&q=85"
+          alt="Pemandangan Alam Camping"
+          class="w-full h-full object-cover object-center scale-105"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-brand-dark/65 via-brand-dark/40 to-transparent"
+        ></div>
+      </div>
 
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-28 sm:pt-28 sm:pb-36 text-center">
-            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold text-amber-200 mb-6">
-                ⛺ Platform Sewa Alat Outdoor Terpercaya di Indonesia
-            </span>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight">
-                Jelajah Alam Tanpa Ribet Peralatan.
-            </h1>
-            <p class="mt-5 text-base sm:text-lg text-gray-200 max-w-2xl mx-auto">
-                Cek ketersediaan tenda secara real-time, pilih paket camping hemat, dan ambil langsung di basecamp mitra terdekat.
-            </p>
-        </div>
+      <div
+        class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-36 sm:pt-28 sm:pb-44 text-center"
+      >
+        <span
+          class="glossy-dark inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold text-amber-100 mb-6"
+        >
+          <span>⛺</span> Platform Sewa Alat Outdoor Terpercaya di Indonesia
+        </span>
+        <h1
+          class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight drop-shadow-md"
+        >
+          Jelajah Alam Tanpa Ribet Peralatan.
+        </h1>
+        <p
+          class="mt-5 text-base sm:text-lg text-white/95 max-w-2xl mx-auto font-medium drop-shadow"
+        >
+          Nikmati pengalaman berkemah dengan peralatan bersih, terawat, dan siap
+          pakai. Cek stok secara real-time dan ambil di basecamp mitra terdekat.
+        </p>
+      </div>
     </section>
 
-    <!-- FLOATING STICKY SEARCH BAR -->
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 -mt-14 relative z-30">
-        <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 card-shadow border border-brand-green/10">
-            <form onsubmit="cariTenda(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Lokasi / Gunung</label>
-                    <input type="text" id="inputLokasi" placeholder="Contoh: Gunung Marapi, Padang" class="w-full px-4 py-3 rounded-xl bg-brand-sand/60 border border-gray-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-green">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Tanggal Mulai</label>
-                    <input type="date" id="inputTanggal" class="w-full px-4 py-3 rounded-xl bg-brand-sand/60 border border-gray-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-green">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Kapasitas Tenda</label>
-                    <select id="inputKapasitas" class="w-full px-4 py-3 rounded-xl bg-brand-sand/60 border border-gray-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-green">
-                        <option value="all">Semua Kapasitas</option>
-                        <option value="solo">1 - 2 Orang (Solo/Couple)</option>
-                        <option value="keluarga">4 - 6 Orang (Keluarga/Grup)</option>
-                        <option value="glamping">Paket Glamping Lengkap</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full py-3.5 px-6 bg-brand-orange hover:bg-brand-orange-hover text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    Cari Tenda
-                </button>
-            </form>
-        </div>
+    <!-- KOTAK PENCARIAN GLOSSY (GLASSMORPHISM) -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 -mt-24 relative z-30">
+      <div class="glossy-panel rounded-3xl p-5 sm:p-7">
+        <form
+          onsubmit="cariTenda(event)"
+          class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end"
+        >
+          <div>
+            <label
+              class="block text-[11px] font-extrabold text-brand-green uppercase tracking-wider mb-1.5"
+              >Lokasi / Gunung</label
+            >
+            <input
+              type="text"
+              id="inputLokasi"
+              placeholder="Contoh: Gunung Marapi, Padang"
+              class="w-full px-4 py-3 rounded-2xl bg-white/80 backdrop-blur-md border border-white text-sm font-medium shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-green"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-[11px] font-extrabold text-brand-green uppercase tracking-wider mb-1.5"
+              >Tanggal Mulai</label
+            >
+            <input
+              type="date"
+              id="inputTanggal"
+              class="w-full px-4 py-3 rounded-2xl bg-white/80 backdrop-blur-md border border-white text-sm font-medium shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-green"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-[11px] font-extrabold text-brand-green uppercase tracking-wider mb-1.5"
+              >Kapasitas Tenda</label
+            >
+            <select
+              id="inputKapasitas"
+              class="w-full px-4 py-3 rounded-2xl bg-white/80 backdrop-blur-md border border-white text-sm font-medium shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-green"
+            >
+              <option value="all">Semua Kapasitas</option>
+              <option value="solo">1 - 2 Orang (Solo/Couple)</option>
+              <option value="keluarga">4 - 6 Orang (Keluarga/Grup)</option>
+              <option value="glamping">Paket Glamping Lengkap</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            class="btn-glossy-orange w-full py-3.5 px-6 text-white font-bold rounded-2xl transition flex items-center justify-center gap-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            Cari Tenda
+          </button>
+        </form>
+      </div>
     </div>
 
-    <!-- STATISTIK SINGKAT (SOCIAL PROOF) -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-4">
-        <div class="grid grid-cols-3 gap-4 text-center divide-x divide-gray-200">
-            <div>
-                <p class="text-2xl sm:text-3xl font-extrabold text-brand-green">120+</p>
-                <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">Unit Tenda & Alat</p>
-            </div>
-            <div>
-                <p class="text-2xl sm:text-3xl font-extrabold text-brand-green">15+</p>
-                <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">Mitra Persewaan Aktif</p>
-            </div>
-            <div>
-                <p class="text-2xl sm:text-3xl font-extrabold text-brand-orange">4.9 / 5</p>
-                <p class="text-xs sm:text-sm text-gray-500 font-medium mt-1">Rating Kepuasan Penyewa</p>
-            </div>
+    <!-- STATISTIK SINGKAT DALAM KARTU GLOSSY -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-10 pb-4">
+      <div
+        class="glossy-card rounded-3xl py-6 px-4 grid grid-cols-3 gap-4 text-center divide-x divide-brand-green/15"
+      >
+        <div>
+          <p class="text-2xl sm:text-3xl font-extrabold text-brand-green">
+            120+
+          </p>
+          <p class="text-xs sm:text-sm text-gray-700 font-semibold mt-1">
+            Unit Tenda & Alat
+          </p>
         </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-extrabold text-brand-green">
+            15+
+          </p>
+          <p class="text-xs sm:text-sm text-gray-700 font-semibold mt-1">
+            Mitra Persewaan Aktif
+          </p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-extrabold text-brand-orange">
+            4.9 / 5
+          </p>
+          <p class="text-xs sm:text-sm text-gray-700 font-semibold mt-1">
+            Rating Kepuasan Penyewa
+          </p>
+        </div>
+      </div>
     </section>
 
-    <!-- KATALOG PRODUK & FILTER KATEGORI -->
+    <!-- KATALOG PRODUK & TOMBOL PILIHAN KATEGORI GLOSSY -->
     <section id="katalog" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+      <div
+        class="flex flex-col lg:flex-row lg:items-end justify-between mb-6 gap-5"
+      >
+        <div>
+          <span
+            class="text-xs font-extrabold uppercase tracking-widest text-brand-orange"
+            >Katalog Terpopuler (7 Unit Pilihan)</span
+          >
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark mt-1">
+            Pilih Peralatan Kempingmu
+          </h2>
+        </div>
+
+        <!-- Kotak / Pill Pilihan Kategori Glossy -->
+        <div class="flex flex-wrap gap-2.5" id="filterButtons">
+          <button
+            onclick="filterKategori('all', this)"
+            class="filter-btn glossy-pill glossy-pill-active px-5 py-2.5 rounded-2xl text-sm font-bold"
+          >
+            Semua Tenda
+          </button>
+          <button
+            onclick="filterKategori('solo', this)"
+            class="filter-btn glossy-pill px-5 py-2.5 rounded-2xl text-sm font-semibold text-gray-800"
+          >
+            Tenda Solo (1-2p)
+          </button>
+          <button
+            onclick="filterKategori('keluarga', this)"
+            class="filter-btn glossy-pill px-5 py-2.5 rounded-2xl text-sm font-semibold text-gray-800"
+          >
+            Tenda Keluarga (4-6p)
+          </button>
+          <button
+            onclick="filterKategori('glamping', this)"
+            class="filter-btn glossy-pill px-5 py-2.5 rounded-2xl text-sm font-semibold text-gray-800"
+          >
+            Paket Glamping
+          </button>
+        </div>
+      </div>
+
+      <!-- Bar Kontrol Geser Kiri / Kanan Halus untuk Katalog Horizontal -->
+      <div class="flex items-center justify-between gap-3 mb-2">
+        <p
+          class="text-xs font-semibold text-brand-green/80 flex items-center gap-1.5"
+        >
+          <span
+            class="inline-block w-2 h-2 rounded-full bg-brand-orange"
+          ></span>
+          <span
+            >Geser ke samping untuk menjelajahi 7 pilihan tenda & paket
+            glamping</span
+          >
+        </p>
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onclick="geserKatalog(-1)"
+            aria-label="Geser katalog ke kiri"
+            class="glossy-pill p-2.5 rounded-xl text-brand-green hover:text-brand-orange active:scale-95"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.4"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onclick="geserKatalog(1)"
+            aria-label="Geser katalog ke kanan"
+            class="glossy-pill p-2.5 rounded-xl text-brand-green hover:text-brand-orange active:scale-95"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.4"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Baris Produk Geser Horizontal (Target div:has(> .product-card)) -->
+      <div id="gridProduk" class="px-1">
+        <!-- Kartu Produk 1 -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="keluarga"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Tenda+Eiger+Guardian+4P';
+                "
+                alt="Tenda Borneo 4P"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-orange/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Terpopuler</span
+                >
+                <span
+                  class="px-3 py-1 bg-brand-green/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Anti Badai</span
+                >
+              </div>
+            </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 Kapasitas 4 Orang</span>
+                <span>💧 3000mm</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Tenda Eiger Guardian 4P
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Double layer, frame alloy kokoh, tahan angin kencang pegunungan.
+              </p>
+            </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-brand-orange">Katalog Terpopuler</span>
-                <h2 class="text-3xl font-extrabold text-brand-dark mt-1">Pilih Peralatan Kempingmu</h2>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 45.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
             </div>
-
-            <!-- Filter Kategori -->
-            <div class="flex flex-wrap gap-2" id="filterButtons">
-                <button onclick="filterKategori('all', this)" class="filter-btn active px-4 py-2 rounded-xl text-sm font-bold bg-brand-green text-white transition">
-                    Semua Alat
-                </button>
-                <button onclick="filterKategori('solo', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white border border-gray-200 text-gray-700 hover:border-brand-green transition">
-                    Tenda Solo (1-2p)
-                </button>
-                <button onclick="filterKategori('keluarga', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white border border-gray-200 text-gray-700 hover:border-brand-green transition">
-                    Tenda Keluarga (4-6p)
-                </button>
-                <button onclick="filterKategori('glamping', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white border border-gray-200 text-gray-700 hover:border-brand-green transition">
-                    Paket Glamping
-                </button>
-                <button onclick="filterKategori('alat', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white border border-gray-200 text-gray-700 hover:border-brand-green transition">
-                    Alat Pendukung
-                </button>
-            </div>
+            <button
+              onclick="bukaModalSewa('Tenda Eiger Guardian 4P', 45000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
         </div>
 
-        <!-- Grid Produk -->
-        <div id="gridProduk" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Kartu Produk 1 -->
-            <div class="product-card bg-white rounded-3xl overflow-hidden card-shadow border border-gray-100 flex flex-col justify-between transition hover:-translate-y-1" data-kategori="keluarga">
-                <div>
-                    <div class="relative h-52 bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80" alt="Tenda Borneo 4P" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3 flex gap-1.5">
-                            <span class="px-2.5 py-1 bg-brand-orange text-white text-xs font-bold rounded-lg shadow">Terpopuler</span>
-                            <span class="px-2.5 py-1 bg-brand-green text-white text-xs font-bold rounded-lg shadow">Anti Badai</span>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium mb-1">
-                            <span>👥 Kapasitas 4 Orang</span>
-                            <span>💧 3000mm</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-brand-dark">Tenda Eiger Guardian 4P</h3>
-                        <p class="text-xs text-gray-500 mt-1">Double layer, frame alloy kokoh, tahan angin kencang pegunungan.</p>
-                    </div>
-                </div>
-                <div class="px-5 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                        <span class="text-lg font-extrabold text-brand-green">Rp 45.000</span>
-                        <span class="text-xs text-gray-500">/ hari</span>
-                    </div>
-                    <button onclick="bukaModalSewa('Tenda Eiger Guardian 4P', 45000)" class="px-4 py-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold rounded-xl transition">
-                        Detail / Sewa
-                    </button>
-                </div>
+        <!-- Kartu Produk 2 -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="solo"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Naturehike+Cloud+Up+2';
+                "
+                alt="Tenda Ultralight 2P"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-green/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Ultralight 1.8kg</span
+                >
+              </div>
             </div>
-
-            <!-- Kartu Produk 2 -->
-            <div class="product-card bg-white rounded-3xl overflow-hidden card-shadow border border-gray-100 flex flex-col justify-between transition hover:-translate-y-1" data-kategori="solo">
-                <div>
-                    <div class="relative h-52 bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=800&q=80" alt="Tenda Ultralight 2P" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3 flex gap-1.5">
-                            <span class="px-2.5 py-1 bg-brand-green text-white text-xs font-bold rounded-lg shadow">Ultralight 1.8kg</span>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium mb-1">
-                            <span>👥 Kapasitas 2 Orang</span>
-                            <span>💧 3000mm</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-brand-dark">Naturehike Cloud Up 2</h3>
-                        <p class="text-xs text-gray-500 mt-1">Ringan dibawa mendaki tektok atau camping berdua, mudah dipasang.</p>
-                    </div>
-                </div>
-                <div class="px-5 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                        <span class="text-lg font-extrabold text-brand-green">Rp 35.000</span>
-                        <span class="text-xs text-gray-500">/ hari</span>
-                    </div>
-                    <button onclick="bukaModalSewa('Naturehike Cloud Up 2', 35000)" class="px-4 py-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold rounded-xl transition">
-                        Detail / Sewa
-                    </button>
-                </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 Kapasitas 2 Orang</span>
+                <span>💧 3000mm</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Naturehike Cloud Up 2
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Ringan dibawa mendaki tektok atau camping berdua, mudah
+                dipasang.
+              </p>
             </div>
-
-            <!-- Kartu Produk 3 -->
-            <div class="product-card bg-white rounded-3xl overflow-hidden card-shadow border border-gray-100 flex flex-col justify-between transition hover:-translate-y-1" data-kategori="glamping">
-                <div>
-                    <div class="relative h-52 bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?auto=format&fit=crop&w=800&q=80" alt="Paket Glamping" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3 flex gap-1.5">
-                            <span class="px-2.5 py-1 bg-brand-orange text-white text-xs font-bold rounded-lg shadow">Paket Lengkap</span>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium mb-1">
-                            <span>👥 4 - 6 Orang</span>
-                            <span>✨ Full Set</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-brand-dark">Paket Family Glamping</h3>
-                        <p class="text-xs text-gray-500 mt-1">Tenda besar + 4 kursi lipat + meja + lampu gantung + alat masak.</p>
-                    </div>
-                </div>
-                <div class="px-5 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                        <span class="text-lg font-extrabold text-brand-green">Rp 120.000</span>
-                        <span class="text-xs text-gray-500">/ hari</span>
-                    </div>
-                    <button onclick="bukaModalSewa('Paket Family Glamping', 120000)" class="px-4 py-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold rounded-xl transition">
-                        Detail / Sewa
-                    </button>
-                </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
+            <div>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 35.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
             </div>
-
-            <!-- Kartu Produk 4 -->
-            <div class="product-card bg-white rounded-3xl overflow-hidden card-shadow border border-gray-100 flex flex-col justify-between transition hover:-translate-y-1" data-kategori="alat">
-                <div>
-                    <div class="relative h-52 bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1510312305653-8ed4962ae754?auto=format&fit=crop&w=800&q=80" alt="Paket Alat Masak" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3 flex gap-1.5">
-                            <span class="px-2.5 py-1 bg-brand-green text-white text-xs font-bold rounded-lg shadow">Hemat</span>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-medium mb-1">
-                            <span>🔥 Kompor + Nesting</span>
-                            <span>🍳 3-4 Orang</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-brand-dark">Set Masak & Kompor Windproof</h3>
-                        <p class="text-xs text-gray-500 mt-1">Kompor anti angin + nesting set 4 susun (free adaptor gas).</p>
-                    </div>
-                </div>
-                <div class="px-5 pb-5 pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                        <span class="text-lg font-extrabold text-brand-green">Rp 20.000</span>
-                        <span class="text-xs text-gray-500">/ hari</span>
-                    </div>
-                    <button onclick="bukaModalSewa('Set Masak & Kompor Windproof', 20000)" class="px-4 py-2 bg-brand-orange hover:bg-brand-orange-hover text-white text-xs font-bold rounded-xl transition">
-                        Detail / Sewa
-                    </button>
-                </div>
-            </div>
+            <button
+              onclick="bukaModalSewa('Naturehike Cloud Up 2', 35000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
         </div>
+
+        <!-- Kartu Produk 3 -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="glamping"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Paket+Family+Glamping';
+                "
+                alt="Paket Glamping"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-orange/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Paket Lengkap</span
+                >
+              </div>
+            </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 4 - 6 Orang</span>
+                <span>✨ Full Set</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Paket Family Glamping
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Tenda besar + 4 kursi lipat + meja + lampu gantung + alat masak.
+              </p>
+            </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
+            <div>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 120.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
+            </div>
+            <button
+              onclick="bukaModalSewa('Paket Family Glamping', 120000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Produk 4 -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="keluarga"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1496545672447-f699b503d270?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Tenda+Consina+Magnum+6P';
+                "
+                alt="Tenda Consina Magnum 6P"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-orange/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Kapasitas Besar</span
+                >
+                <span
+                  class="px-3 py-1 bg-brand-green/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >2 Kamar</span
+                >
+              </div>
+            </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 Kapasitas 6 Orang</span>
+                <span>💧 3000mm</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Tenda Consina Magnum 6P
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Kabin tinggi 190cm dengan sekat 2 ruang tidur dan teras luas
+                untuk rombongan.
+              </p>
+            </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
+            <div>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 65.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
+            </div>
+            <button
+              onclick="bukaModalSewa('Tenda Consina Magnum 6P', 65000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Produk 5 -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="solo"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1537905569824-f89f14cceb68?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Tenda+Great+Outdoor+Dome+2P';
+                "
+                alt="Tenda Great Outdoor Dome 2P"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-green/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Ekonomis</span
+                >
+              </div>
+            </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 Kapasitas 2 Orang</span>
+                <span>💧 2500mm</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Tenda Great Outdoor Dome 2P
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Praktis didirikan dalam 5 menit, pas untuk kemping santai akhir
+                pekan berdua.
+              </p>
+            </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
+            <div>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 30.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
+            </div>
+            <button
+              onclick="bukaModalSewa('Tenda Great Outdoor Dome 2P', 30000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Produk 6 (Tambahan Baru 1) -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="keluarga"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1517824806704-9040b037703b?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Tenda+Arei+Borobudur+4P';
+                "
+                alt="Tenda Arei Borobudur 4P"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-green/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >Double Layer</span
+                >
+              </div>
+            </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 Kapasitas 4 Orang</span>
+                <span>💧 3000mm</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Tenda Arei Borobudur 4P
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Dilengkapi vestibule depan luas untuk memasak saat hujan ringan.
+              </p>
+            </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
+            <div>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 50.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
+            </div>
+            <button
+              onclick="bukaModalSewa('Tenda Arei Borobudur 4P', 50000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Produk 7 (Tambahan Baru 2) -->
+        <div
+          class="product-card glossy-card rounded-3xl overflow-hidden flex flex-col justify-between"
+          data-kategori="glamping"
+        >
+          <div>
+            <div class="relative h-52 bg-gray-100 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1526491109672-74740652b963?auto=format&fit=crop&w=800&q=80"
+                onerror="
+                  this.onerror = null;
+                  this.src =
+                    'https://placehold.co/600x400/1B4332/ffffff?text=Glamping+Bell+Tent+VIP';
+                "
+                alt="Paket Glamping Bell Tent VIP"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span
+                  class="px-3 py-1 bg-brand-orange/90 backdrop-blur-md text-white text-xs font-bold rounded-xl shadow border border-white/25"
+                  >VIP Estetik</span
+                >
+              </div>
+            </div>
+            <div class="p-5">
+              <div
+                class="flex items-center justify-between text-xs text-gray-600 font-semibold mb-1.5"
+              >
+                <span>👥 4 - 6 Orang</span>
+                <span>⛺ Canvas Bell</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-dark">
+                Paket Glamping Bell Tent VIP
+              </h3>
+              <p class="text-xs text-gray-700 mt-1.5 leading-relaxed">
+                Tenda bell kanvas estetik + kasur angin queen + lampu hangat &
+                karpet.
+              </p>
+            </div>
+          </div>
+          <div
+            class="px-5 pb-5 pt-3 border-t border-brand-green/10 flex items-center justify-between"
+          >
+            <div>
+              <span class="text-lg font-extrabold text-brand-green"
+                >Rp 165.000</span
+              >
+              <span class="text-xs text-gray-600">/ hari</span>
+            </div>
+            <button
+              onclick="bukaModalSewa('Paket Glamping Bell Tent VIP', 165000)"
+              class="btn-glossy-orange px-4 py-2 text-white text-xs font-bold rounded-xl transition"
+            >
+              Detail / Sewa
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- CARA KERJA / ALUR PENYEWAAN -->
-    <section id="cara-kerja" class="py-16 bg-white border-y border-brand-green/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-xs font-bold uppercase tracking-wider text-brand-orange">Mudah & Transparan</span>
-                <h2 class="text-3xl font-extrabold text-brand-dark mt-1">4 Langkah Sewa di TeduhAlam</h2>
-                <p class="text-sm text-gray-500 mt-2">Tidak perlu repot tanya stok satu per satu via chat. Semua proses tercatat otomatis.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="p-6 rounded-3xl bg-brand-sand/50 border border-brand-green/10">
-                    <div class="w-11 h-11 rounded-2xl bg-brand-green text-white font-extrabold flex items-center justify-center text-lg mb-4">1</div>
-                    <h3 class="font-bold text-lg text-brand-dark">Pilih Tenda & Tanggal</h3>
-                    <p class="text-sm text-gray-600 mt-2">Tentukan peralatan kemping dan durasi sewa sesuai jadwal keberangkatanmu.</p>
-                </div>
-                <div class="p-6 rounded-3xl bg-brand-sand/50 border border-brand-green/10">
-                    <div class="w-11 h-11 rounded-2xl bg-brand-green text-white font-extrabold flex items-center justify-center text-lg mb-4">2</div>
-                    <h3 class="font-bold text-lg text-brand-dark">Booking & Konfirmasi</h3>
-                    <p class="text-sm text-gray-600 mt-2">Isi data penyewa dan kunci jadwalmu agar tenda tidak diambil orang lain.</p>
-                </div>
-                <div class="p-6 rounded-3xl bg-brand-sand/50 border border-brand-green/10">
-                    <div class="w-11 h-11 rounded-2xl bg-brand-green text-white font-extrabold flex items-center justify-center text-lg mb-4">3</div>
-                    <h3 class="font-bold text-lg text-brand-dark">Ambil di Basecamp</h3>
-                    <p class="text-sm text-gray-600 mt-2">Ambil peralatan di lokasi mitra dengan meninggalkan kartu identitas (E-KTP/KTM).</p>
-                </div>
-                <div class="p-6 rounded-3xl bg-brand-sand/50 border border-brand-green/10">
-                    <div class="w-11 h-11 rounded-2xl bg-brand-orange text-white font-extrabold flex items-center justify-center text-lg mb-4">4</div>
-                    <h3 class="font-bold text-lg text-brand-dark">Selesai & Kembalikan</h3>
-                    <p class="text-sm text-gray-600 mt-2">Kembalikan peralatan setelah kemping selesai dan ambil kembali identitas jaminanmu.</p>
-                </div>
-            </div>
+    <section id="cara-kerja" class="py-16 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span
+            class="text-xs font-extrabold uppercase tracking-widest text-brand-orange"
+            >Mudah & Transparan</span
+          >
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark mt-1">
+            4 Langkah Sewa di TeduhAlam
+          </h2>
+          <p class="text-sm text-gray-700 font-medium mt-2">
+            Tidak perlu repot tanya stok satu per satu via chat. Semua proses
+            tercatat otomatis.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="glossy-card p-6 rounded-3xl transition hover:-translate-y-1"
+          >
+            <div
+              class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-green to-brand-dark text-white font-extrabold flex items-center justify-center text-lg mb-4 shadow"
+            >
+              1
+            </div>
+            <h3 class="font-bold text-lg text-brand-dark">
+              Pilih Tenda & Tanggal
+            </h3>
+            <p class="text-sm text-gray-700 mt-2">
+              Tentukan peralatan kemping dan durasi sewa sesuai jadwal
+              keberangkatanmu.
+            </p>
+          </div>
+          <div
+            class="glossy-card p-6 rounded-3xl transition hover:-translate-y-1"
+          >
+            <div
+              class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-green to-brand-dark text-white font-extrabold flex items-center justify-center text-lg mb-4 shadow"
+            >
+              2
+            </div>
+            <h3 class="font-bold text-lg text-brand-dark">
+              Booking & Konfirmasi
+            </h3>
+            <p class="text-sm text-gray-700 mt-2">
+              Isi data penyewa dan kunci jadwalmu agar tenda tidak diambil orang
+              lain.
+            </p>
+          </div>
+          <div
+            class="glossy-card p-6 rounded-3xl transition hover:-translate-y-1"
+          >
+            <div
+              class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-green to-brand-dark text-white font-extrabold flex items-center justify-center text-lg mb-4 shadow"
+            >
+              3
+            </div>
+            <h3 class="font-bold text-lg text-brand-dark">Ambil di Basecamp</h3>
+            <p class="text-sm text-gray-700 mt-2">
+              Ambil peralatan di lokasi mitra dengan meninggalkan kartu
+              identitas (E-KTP/KTM).
+            </p>
+          </div>
+          <div
+            class="glossy-card p-6 rounded-3xl transition hover:-translate-y-1"
+          >
+            <div
+              class="w-11 h-11 rounded-2xl btn-glossy-orange text-white font-extrabold flex items-center justify-center text-lg mb-4"
+            >
+              4
+            </div>
+            <h3 class="font-bold text-lg text-brand-dark">
+              Selesai & Kembalikan
+            </h3>
+            <p class="text-sm text-gray-700 mt-2">
+              Kembalikan peralatan setelah kemping selesai dan ambil kembali
+              identitas jaminanmu.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- SIMULATOR / KALKULATOR PAKET CAMPING -->
-    <section id="simulator" class="py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-3xl p-6 sm:p-10 card-shadow border border-brand-green/15">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div>
-                    <span class="px-3 py-1 bg-brand-green/10 text-brand-green text-xs font-bold rounded-full">Fitur Pintar</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark mt-3">Bingung Butuh Alat Apa Saja?</h2>
-                    <p class="text-sm text-gray-600 mt-2">Geser jumlah anggota rombongan dan lama kemping, sistem kami akan menghitungkan estimasi paket paling hemat untukmu.</p>
+    <!-- SIMULATOR / KALKULATOR PAKET CAMPING GLOSSY -->
+    <section
+      id="simulator"
+      class="py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
+    >
+      <div class="glossy-panel rounded-3xl p-6 sm:p-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <span
+              class="glossy-pill inline-block px-3.5 py-1 text-brand-green text-xs font-extrabold rounded-full"
+              >✨ Fitur Pintar</span
+            >
+            <h2
+              class="text-2xl sm:text-3xl font-extrabold text-brand-dark mt-3"
+            >
+              Bingung Butuh Alat Apa Saja?
+            </h2>
+            <p class="text-sm text-gray-700 mt-2">
+              Geser jumlah anggota rombongan dan lama kemping, sistem kami akan
+              menghitungkan estimasi paket paling hemat untukmu.
+            </p>
 
-                    <div class="mt-6 space-y-5">
-                        <div>
-                            <div class="flex justify-between text-sm font-bold mb-1">
-                                <span>Jumlah Anggota Rombongan</span>
-                                <span class="text-brand-orange"><span id="labelOrang">4</span> Orang</span>
-                            </div>
-                            <input type="range" id="sliderOrang" min="1" max="12" value="4" oninput="hitungPaket()" class="w-full accent-brand-orange cursor-pointer">
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm font-bold mb-1">
-                                <span>Durasi Kemping</span>
-                                <span class="text-brand-orange"><span id="labelHari">2</span> Hari</span>
-                            </div>
-                            <input type="range" id="sliderHari" min="1" max="7" value="2" oninput="hitungPaket()" class="w-full accent-brand-orange cursor-pointer">
-                        </div>
-                    </div>
+            <div class="mt-6 space-y-5">
+              <div>
+                <div class="flex justify-between text-sm font-bold mb-1">
+                  <span>Jumlah Anggota Rombongan</span>
+                  <span class="text-brand-orange"
+                    ><span id="labelOrang">4</span> Orang</span
+                  >
                 </div>
-
-                <div class="bg-brand-sand rounded-2xl p-6 border border-brand-green/10">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500">Rekomendasi Sistem:</h3>
-                    <p id="hasilRekomendasi" class="text-base font-bold text-brand-dark mt-2">
-                        1x Tenda Kapasitas 4P + 4x Matras + 1x Set Masak & Lampu Tenda
-                    </p>
-                    <div class="my-4 border-t border-gray-300/70"></div>
-                    <div class="flex items-baseline justify-between">
-                        <span class="text-sm text-gray-600 font-medium">Estimasi Total Biaya:</span>
-                        <span id="hasilHargaTotal" class="text-2xl sm:text-3xl font-extrabold text-brand-green">Rp 130.000</span>
-                    </div>
-                    <p id="hasilPatungan" class="text-xs text-brand-orange font-bold mt-1 text-right">
-                        Hanya Rp 32.500 / orang!
-                    </p>
-                    <button onclick="sewaDariSimulator()" class="mt-5 w-full py-3 bg-brand-green hover:bg-brand-dark text-white font-bold rounded-xl transition">
-                        Booking Paket Rekomendasi Ini
-                    </button>
+                <input
+                  type="range"
+                  id="sliderOrang"
+                  min="1"
+                  max="12"
+                  value="4"
+                  oninput="hitungPaket()"
+                  class="w-full accent-brand-orange cursor-pointer"
+                />
+              </div>
+              <div>
+                <div class="flex justify-between text-sm font-bold mb-1">
+                  <span>Durasi Kemping</span>
+                  <span class="text-brand-orange"
+                    ><span id="labelHari">2</span> Hari</span
+                  >
                 </div>
+                <input
+                  type="range"
+                  id="sliderHari"
+                  min="1"
+                  max="7"
+                  value="2"
+                  oninput="hitungPaket()"
+                  class="w-full accent-brand-orange cursor-pointer"
+                />
+              </div>
             </div>
+          </div>
+
+          <div
+            class="bg-white/75 backdrop-blur-md rounded-2xl p-6 border border-white shadow-sm"
+          >
+            <h3
+              class="text-xs font-extrabold uppercase tracking-wider text-gray-500"
+            >
+              Rekomendasi Sistem:
+            </h3>
+            <p
+              id="hasilRekomendasi"
+              class="text-base font-bold text-brand-dark mt-2"
+            >
+              1x Tenda Kapasitas 4P + 4x Matras + 1x Set Masak & Lampu Tenda
+            </p>
+            <div class="my-4 border-t border-gray-200/80"></div>
+            <div class="flex items-baseline justify-between">
+              <span class="text-sm text-gray-600 font-medium"
+                >Estimasi Total Biaya:</span
+              >
+              <span
+                id="hasilHargaTotal"
+                class="text-2xl sm:text-3xl font-extrabold text-brand-green"
+                >Rp 130.000</span
+              >
+            </div>
+            <p
+              id="hasilPatungan"
+              class="text-xs text-brand-orange font-bold mt-1 text-right"
+            >
+              Hanya Rp 32.500 / orang!
+            </p>
+            <button
+              onclick="sewaDariSimulator()"
+              class="mt-5 w-full py-3.5 bg-gradient-to-r from-brand-green to-brand-dark hover:opacity-95 text-white font-bold rounded-2xl shadow-lg transition"
+            >
+              Booking Paket Rekomendasi Ini
+            </button>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- REKOMENDASI SPOT KEMPING POPULER -->
-    <section id="destinasi" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-10">
-            <span class="text-xs font-bold uppercase tracking-wider text-brand-orange">Inspirasi Perjalanan</span>
-            <h2 class="text-3xl font-extrabold text-brand-dark mt-1">Spot Kemping Populer Sumatera Barat</h2>
+    <section
+      id="destinasi"
+      class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+    >
+      <div class="mb-10">
+        <span
+          class="text-xs font-extrabold uppercase tracking-widest text-brand-orange"
+          >Inspirasi Perjalanan</span
+        >
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark mt-1">
+          Spot Kemping Populer Sumatera Barat
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div
+          class="group relative rounded-3xl overflow-hidden h-80 shadow-xl border border-white/70"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"
+            alt="Gunung Marapi"
+            class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"
+          ></div>
+          <div class="absolute bottom-5 left-5 right-5 text-white">
+            <span
+              class="glossy-dark px-3 py-1 text-xs font-semibold rounded-xl inline-block"
+              >🌡️ Suhu 12°C - 16°C</span
+            >
+            <h3 class="text-xl font-bold mt-2.5">Cadas Gunung Marapi</h3>
+            <p class="text-xs text-gray-200 mt-1">
+              Wajib tenda double-layer frame alloy & sleeping bag tebal.
+            </p>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="group relative rounded-3xl overflow-hidden h-72 card-shadow">
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt="Gunung Marapi" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                <div class="absolute bottom-5 left-5 right-5 text-white">
-                    <span class="px-2.5 py-1 bg-white/20 backdrop-blur-md text-xs font-semibold rounded-lg">🌡️ Suhu 12°C - 16°C</span>
-                    <h3 class="text-xl font-bold mt-2">Cadas Gunung Marapi</h3>
-                    <p class="text-xs text-gray-200 mt-1">Wajib tenda double-layer frame alloy & sleeping bag tebal.</p>
-                </div>
-            </div>
-
-            <div class="group relative rounded-3xl overflow-hidden h-72 card-shadow">
-                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80" alt="Lembah Harau" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                <div class="absolute bottom-5 left-5 right-5 text-white">
-                    <span class="px-2.5 py-1 bg-white/20 backdrop-blur-md text-xs font-semibold rounded-lg">🌡️ Suhu 20°C - 24°C</span>
-                    <h3 class="text-xl font-bold mt-2">Lembah Harau Camp Ground</h3>
-                    <p class="text-xs text-gray-200 mt-1">Cocok untuk Paket Family Glamping & kemping santai.</p>
-                </div>
-            </div>
-
-            <div class="group relative rounded-3xl overflow-hidden h-72 card-shadow">
-                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Pantai Carocok & Pulau" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                <div class="absolute bottom-5 left-5 right-5 text-white">
-                    <span class="px-2.5 py-1 bg-white/20 backdrop-blur-md text-xs font-semibold rounded-lg">🌡️ Suhu 25°C - 29°C</span>
-                    <h3 class="text-xl font-bold mt-2">Pantai Air Manis & Mandeh</h3>
-                    <p class="text-xs text-gray-200 mt-1">Rekomendasi tenda sirkulasi udara lebar + flysheet & kursi lipat.</p>
-                </div>
-            </div>
+        <div
+          class="group relative rounded-3xl overflow-hidden h-80 shadow-xl border border-white/70"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80"
+            alt="Lembah Harau"
+            class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"
+          ></div>
+          <div class="absolute bottom-5 left-5 right-5 text-white">
+            <span
+              class="glossy-dark px-3 py-1 text-xs font-semibold rounded-xl inline-block"
+              >🌡️ Suhu 20°C - 24°C</span
+            >
+            <h3 class="text-xl font-bold mt-2.5">Lembah Harau Camp Ground</h3>
+            <p class="text-xs text-gray-200 mt-1">
+              Cocok untuk Paket Family Glamping & kemping santai.
+            </p>
+          </div>
         </div>
+
+        <div
+          class="group relative rounded-3xl overflow-hidden h-80 shadow-xl border border-white/70"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+            alt="Pantai Carocok & Pulau"
+            class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"
+          ></div>
+          <div class="absolute bottom-5 left-5 right-5 text-white">
+            <span
+              class="glossy-dark px-3 py-1 text-xs font-semibold rounded-xl inline-block"
+              >🌡️ Suhu 25°C - 29°C</span
+            >
+            <h3 class="text-xl font-bold mt-2.5">Pantai Air Manis & Mandeh</h3>
+            <p class="text-xs text-gray-200 mt-1">
+              Rekomendasi tenda sirkulasi udara lebar + flysheet & kursi lipat.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- SECTION KHUSUS MITRA -->
-    <section id="mitra" class="py-16 bg-brand-sand/60">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-br from-brand-green to-brand-dark rounded-3xl p-8 sm:p-12 text-white shadow-xl">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                    <div class="lg:col-span-2">
-                        <span class="inline-block px-3.5 py-1.5 rounded-xl border border-brand-orange/60 bg-brand-orange/15 text-amber-300 text-xs font-bold mb-4">
-                            Khusus Pengusaha Rental Alat Camping
-                        </span>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
-                            Punya Usaha Sewa Alat Outdoor? Gabung Jadi Mitra TeduhAlam!
-                        </h2>
-                        <p class="text-gray-200 text-sm sm:text-base mt-3 max-w-2xl">
-                            Digitalisasikan rental tendamu secara gratis! Dapatkan manajemen stok otomatis, sistem booking online 24/7, dan jangkau ribuan pendaki setiap bulannya.
-                        </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-7 text-sm font-semibold">
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand-orange font-bold">✓</span> Manajemen Stok 1-Klik
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand-orange font-bold">✓</span> Pencairan Otomatis
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-brand-orange font-bold">✓</span> Bebas Biaya Pendaftaran
-                            </div>
-                        </div>
-                    </div>
+    <section id="mitra" class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/40"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1600&q=80"
+            alt="Hutan Pinus"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-brand-dark/95 via-brand-green/90 to-brand-dark/80"
+          ></div>
 
-                    <div class="flex flex-col gap-3">
-                        <button onclick="bukaModalAdmin()" class="w-full py-4 px-6 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-bold text-center shadow-lg transition">
-                            Masuk / Daftarkan Rental Saya
-                        </button>
-                        <a href="#faq" class="w-full py-3.5 px-6 rounded-xl border border-white/30 hover:bg-white/10 text-white font-semibold text-center text-sm transition">
-                            Pelajari Skema Kemitraan
-                        </a>
-                    </div>
+          <div
+            class="relative p-8 sm:p-12 text-white grid grid-cols-1 lg:grid-cols-3 gap-8 items-center"
+          >
+            <div class="lg:col-span-2">
+              <span
+                class="glossy-dark inline-block px-3.5 py-1.5 rounded-xl text-amber-300 text-xs font-bold mb-4"
+              >
+                Khusus Pengusaha Rental Alat Camping
+              </span>
+              <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
+                Punya Usaha Sewa Alat Outdoor? Gabung Jadi Mitra TeduhAlam!
+              </h2>
+              <p class="text-gray-200 text-sm sm:text-base mt-3 max-w-2xl">
+                Digitalisasikan rental tendamu secara gratis! Dapatkan manajemen
+                stok otomatis, sistem booking online 24/7, dan jangkau ribuan
+                pendaki setiap bulannya.
+              </p>
+              <div
+                class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-7 text-sm font-semibold"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-brand-orange font-bold">✓</span> Manajemen
+                  Stok 1-Klik
                 </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-brand-orange font-bold">✓</span> Pencairan
+                  Otomatis
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-brand-orange font-bold">✓</span> Bebas Biaya
+                  Pendaftaran
+                </div>
+              </div>
             </div>
+
+            <div class="flex flex-col gap-3">
+              <button
+                onclick="bukaModalAdmin()"
+                class="btn-glossy-orange w-full py-4 px-6 rounded-2xl text-white font-bold text-center transition"
+              >
+                Masuk / Daftarkan Rental Saya
+              </button>
+              <a
+                href="#faq"
+                class="glossy-dark w-full py-3.5 px-6 rounded-2xl hover:bg-white/20 text-white font-semibold text-center text-sm transition"
+              >
+                Pelajari Skema Kemitraan
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- BAGIAN FAQ (TANYA JAWAB) -->
+    <!-- BAGIAN FAQ GLOSSY -->
     <section id="faq" class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10">
-            <span class="text-xs font-bold uppercase tracking-wider text-brand-orange">Pusat Bantuan</span>
-            <h2 class="text-3xl font-extrabold text-brand-dark mt-1">Pertanyaan yang Sering Diajukan</h2>
-        </div>
+      <div class="text-center mb-10">
+        <span
+          class="text-xs font-extrabold uppercase tracking-widest text-brand-orange"
+          >Pusat Bantuan</span
+        >
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark mt-1">
+          Pertanyaan yang Sering Diajukan
+        </h2>
+      </div>
 
-        <div class="space-y-3">
-            <details class="group bg-white rounded-2xl p-5 border border-gray-200 open:border-brand-green transition">
-                <summary class="flex justify-between items-center font-bold text-brand-dark cursor-pointer list-none">
-                    <span>Apa syarat jaminan untuk menyewa tenda di teduhalam.id?</span>
-                    <span class="text-brand-orange font-bold group-open:rotate-45 transition">+</span>
-                </summary>
-                <p class="text-sm text-gray-600 mt-3 leading-relaxed">
-                    Penyewa wajib meninggalkan 1 kartu identitas asli yang masih berlaku (E-KTP, SIM, atau Kartu Tanda Mahasiswa/KTM) saat pengambilan alat di basecamp mitra. Identitas akan dikembalikan utuh saat alat selesai dikembalikan.
-                </p>
-            </details>
+      <div class="space-y-3.5">
+        <details
+          class="group glossy-card rounded-2xl p-5 open:ring-2 open:ring-brand-green/30 transition"
+        >
+          <summary
+            class="flex justify-between items-center font-bold text-brand-dark cursor-pointer list-none"
+          >
+            <span>Apa syarat jaminan untuk menyewa tenda di teduhalam.id?</span>
+            <span
+              class="text-brand-orange font-bold text-lg group-open:rotate-45 transition"
+              >+</span
+            >
+          </summary>
+          <p class="text-sm text-gray-700 mt-3 leading-relaxed">
+            Penyewa wajib meninggalkan 1 kartu identitas asli yang masih berlaku
+            (E-KTP, SIM, atau Kartu Tanda Mahasiswa/KTM) saat pengambilan alat
+            di basecamp mitra. Identitas akan dikembalikan utuh saat alat
+            selesai dikembalikan.
+          </p>
+        </details>
 
-            <details class="group bg-white rounded-2xl p-5 border border-gray-200 open:border-brand-green transition">
-                <summary class="flex justify-between items-center font-bold text-brand-dark cursor-pointer list-none">
-                    <span>Bagaimana perhitungan durasi sewa 1 hari?</span>
-                    <span class="text-brand-orange font-bold group-open:rotate-45 transition">+</span>
-                </summary>
-                <p class="text-sm text-gray-600 mt-3 leading-relaxed">
-                    Hitungan 1 hari sewa adalah 24 jam sejak waktu pengambilan barang yang disepakati. Keterlambatan pengembalian di atas toleransi 2 jam akan dikenakan biaya tambahan sesuai tarif harian.
-                </p>
-            </details>
+        <details
+          class="group glossy-card rounded-2xl p-5 open:ring-2 open:ring-brand-green/30 transition"
+        >
+          <summary
+            class="flex justify-between items-center font-bold text-brand-dark cursor-pointer list-none"
+          >
+            <span>Bagaimana perhitungan durasi sewa 1 hari?</span>
+            <span
+              class="text-brand-orange font-bold text-lg group-open:rotate-45 transition"
+              >+</span
+            >
+          </summary>
+          <p class="text-sm text-gray-700 mt-3 leading-relaxed">
+            Hitungan 1 hari sewa adalah 24 jam sejak waktu pengambilan barang
+            yang disepakati. Keterlambatan pengembalian di atas toleransi 2 jam
+            akan dikenakan biaya tambahan sesuai tarif harian.
+          </p>
+        </details>
 
-            <details class="group bg-white rounded-2xl p-5 border border-gray-200 open:border-brand-green transition">
-                <summary class="flex justify-between items-center font-bold text-brand-dark cursor-pointer list-none">
-                    <span>Bagaimana jika pemilik rental ingin mendaftarkan usahanya?</span>
-                    <span class="text-brand-orange font-bold group-open:rotate-45 transition">+</span>
-                </summary>
-                <p class="text-sm text-gray-600 mt-3 leading-relaxed">
-                    Pemilik usaha rental tenda dapat mengakses Dashboard Mitra melalui tombol <strong>Login Admin</strong> di bagian atas halaman untuk mengelola daftar inventaris tenda, harga sewa, dan pesanan pelanggan secara mandiri.
-                </p>
-            </details>
-        </div>
+        <details
+          class="group glossy-card rounded-2xl p-5 open:ring-2 open:ring-brand-green/30 transition"
+        >
+          <summary
+            class="flex justify-between items-center font-bold text-brand-dark cursor-pointer list-none"
+          >
+            <span
+              >Bagaimana jika pemilik rental ingin mendaftarkan usahanya?</span
+            >
+            <span
+              class="text-brand-orange font-bold text-lg group-open:rotate-45 transition"
+              >+</span
+            >
+          </summary>
+          <p class="text-sm text-gray-700 mt-3 leading-relaxed">
+            Pemilik usaha rental tenda dapat mengakses Dashboard Mitra melalui
+            tombol <strong>Login Admin</strong> di bagian atas halaman untuk
+            mengelola daftar inventaris tenda, harga sewa, dan pesanan pelanggan
+            secara mandiri.
+          </p>
+        </details>
+      </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-brand-dark text-white pt-16 pb-12 border-t border-white/10 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/10">
-                <div class="md:col-span-2">
-                    <span class="text-2xl font-extrabold tracking-tight text-white">
-                        teduhalam<span class="text-brand-orange">.id</span>
-                    </span>
-                    <p class="text-sm text-gray-400 mt-3 max-w-md">
-                        Platform digitalisasi persewaan tenda dan perlengkapan kegiatan alam terbuka. Memudahkan pendaki, memajukan pengusaha rental lokal.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-300 mb-3">Navigasi</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#katalog" class="hover:text-white transition">Katalog Tenda</a></li>
-                        <li><a href="#cara-kerja" class="hover:text-white transition">Cara Penyewaan</a></li>
-                        <li><a href="#simulator" class="hover:text-white transition">Kalkulator Paket</a></li>
-                        <li><a href="#destinasi" class="hover:text-white transition">Spot Kemping</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-sm uppercase tracking-wider text-gray-300 mb-3">Akses Mitra & Admin</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><button onclick="bukaModalAdmin()" class="hover:text-brand-orange transition font-semibold text-left">Login Dashboard Admin</button></li>
-                        <li><a href="#mitra" class="hover:text-white transition">Daftar Jadi Mitra</a></li>
-                        <li><a href="#faq" class="hover:text-white transition">Syarat & Ketentuan</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 gap-4">
-                <p>&copy; 2026 teduhalam.id — Proyek Pengembangan Web Informatika.</p>
-                <p>Padang, Sumatera Barat, Indonesia</p>
-            </div>
+    <footer
+      class="bg-brand-dark/95 backdrop-blur-lg text-white pt-16 pb-12 border-t border-white/15 mt-auto"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/10"
+        >
+          <div class="md:col-span-2">
+            <span class="text-2xl font-extrabold tracking-tight text-white">
+              teduhalam<span class="text-brand-orange">.id</span>
+            </span>
+            <p class="text-sm text-gray-400 mt-3 max-w-md">
+              Platform digitalisasi persewaan tenda dan perlengkapan kegiatan
+              alam terbuka. Memudahkan pendaki, memajukan pengusaha rental
+              lokal.
+            </p>
+          </div>
+          <div>
+            <h4
+              class="font-bold text-sm uppercase tracking-wider text-gray-300 mb-3"
+            >
+              Navigasi
+            </h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="#katalog" class="hover:text-white transition"
+                  >Katalog Tenda</a
+                >
+              </li>
+              <li>
+                <a href="#cara-kerja" class="hover:text-white transition"
+                  >Cara Penyewaan</a
+                >
+              </li>
+              <li>
+                <a href="#simulator" class="hover:text-white transition"
+                  >Kalkulator Paket</a
+                >
+              </li>
+              <li>
+                <a href="#destinasi" class="hover:text-white transition"
+                  >Spot Kemping</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4
+              class="font-bold text-sm uppercase tracking-wider text-gray-300 mb-3"
+            >
+              Akses Mitra & Admin
+            </h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>
+                <button
+                  onclick="bukaModalAdmin()"
+                  class="hover:text-brand-orange transition font-semibold text-left"
+                >
+                  Login Dashboard Admin
+                </button>
+              </li>
+              <li>
+                <a href="#mitra" class="hover:text-white transition"
+                  >Daftar Jadi Mitra</a
+                >
+              </li>
+              <li>
+                <a href="#faq" class="hover:text-white transition"
+                  >Syarat & Ketentuan</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
+        <div
+          class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 gap-4"
+        >
+          <p>&copy; 2026 teduhalam.id — Proyek Pengembangan Web Informatika.</p>
+          <p>Padang, Sumatera Barat, Indonesia</p>
+        </div>
+      </div>
     </footer>
 
-    <!-- TOMBOL FLOATING WHATSAPP CS -->
-    <a href="https://wa.me/6289637886470?text=Halo%20Admin%20TeduhAlam,%20saya%20ingin%20tanya%20ketersediaan%20tenda" target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-2 text-sm font-bold transition hover:scale-105">
-        <span>💬 Tanya CS</span>
+    <!-- TOMBOL FLOATING WHATSAPP CS (NOMOR SULTHAN) -->
+    <a
+      href="https://wa.me/6289637886470?text=Halo%20Admin%20TeduhAlam,%20saya%20ingin%20tanya%20ketersediaan%20tenda"
+      target="_blank"
+      class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white px-5 py-3 rounded-full shadow-2xl border border-white/35 flex items-center gap-2 text-sm font-bold transition hover:scale-105"
+    >
+      <span>💬 Tanya CS</span>
     </a>
 
-    <!-- MODAL BOOKING / SEWA PRODUK -->
-    <div id="modalSewa" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
-            <button onclick="tutupModalSewa()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 font-bold text-lg">✕</button>
-            <span class="inline-block px-3 py-1 bg-brand-orange/15 text-brand-orange text-xs font-bold rounded-full mb-2">Form Reservasi Cepat</span>
-            <h3 id="judulProdukModal" class="text-xl font-extrabold text-brand-dark">Nama Produk</h3>
-            <p id="hargaProdukModal" class="text-sm font-bold text-brand-green mt-1">Rp 45.000 / hari</p>
-
-            <form onsubmit="konfirmasiBooking(event)" class="mt-5 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Nama Lengkap Penyewa</label>
-                    <input type="text" required placeholder="Masukkan nama sesuai KTP/KTM" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">Tanggal Ambil</label>
-                        <input type="date" required class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">Lama Sewa (Hari)</label>
-                        <input type="number" id="durasiModal" min="1" value="2" oninput="updateTotalModal()" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none">
-                    </div>
-                </div>
-                <div class="bg-brand-sand p-3.5 rounded-xl flex justify-between items-center">
-                    <span class="text-xs font-semibold text-gray-600">Total Estimasi Bayar:</span>
-                    <span id="totalBayarModal" class="text-lg font-extrabold text-brand-green">Rp 90.000</span>
-                </div>
-                <button type="submit" class="w-full py-3 bg-brand-orange hover:bg-brand-orange-hover text-white font-bold rounded-xl shadow-lg transition">
-                    Konfirmasi Booking Sekarang
-                </button>
-            </form>
-        </div>
+    <!-- NOTIFIKASI TOAST KONFIRMASI BOOKING -->
+    <div
+      id="toastNotifikasi"
+      class="fixed bottom-20 right-6 z-50 hidden max-w-sm bg-brand-dark/95 backdrop-blur-xl text-white px-5 py-4 rounded-2xl shadow-2xl border border-white/20 flex items-start gap-3"
+    >
+      <span
+        class="w-6 h-6 rounded-full bg-brand-orange text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
+        >✓</span
+      >
+      <p
+        id="teksNotifikasi"
+        class="text-xs sm:text-sm font-medium leading-relaxed"
+      ></p>
     </div>
 
-    <!-- MODAL LOGIN ADMIN / MITRA (TERHUBUNG KE admin.html) -->
-    <div id="modalLoginAdmin" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
-            <button onclick="tutupModalAdmin()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 font-bold text-lg">✕</button>
+    <!-- MODAL BOOKING / SEWA PRODUK GLOSSY -->
+    <div
+      id="modalSewa"
+      class="fixed inset-0 z-50 hidden bg-black/55 backdrop-blur-md flex items-center justify-center p-4"
+    >
+      <div
+        class="glossy-panel bg-white/95 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative"
+      >
+        <button
+          onclick="tutupModalSewa()"
+          class="absolute top-5 right-5 text-gray-500 hover:text-gray-800 font-bold text-lg"
+        >
+          ✕
+        </button>
+        <span
+          class="inline-block px-3 py-1 bg-brand-orange/15 text-brand-orange text-xs font-bold rounded-full mb-2"
+          >Form Reservasi Cepat</span
+        >
+        <h3
+          id="judulProdukModal"
+          class="text-xl font-extrabold text-brand-dark"
+        >
+          Nama Produk
+        </h3>
+        <p
+          id="hargaProdukModal"
+          class="text-sm font-bold text-brand-green mt-1"
+        >
+          Rp 45.000 / hari
+        </p>
 
-            <div class="text-center mb-6">
-                <span class="inline-block px-3 py-1 bg-brand-green/10 text-brand-green text-xs font-bold rounded-full mb-2">
-                    Portal Mitra & Pengelola
-                </span>
-                <h3 class="text-2xl font-extrabold text-brand-dark">Login Dashboard Admin</h3>
-                <p class="text-xs text-gray-500 mt-1">Kelola stok tenda, pesanan masuk, dan laporan transaksi.</p>
+        <form onsubmit="konfirmasiBooking(event)" class="mt-5 space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1"
+              >Nama Lengkap Penyewa</label
+            >
+            <input
+              type="text"
+              required
+              placeholder="Masukkan nama sesuai KTP/KTM"
+              class="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Tanggal Ambil</label
+              >
+              <input
+                type="date"
+                required
+                class="w-full px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none"
+              />
             </div>
-
-            <form onsubmit="prosesLoginAdmin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Username / Email Admin</label>
-                    <input type="text" id="adminUser" required placeholder="admin" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
-                    <input type="password" id="adminPass" required placeholder="•••••" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none">
-                </div>
-
-                <p id="pesanErrorAdmin" class="text-xs text-red-600 hidden font-semibold">
-                    Username atau password salah! Gunakan akun demo di bawah.
-                </p>
-
-                <button type="submit" class="w-full py-3 bg-brand-green hover:bg-brand-dark text-white font-bold rounded-xl transition shadow-lg">
-                    Masuk ke Dashboard Admin
-                </button>
-            </form>
-
-            <div class="mt-4 p-3 rounded-xl bg-brand-sand text-center text-xs text-gray-600">
-                Akun Demo Presentasi: <span class="font-bold text-brand-dark">admin</span> | Password: <span class="font-bold text-brand-dark">12345</span>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Lama Sewa (Hari)</label
+              >
+              <input
+                type="number"
+                id="durasiModal"
+                min="1"
+                value="2"
+                oninput="updateTotalModal()"
+                class="w-full px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none"
+              />
             </div>
+          </div>
+          <div
+            class="bg-brand-sand/80 p-3.5 rounded-xl flex justify-between items-center border border-brand-green/10"
+          >
+            <span class="text-xs font-semibold text-gray-600"
+              >Total Estimasi Bayar:</span
+            >
+            <span
+              id="totalBayarModal"
+              class="text-lg font-extrabold text-brand-green"
+              >Rp 90.000</span
+            >
+          </div>
+          <button
+            type="submit"
+            class="btn-glossy-orange w-full py-3 text-white font-bold rounded-xl transition"
+          >
+            Konfirmasi Booking Sekarang
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN / MITRA GLOSSY -->
+    <div
+      id="modalLoginAdmin"
+      class="fixed inset-0 z-50 hidden bg-black/55 backdrop-blur-md flex items-center justify-center p-4"
+    >
+      <div
+        class="glossy-panel bg-white/95 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative"
+      >
+        <button
+          onclick="tutupModalAdmin()"
+          class="absolute top-5 right-5 text-gray-500 hover:text-gray-800 font-bold text-lg"
+        >
+          ✕
+        </button>
+
+        <div class="text-center mb-6">
+          <span
+            class="inline-block px-3 py-1 bg-brand-green/10 text-brand-green text-xs font-bold rounded-full mb-2"
+          >
+            Portal Mitra & Pengelola
+          </span>
+          <h3 class="text-2xl font-extrabold text-brand-dark">
+            Login Dashboard Admin
+          </h3>
+          <p class="text-xs text-gray-500 mt-1">
+            Kelola stok tenda, pesanan masuk, dan laporan transaksi.
+          </p>
         </div>
+
+        <form onsubmit="prosesLoginAdmin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1"
+              >Username / Email Admin</label
+            >
+            <input
+              type="text"
+              id="adminUser"
+              required
+              placeholder="admin"
+              class="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="adminPass"
+              required
+              placeholder="•••••"
+              class="w-full px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-sm focus:ring-2 focus:ring-brand-green focus:outline-none"
+            />
+          </div>
+
+          <p
+            id="pesanErrorAdmin"
+            class="text-xs text-red-600 hidden font-semibold"
+          >
+            Username atau password salah! Gunakan akun demo di bawah.
+          </p>
+
+          <button
+            type="submit"
+            class="w-full py-3 bg-gradient-to-r from-brand-green to-brand-dark hover:opacity-95 text-white font-bold rounded-xl transition shadow-lg"
+          >
+            Masuk ke Dashboard Admin
+          </button>
+        </form>
+
+        <div
+          class="mt-4 p-3 rounded-xl bg-brand-sand/80 text-center text-xs text-gray-600 border border-brand-green/10"
+        >
+          Akun Demo Presentasi:
+          <span class="font-bold text-brand-dark">admin</span> | Password:
+          <span class="font-bold text-brand-dark">12345</span>
+        </div>
+      </div>
     </div>
 
     <!-- JAVASCRIPT INTERAKTIF -->
     <script>
-        let hargaSatuanAktif = 0;
-        let namaProdukAktif = '';
+      let hargaSatuanAktif = 0;
+      let namaProdukAktif = "";
 
-        // Filter Katalog
-        function filterKategori(kategori, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => {
-                b.classList.remove('bg-brand-green', 'text-white', 'font-bold');
-                b.classList.add('bg-white', 'text-gray-700', 'font-semibold');
-            });
-            btn.classList.remove('bg-white', 'text-gray-700', 'font-semibold');
-            btn.classList.add('bg-brand-green', 'text-white', 'font-bold');
+      function geserKatalog(arah) {
+        const grid = document.getElementById("gridProduk");
+        grid.scrollBy({ left: arah * 304, behavior: "smooth" });
+      }
 
-            document.querySelectorAll('.product-card').forEach(card => {
-                if (kategori === 'all' || card.dataset.kategori === kategori) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
+      function filterKategori(kategori, btn) {
+        document.querySelectorAll(".filter-btn").forEach((b) => {
+          b.classList.remove("glossy-pill-active", "font-bold");
+          b.classList.add("text-gray-800", "font-semibold");
+        });
+        btn.classList.remove("text-gray-800", "font-semibold");
+        btn.classList.add("glossy-pill-active", "font-bold");
+
+        document.querySelectorAll(".product-card").forEach((card) => {
+          if (kategori === "all" || card.dataset.kategori === kategori) {
+            card.classList.remove("hidden");
+          } else {
+            card.classList.add("hidden");
+          }
+        });
+
+        const grid = document.getElementById("gridProduk");
+        if (grid) {
+          grid.scrollTo({ left: 0, behavior: "smooth" });
+        }
+      }
+
+      function cariTenda(e) {
+        e.preventDefault();
+        const kap = document.getElementById("inputKapasitas").value;
+        document
+          .getElementById("katalog")
+          .scrollIntoView({ behavior: "smooth" });
+        const targetBtn = document.querySelector(
+          `.filter-btn[onclick*="'${kap}'"]`,
+        );
+        if (targetBtn) filterKategori(kap, targetBtn);
+      }
+
+      function hitungPaket() {
+        const orang = parseInt(document.getElementById("sliderOrang").value);
+        const hari = parseInt(document.getElementById("sliderHari").value);
+        document.getElementById("labelOrang").innerText = orang;
+        document.getElementById("labelHari").innerText = hari;
+
+        let rekomendasi = "";
+        let hargaPerHari = 0;
+
+        if (orang <= 2) {
+          rekomendasi = `1x Tenda Ultralight 2P + ${orang}x Matras + 1x Set Kompor Mini`;
+          hargaPerHari = 45000;
+        } else if (orang <= 4) {
+          rekomendasi = `1x Tenda Guardian 4P + ${orang}x Matras + 1x Set Masak & Lampu Tenda`;
+          hargaPerHari = 65000;
+        } else if (orang <= 8) {
+          rekomendasi = `2x Tenda Guardian 4P + ${orang}x Matras + 2x Set Masak & Flysheet`;
+          hargaPerHari = 125000;
+        } else {
+          rekomendasi = `3x Tenda Kapasitas 4P + ${orang}x Matras + 2x Set Masak Besar & Lampu`;
+          hargaPerHari = 185000;
         }
 
-        // Pencarian dari Hero Search Bar
-        function cariTenda(e) {
-            e.preventDefault();
-            const kap = document.getElementById('inputKapasitas').value;
-            document.getElementById('katalog').scrollIntoView({ behavior: 'smooth' });
-            const targetBtn = document.querySelector(`.filter-btn[onclick*="'${kap}'"]`);
-            if (targetBtn) filterKategori(kap, targetBtn);
+        const total = hargaPerHari * hari;
+        const patungan = Math.round(total / orang);
+
+        document.getElementById("hasilRekomendasi").innerText = rekomendasi;
+        document.getElementById("hasilHargaTotal").innerText =
+          "Rp " + total.toLocaleString("id-ID");
+        document.getElementById("hasilPatungan").innerText =
+          `Hanya Rp ${patungan.toLocaleString("id-ID")} / orang!`;
+      }
+
+      function sewaDariSimulator() {
+        const totalText = document
+          .getElementById("hasilHargaTotal")
+          .innerText.replace(/[^0-9]/g, "");
+        const hari = parseInt(document.getElementById("sliderHari").value);
+        const hargaHarian = Math.round(parseInt(totalText) / hari);
+        bukaModalSewa("Paket Custom Simulator", hargaHarian);
+      }
+
+      function bukaModalSewa(nama, harga) {
+        namaProdukAktif = nama;
+        hargaSatuanAktif = harga;
+        document.getElementById("judulProdukModal").innerText = nama;
+        document.getElementById("hargaProdukModal").innerText =
+          "Rp " + harga.toLocaleString("id-ID") + " / hari";
+        document.getElementById("durasiModal").value = 2;
+        updateTotalModal();
+        document.getElementById("modalSewa").classList.remove("hidden");
+      }
+
+      function tutupModalSewa() {
+        document.getElementById("modalSewa").classList.add("hidden");
+      }
+
+      function updateTotalModal() {
+        const durasi =
+          parseInt(document.getElementById("durasiModal").value) || 1;
+        const total = hargaSatuanAktif * durasi;
+        document.getElementById("totalBayarModal").innerText =
+          "Rp " + total.toLocaleString("id-ID");
+      }
+
+      function konfirmasiBooking(e) {
+        e.preventDefault();
+        tutupModalSewa();
+        const toast = document.getElementById("toastNotifikasi");
+        const teks = document.getElementById("teksNotifikasi");
+        teks.innerText = `Terima kasih! Booking untuk "${namaProdukAktif}" berhasil dicatat. Silakan tunjukkan bukti ini saat pengambilan di basecamp.`;
+        toast.classList.remove("hidden");
+        clearTimeout(window.toastTimer);
+        window.toastTimer = setTimeout(() => {
+          toast.classList.add("hidden");
+        }, 4500);
+      }
+
+      function bukaModalAdmin() {
+        document.getElementById("modalLoginAdmin").classList.remove("hidden");
+      }
+
+      function tutupModalAdmin() {
+        document.getElementById("modalLoginAdmin").classList.add("hidden");
+      }
+
+      function prosesLoginAdmin(e) {
+        e.preventDefault();
+        const user = document.getElementById("adminUser").value.trim();
+        const pass = document.getElementById("adminPass").value.trim();
+        const err = document.getElementById("pesanErrorAdmin");
+
+        if (
+          (user === "admin" || user === "admin@teduhalam.id") &&
+          pass === "12345"
+        ) {
+          err.classList.add("hidden");
+          window.location.href = "admin.html";
+        } else {
+          err.classList.remove("hidden");
         }
-
-        // Simulator / Kalkulator Paket
-        function hitungPaket() {
-            const orang = parseInt(document.getElementById('sliderOrang').value);
-            const hari = parseInt(document.getElementById('sliderHari').value);
-            document.getElementById('labelOrang').innerText = orang;
-            document.getElementById('labelHari').innerText = hari;
-
-            let rekomendasi = '';
-            let hargaPerHari = 0;
-
-            if (orang <= 2) {
-                rekomendasi = `1x Tenda Ultralight 2P + ${orang}x Matras + 1x Set Kompor Mini`;
-                hargaPerHari = 45000;
-            } else if (orang <= 4) {
-                rekomendasi = `1x Tenda Guardian 4P + ${orang}x Matras + 1x Set Masak & Lampu Tenda`;
-                hargaPerHari = 65000;
-            } else if (orang <= 8) {
-                rekomendasi = `2x Tenda Guardian 4P + ${orang}x Matras + 2x Set Masak & Flysheet`;
-                hargaPerHari = 125000;
-            } else {
-                rekomendasi = `3x Tenda Kapasitas 4P + ${orang}x Matras + 2x Set Masak Besar & Lampu`;
-                hargaPerHari = 185000;
-            }
-
-            const total = hargaPerHari * hari;
-            const patungan = Math.round(total / orang);
-
-            document.getElementById('hasilRekomendasi').innerText = rekomendasi;
-            document.getElementById('hasilHargaTotal').innerText = 'Rp ' + total.toLocaleString('id-ID');
-            document.getElementById('hasilPatungan').innerText = `Hanya Rp ${patungan.toLocaleString('id-ID')} / orang!`;
-        }
-
-        function sewaDariSimulator() {
-            const rek = document.getElementById('hasilRekomendasi').innerText;
-            const totalText = document.getElementById('hasilHargaTotal').innerText.replace(/[^0-9]/g, '');
-            const hari = parseInt(document.getElementById('sliderHari').value);
-            const hargaHarian = Math.round(parseInt(totalText) / hari);
-            bukaModalSewa('Paket Custom Simulator', hargaHarian);
-        }
-
-        // Modal Sewa Produk
-        function bukaModalSewa(nama, harga) {
-            namaProdukAktif = nama;
-            hargaSatuanAktif = harga;
-            document.getElementById('judulProdukModal').innerText = nama;
-            document.getElementById('hargaProdukModal').innerText = 'Rp ' + harga.toLocaleString('id-ID') + ' / hari';
-            document.getElementById('durasiModal').value = 2;
-            updateTotalModal();
-            document.getElementById('modalSewa').classList.remove('hidden');
-        }
-
-        function tutupModalSewa() {
-            document.getElementById('modalSewa').classList.add('hidden');
-        }
-
-        function updateTotalModal() {
-            const durasi = parseInt(document.getElementById('durasiModal').value) || 1;
-            const total = hargaSatuanAktif * durasi;
-            document.getElementById('totalBayarModal').innerText = 'Rp ' + total.toLocaleString('id-ID');
-        }
-
-        function konfirmasiBooking(e) {
-            e.preventDefault();
-            alert(`Terima kasih! Booking untuk "${namaProdukAktif}" berhasil dicatat. Silakan tunjukkan bukti ini saat pengambilan di basecamp.`);
-            tutupModalSewa();
-        }
-
-        // Modal Login Admin -> Arahkan ke admin.html
-        function bukaModalAdmin() {
-            document.getElementById('modalLoginAdmin').classList.remove('hidden');
-        }
-
-        function tutupModalAdmin() {
-            document.getElementById('modalLoginAdmin').classList.add('hidden');
-        }
-
-        function prosesLoginAdmin(e) {
-            e.preventDefault();
-            const user = document.getElementById('adminUser').value.trim();
-            const pass = document.getElementById('adminPass').value.trim();
-            const err = document.getElementById('pesanErrorAdmin');
-
-            if ((user === 'admin' || user === 'admin@teduhalam.id') && pass === '12345') {
-                err.classList.add('hidden');
-                window.location.href = 'admin.html';
-            } else {
-                err.classList.remove('hidden');
-            }
-        }
+      }
     </script>
-</body>
+  </body>
 </html>
