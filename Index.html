@@ -1253,8 +1253,8 @@
                   Otomatis
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="text-brand-orange font-bold">✓</span> Bebas Biaya
-                  Pendaftaran
+                  <span class="text-brand-orange font-bold">✓</span> Bebas
+                  Konsultasi
                 </div>
               </div>
             </div>
@@ -1833,17 +1833,17 @@
 
     <div
       id="modalDaftarMitra"
-      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/65 backdrop-blur-sm p-4 overflow-y-auto"
+      class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-black/65 backdrop-blur-sm p-4 overflow-y-auto"
     >
       <div
-        class="mitra-modal-box bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 sm:p-8 relative my-auto"
+        class="mitra-modal-box bg-white w-full max-w-md rounded-3xl shadow-2xl p-5 sm:p-7 relative my-auto"
       >
         <!-- Tombol Tutup (X) -->
         <button
           type="button"
           onclick="tutupModalDaftarMitra()"
           aria-label="Tutup"
-          class="absolute top-5 right-5 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition"
+          class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition"
         >
           ✕
         </button>
@@ -1851,21 +1851,22 @@
         <!-- LANGKAH 1: FORMULIR PENDAFTARAN MITRA -->
         <div id="stepFormMitra">
           <div
-            class="mitra-badge-dark inline-block px-3.5 py-1 rounded-full text-xs font-bold mb-3"
+            class="mitra-badge-dark inline-block px-3 py-1 rounded-full text-xs font-bold mb-2"
           >
             Portal Kemitraan TeduhAlam.id
           </div>
-          <h2 class="text-2xl font-extrabold text-[#132A1E]">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-[#132A1E]">
             Daftarkan Rentalmu
           </h2>
-          <p class="text-xs sm:text-sm text-gray-600 mt-1">
-            Lengkapi detail usaha rental — proses kurang dari 1 menit.
+          <p class="text-xs text-gray-600 mt-0.5">
+            Lengkapi detail usaha & durasi sewa lapak — proses kurang dari 1
+            menit.
           </p>
 
           <!-- Peringatan Validasi Inline -->
           <div
             id="alertFormMitra"
-            class="hidden mt-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium"
+            class="hidden mt-2.5 p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium"
           >
             Mohon lengkapi Nama Pemilik, Nama Usaha Rental, dan Nomor WhatsApp
             terlebih dahulu.
@@ -1873,40 +1874,40 @@
 
           <form
             id="formPendaftaranMitra"
-            class="mt-5 space-y-4"
+            class="mt-3.5 space-y-3"
             onsubmit="prosesRingkasanMitra(event)"
           >
             <div>
-              <label class="block text-xs font-bold text-[#132A1E] mb-1.5"
+              <label class="block text-xs font-bold text-[#132A1E] mb-1"
                 >Nama Pemilik / Penanggung Jawab</label
               >
               <input
                 type="text"
                 id="mitraNama"
                 placeholder="Contoh: Sulthan Alfarisi"
-                class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm transition"
+                class="mitra-input w-full px-3.5 py-2 rounded-xl text-sm transition"
               />
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-[#132A1E] mb-1.5"
+              <label class="block text-xs font-bold text-[#132A1E] mb-1"
                 >Nama Usaha Rental & Kota</label
               >
               <input
                 type="text"
                 id="mitraUsaha"
                 placeholder="Contoh: Puncak Camp Gear - Padang"
-                class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm transition"
+                class="mitra-input w-full px-3.5 py-2 rounded-xl text-sm transition"
               />
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-[#132A1E] mb-1.5"
+              <label class="block text-xs font-bold text-[#132A1E] mb-1"
                 >Pilih Skema Kemitraan</label
               >
               <select
                 id="mitraSkema"
-                class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm bg-white transition"
+                class="mitra-input w-full px-3.5 py-2 rounded-xl text-sm bg-white transition"
               >
                 <option value="Mitra Reguler (1–10 Unit Tenda)">
                   Mitra Reguler (1–10 Unit Tenda)
@@ -1920,19 +1921,46 @@
               </select>
             </div>
 
+            <!-- Pilihan Baru: Jangka Waktu Sewa Lapak -->
+            <div>
+              <label class="block text-xs font-bold text-[#132A1E] mb-1"
+                >Jangka Waktu Sewa Lapak (Rp 500.000 / bulan)</label
+              >
+              <select
+                id="mitraDurasi"
+                class="mitra-input w-full px-3.5 py-2 rounded-xl text-sm bg-white font-medium text-[#132A1E] transition"
+              >
+                <option value="1" data-label="1 Bulan">
+                  1 Bulan — Rp 500.000
+                </option>
+                <option value="3" data-label="3 Bulan">
+                  3 Bulan — Rp 1.500.000
+                </option>
+                <option value="6" data-label="6 Bulan">
+                  6 Bulan — Rp 3.000.000
+                </option>
+                <option value="9" data-label="9 Bulan">
+                  9 Bulan — Rp 4.500.000
+                </option>
+                <option value="12" data-label="1 Tahun (12 Bulan)">
+                  1 Tahun (12 Bulan) — Rp 6.000.000
+                </option>
+              </select>
+            </div>
+
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-bold text-[#132A1E] mb-1.5"
-                  >Tanggal Bergabung</label
+                <label class="block text-xs font-bold text-[#132A1E] mb-1"
+                  >Tanggal Mulai</label
                 >
                 <input
                   type="date"
                   id="mitraTanggal"
-                  class="mitra-input w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-700 transition"
+                  class="mitra-input w-full px-3 py-2 rounded-xl text-sm text-gray-700 transition"
                 />
               </div>
               <div>
-                <label class="block text-xs font-bold text-[#132A1E] mb-1.5"
+                <label class="block text-xs font-bold text-[#132A1E] mb-1"
                   >Jumlah Unit Tenda</label
                 >
                 <input
@@ -1940,33 +1968,33 @@
                   id="mitraUnit"
                   min="1"
                   value="5"
-                  class="mitra-input w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-700 transition"
+                  class="mitra-input w-full px-3 py-2 rounded-xl text-sm text-gray-700 transition"
                 />
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-[#132A1E] mb-1.5"
+              <label class="block text-xs font-bold text-[#132A1E] mb-1"
                 >Nomor WhatsApp Aktif</label
               >
               <input
                 type="tel"
                 id="mitraWa"
                 placeholder="Contoh: 0812-3456-7890"
-                class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm transition"
+                class="mitra-input w-full px-3.5 py-2 rounded-xl text-sm transition"
               />
             </div>
 
             <button
               type="submit"
-              class="mitra-dark-btn w-full py-3 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 mt-2"
+              class="mitra-dark-btn w-full py-2.5 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 mt-1"
             >
               <span>Buat Ringkasan Pendaftaran</span>
               <span>→</span>
             </button>
           </form>
 
-          <div class="mt-4 pt-3 border-t border-gray-100 text-center">
+          <div class="mt-3 pt-2.5 border-t border-gray-100 text-center">
             <p class="text-xs text-gray-500">
               Sudah punya akun mitra?
               <button
@@ -1983,23 +2011,23 @@
         <!-- LANGKAH 2: RINGKASAN PENDAFTARAN MITRA -->
         <div id="stepRingkasanMitra" class="hidden text-center">
           <div
-            class="mitra-badge-dark w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-md"
+            class="mitra-badge-dark w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2.5 text-xl shadow-md"
           >
             ⛺
           </div>
-          <h2 class="text-2xl font-extrabold text-[#132A1E]">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-[#132A1E]">
             Ringkasan Pendaftaran
           </h2>
-          <p class="text-xs font-mono font-bold text-[#1B4332] mt-1">
+          <p class="text-xs font-mono font-bold text-[#1B4332] mt-0.5">
             Kode Mitra: <span id="outKodeMitra">MTR-2026-000000</span>
           </p>
 
           <!-- Kotak Rincian Bergaya Struk Digital -->
           <div
-            class="mitra-receipt-box mt-5 rounded-2xl p-4 sm:p-5 text-left space-y-2.5 text-xs sm:text-sm"
+            class="mitra-receipt-box mt-4 rounded-2xl p-4 text-left space-y-2 text-xs sm:text-sm"
           >
             <div
-              class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
               <span class="text-gray-600">Nama Pemilik</span>
               <span
@@ -2009,7 +2037,7 @@
               >
             </div>
             <div
-              class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
               <span class="text-gray-600">Nama Rental</span>
               <span
@@ -2019,7 +2047,7 @@
               >
             </div>
             <div
-              class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
               <span class="text-gray-600">No. WhatsApp</span>
               <span id="outWaMitra" class="font-bold text-[#132A1E] text-right"
@@ -2027,7 +2055,7 @@
               >
             </div>
             <div
-              class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
               <span class="text-gray-600">Skema Kemitraan</span>
               <span
@@ -2037,9 +2065,9 @@
               >
             </div>
             <div
-              class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
-              <span class="text-gray-600">Tanggal Bergabung</span>
+              <span class="text-gray-600">Tanggal Mulai</span>
               <span
                 id="outTanggalMitra"
                 class="font-bold text-[#132A1E] text-right"
@@ -2047,7 +2075,7 @@
               >
             </div>
             <div
-              class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
               <span class="text-gray-600">Jumlah Armada</span>
               <span
@@ -2057,35 +2085,48 @@
               >
             </div>
             <div
-              class="flex justify-between items-center pb-2 border-b border-[#1B4332]/30"
+              class="flex justify-between items-center pb-1.5 border-b border-dashed border-[#1B4332]/20"
             >
-              <span class="text-gray-600">Biaya Pendaftaran</span>
-              <span class="font-bold text-[#1B4332]">Rp 0 (Gratis)</span>
+              <span class="text-gray-600">Durasi Sewa Lapak</span>
+              <span
+                id="outDurasiMitra"
+                class="font-bold text-[#132A1E] text-right"
+                >-</span
+              >
+            </div>
+            <div
+              class="flex justify-between items-center pb-1.5 border-b border-[#1B4332]/30"
+            >
+              <span class="text-gray-600">Tarif Lapak Web</span>
+              <span class="font-semibold text-[#1B4332]"
+                >Rp 500.000 / bulan</span
+              >
             </div>
             <div class="flex justify-between items-center pt-1">
               <span class="font-extrabold text-[#132A1E]"
-                >Status Pengajuan</span
+                >Total Biaya Sewa</span
               >
-              <span class="font-extrabold text-brand-orange"
-                >Siap Verifikasi Admin</span
+              <span
+                id="outTotalMitra"
+                class="font-extrabold text-base text-brand-orange"
+                >Rp 500.000</span
               >
             </div>
           </div>
 
-          <p class="text-[11px] text-gray-500 mt-3.5 leading-relaxed">
-            Pendaftaran mitra 100% gratis tanpa potongan biaya awal. Kirim
-            ringkasan ini via WhatsApp ke Admin TeduhAlam.id untuk aktivasi
-            akun.
+          <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
+            Kirim ringkasan pendaftaran dan durasi sewa lapak ini via WhatsApp
+            ke Admin TeduhAlam.id untuk aktivasi akun & verifikasi pembayaran.
           </p>
 
           <!-- Tombol Aksi Langkah 2 -->
-          <div class="mt-4 space-y-2.5">
+          <div class="mt-3.5 space-y-2">
             <a
               id="btnKonfirmasiWaMitra"
               href="#"
               target="_blank"
               rel="noopener noreferrer"
-              class="mitra-dark-btn w-full py-3 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2"
+              class="mitra-dark-btn w-full py-2.5 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2"
             >
               <span>💬</span>
               <span>Konfirmasi via WhatsApp</span>
@@ -2093,7 +2134,7 @@
             <button
               type="button"
               onclick="tutupModalDaftarMitra()"
-              class="mitra-soft-btn w-full py-2.5 rounded-xl font-bold text-xs"
+              class="mitra-soft-btn w-full py-2 rounded-xl font-bold text-xs"
             >
               Kembali ke Halaman Utama
             </button>
@@ -2161,12 +2202,20 @@
           return `${parseInt(parts[2], 10)} ${bulan[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
         }
 
+        function formatRupiah(angka) {
+          return "Rp " + angka.toLocaleString("id-ID");
+        }
+
         window.prosesRingkasanMitra = function (e) {
           e.preventDefault();
 
           const nama = document.getElementById("mitraNama").value.trim();
           const usaha = document.getElementById("mitraUsaha").value.trim();
           const skema = document.getElementById("mitraSkema").value;
+          const durasiEl = document.getElementById("mitraDurasi");
+          const jumlahBulan = parseInt(durasiEl.value, 10) || 1;
+          const labelDurasi =
+            durasiEl.options[durasiEl.selectedIndex].getAttribute("data-label");
           const tanggal = document.getElementById("mitraTanggal").value;
           const unit = document.getElementById("mitraUnit").value || "1";
           const wa = document.getElementById("mitraWa").value.trim();
@@ -2178,6 +2227,9 @@
           }
           alertBox.classList.add("hidden");
 
+          const tarifPerBulan = 500000;
+          const totalBiaya = jumlahBulan * tarifPerBulan;
+          const totalRupiah = formatRupiah(totalBiaya);
           const kodeUnik =
             "MTR-2026-" + Math.floor(100000 + Math.random() * 900000);
           const tanggalIndo = formatTanggalIndo(tanggal);
@@ -2190,17 +2242,21 @@
           document.getElementById("outTanggalMitra").textContent = tanggalIndo;
           document.getElementById("outUnitMitra").textContent =
             `${unit} Unit Tenda`;
+          document.getElementById("outDurasiMitra").textContent = labelDurasi;
+          document.getElementById("outTotalMitra").textContent = totalRupiah;
 
           const pesanWa =
             `Halo Admin TeduhAlam.id, saya ingin mendaftarkan usaha rental sebagai Mitra dengan detail berikut:\n\n` +
-            `- Kode Mitra    : ${kodeUnik}\n` +
-            `- Nama Pemilik  : ${nama}\n` +
-            `- Nama Rental   : ${usaha}\n` +
-            `- No. WhatsApp  : ${wa}\n` +
-            `- Skema Paket   : ${skema}\n` +
-            `- Jumlah Unit : ${unit} Unit Tenda\n` +
-            `- Tgl Bergabung : ${tanggalIndo}\n\n` +
-            `Mohon bantuan untuk proses verifikasi akun mitra. Terima kasih.`;
+            `- Kode Mitra       : ${kodeUnik}\n` +
+            `- Nama Pemilik     : ${nama}\n` +
+            `- Nama Rental      : ${usaha}\n` +
+            `- No. WhatsApp     : ${wa}\n` +
+            `- Skema Kemitraan  : ${skema}\n` +
+            `- Jumlah Unit    : ${unit} Unit Tenda\n` +
+            `- Tanggal Mulai    : ${tanggalIndo}\n` +
+            `- Durasi Sewa Web  : ${labelDurasi}\n` +
+            `- Total Biaya Sewa : ${totalRupiah} (Rp 500.000/bulan)\n\n` +
+            `Mohon bantuan untuk proses aktivasi lapak mitra. Terima kasih.`;
 
           document.getElementById("btnKonfirmasiWaMitra").href =
             `https://wa.me/6289637886470?text=${encodeURIComponent(pesanWa)}`;
