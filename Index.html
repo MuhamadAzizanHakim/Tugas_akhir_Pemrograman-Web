@@ -1779,5 +1779,290 @@
         }
       }
     </script>
-  </body>
+<!-- === MODAL PENDAFTARAN MITRA 2 LANGKAH - HIJAU GELAP (TEDUHALAM.ID) === -->
+<style>
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .mitra-modal-box {
+    animation: modalPop 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    border: 1px solid rgba(27, 67, 50, 0.2) !important;
+  }
+  .mitra-badge-dark {
+    background-color: #1B4332 !important;
+    color: #F0FDF4 !important;
+  }
+  .mitra-dark-btn {
+    background-color: #1B4332 !important;
+    color: #FFFFFF !important;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+  .mitra-dark-btn:hover {
+    background-color: #122E22 !important;
+  }
+  .mitra-soft-btn {
+    background-color: #E4ECE7 !important;
+    color: #1B4332 !important;
+    transition: background-color 0.2s ease;
+  }
+  .mitra-soft-btn:hover {
+    background-color: #D3E0D8 !important;
+  }
+  .mitra-receipt-box {
+    background-color: #EDF2EF !important;
+    border: 1px solid rgba(27, 67, 50, 0.22) !important;
+  }
+  .mitra-input {
+    border: 1px solid rgba(27, 67, 50, 0.22) !important;
+  }
+  .mitra-input:focus {
+    border-color: #1B4332 !important;
+    box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.14) !important;
+    outline: none !important;
+  }
+</style>
+
+<div id="modalDaftarMitra" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/65 backdrop-blur-sm p-4 overflow-y-auto">
+  <div class="mitra-modal-box bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 sm:p-8 relative my-auto">
+    
+    <!-- Tombol Tutup (X) -->
+    <button type="button" onclick="tutupModalDaftarMitra()" aria-label="Tutup" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition">
+      ✕
+    </button>
+
+    <!-- LANGKAH 1: FORMULIR PENDAFTARAN MITRA -->
+    <div id="stepFormMitra">
+      <div class="mitra-badge-dark inline-block px-3.5 py-1 rounded-full text-xs font-bold mb-3">
+        Portal Kemitraan TeduhAlam.id
+      </div>
+      <h2 class="text-2xl font-extrabold text-[#132A1E]">Daftarkan Rentalmu</h2>
+      <p class="text-xs sm:text-sm text-gray-600 mt-1">Lengkapi detail usaha rental — proses kurang dari 1 menit.</p>
+
+      <!-- Peringatan Validasi Inline -->
+      <div id="alertFormMitra" class="hidden mt-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium">
+        Mohon lengkapi Nama Pemilik, Nama Usaha Rental, dan Nomor WhatsApp terlebih dahulu.
+      </div>
+
+      <form id="formPendaftaranMitra" class="mt-5 space-y-4" onsubmit="prosesRingkasanMitra(event)">
+        <div>
+          <label class="block text-xs font-bold text-[#132A1E] mb-1.5">Nama Pemilik / Penanggung Jawab</label>
+          <input type="text" id="mitraNama" placeholder="Contoh: Sulthan Alfarisi" class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#132A1E] mb-1.5">Nama Usaha Rental & Kota</label>
+          <input type="text" id="mitraUsaha" placeholder="Contoh: Puncak Camp Gear - Padang" class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#132A1E] mb-1.5">Pilih Skema Kemitraan</label>
+          <select id="mitraSkema" class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm bg-white transition">
+            <option value="Mitra Reguler (1–10 Unit Tenda)">Mitra Reguler (1–10 Unit Tenda)</option>
+            <option value="Mitra Pro (11–30 Unit + Alat Masak)">Mitra Pro (11–30 Unit + Alat Masak)</option>
+            <option value="Mitra Glamping & Ekspedisi (> 30 Unit)">Mitra Glamping & Ekspedisi (> 30 Unit)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-[#132A1E] mb-1.5">Tanggal Bergabung</label>
+            <input type="date" id="mitraTanggal" class="mitra-input w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-700 transition">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#132A1E] mb-1.5">Jumlah Unit Tenda</label>
+            <input type="number" id="mitraUnit" min="1" value="5" class="mitra-input w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-700 transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#132A1E] mb-1.5">Nomor WhatsApp Aktif</label>
+          <input type="tel" id="mitraWa" placeholder="Contoh: 0812-3456-7890" class="mitra-input w-full px-4 py-2.5 rounded-xl text-sm transition">
+        </div>
+
+        <button type="submit" class="mitra-dark-btn w-full py-3 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 mt-2">
+          <span>Buat Ringkasan Pendaftaran</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="mt-4 pt-3 border-t border-gray-100 text-center">
+        <p class="text-xs text-gray-500">
+          Sudah punya akun mitra? 
+          <button type="button" onclick="alihKeLoginAdmin()" class="font-bold text-[#1B4332] hover:underline">Masuk Dashboard Admin</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- LANGKAH 2: RINGKASAN PENDAFTARAN MITRA -->
+    <div id="stepRingkasanMitra" class="hidden text-center">
+      <div class="mitra-badge-dark w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-md">
+        ⛺
+      </div>
+      <h2 class="text-2xl font-extrabold text-[#132A1E]">Ringkasan Pendaftaran</h2>
+      <p class="text-xs font-mono font-bold text-[#1B4332] mt-1">
+        Kode Mitra: <span id="outKodeMitra">MTR-2026-000000</span>
+      </p>
+
+      <!-- Kotak Rincian Bergaya Struk Digital -->
+      <div class="mitra-receipt-box mt-5 rounded-2xl p-4 sm:p-5 text-left space-y-2.5 text-xs sm:text-sm">
+        <div class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20">
+          <span class="text-gray-600">Nama Pemilik</span>
+          <span id="outNamaMitra" class="font-bold text-[#132A1E] text-right">-</span>
+        </div>
+        <div class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20">
+          <span class="text-gray-600">Nama Rental</span>
+          <span id="outUsahaMitra" class="font-bold text-[#132A1E] text-right">-</span>
+        </div>
+        <div class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20">
+          <span class="text-gray-600">No. WhatsApp</span>
+          <span id="outWaMitra" class="font-bold text-[#132A1E] text-right">-</span>
+        </div>
+        <div class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20">
+          <span class="text-gray-600">Skema Kemitraan</span>
+          <span id="outSkemaMitra" class="font-bold text-[#132A1E] text-right">-</span>
+        </div>
+        <div class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20">
+          <span class="text-gray-600">Tanggal Bergabung</span>
+          <span id="outTanggalMitra" class="font-bold text-[#132A1E] text-right">-</span>
+        </div>
+        <div class="flex justify-between items-center pb-2 border-b border-dashed border-[#1B4332]/20">
+          <span class="text-gray-600">Jumlah Armada</span>
+          <span id="outUnitMitra" class="font-bold text-[#132A1E] text-right">-</span>
+        </div>
+        <div class="flex justify-between items-center pb-2 border-b border-[#1B4332]/30">
+          <span class="text-gray-600">Biaya Pendaftaran</span>
+          <span class="font-bold text-[#1B4332]">Rp 0 (Gratis)</span>
+        </div>
+        <div class="flex justify-between items-center pt-1">
+          <span class="font-extrabold text-[#132A1E]">Status Pengajuan</span>
+          <span class="font-extrabold text-brand-orange">Siap Verifikasi Admin</span>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-gray-500 mt-3.5 leading-relaxed">
+        Pendaftaran mitra 100% gratis tanpa potongan biaya awal. Kirim ringkasan ini via WhatsApp ke Admin TeduhAlam.id untuk aktivasi akun.
+      </p>
+
+      <!-- Tombol Aksi Langkah 2 -->
+      <div class="mt-4 space-y-2.5">
+        <a id="btnKonfirmasiWaMitra" href="#" target="_blank" rel="noopener noreferrer" class="mitra-dark-btn w-full py-3 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2">
+          <span>💬</span>
+          <span>Konfirmasi via WhatsApp</span>
+        </a>
+        <button type="button" onclick="tutupModalDaftarMitra()" class="mitra-soft-btn w-full py-2.5 rounded-xl font-bold text-xs">
+          Kembali ke Halaman Utama
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    const modalMitra = document.getElementById('modalDaftarMitra');
+    const stepForm = document.getElementById('stepFormMitra');
+    const stepRingkasan = document.getElementById('stepRingkasanMitra');
+    const inputTanggal = document.getElementById('mitraTanggal');
+
+    if (inputTanggal) {
+      inputTanggal.valueAsDate = new Date();
+    }
+
+    window.bukaModalDaftarMitra = function () {
+      stepForm.classList.remove('hidden');
+      stepRingkasan.classList.add('hidden');
+      document.getElementById('alertFormMitra').classList.add('hidden');
+      modalMitra.classList.remove('hidden');
+      modalMitra.classList.add('flex');
+    };
+
+    window.tutupModalDaftarMitra = function () {
+      modalMitra.classList.add('hidden');
+      modalMitra.classList.remove('flex');
+    };
+
+    window.alihKeLoginAdmin = function () {
+      tutupModalDaftarMitra();
+      const semuaTombol = document.querySelectorAll('button, a');
+      for (const el of semuaTombol) {
+        if (el.textContent && el.textContent.trim().includes('Login Admin')) {
+          el.click();
+          break;
+        }
+      }
+    };
+
+    function formatTanggalIndo(dateStr) {
+      if (!dateStr) return '-';
+      const bulan = [
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      return `${parseInt(parts[2], 10)} ${bulan[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+    }
+
+    window.prosesRingkasanMitra = function (e) {
+      e.preventDefault();
+
+      const nama = document.getElementById('mitraNama').value.trim();
+      const usaha = document.getElementById('mitraUsaha').value.trim();
+      const skema = document.getElementById('mitraSkema').value;
+      const tanggal = document.getElementById('mitraTanggal').value;
+      const unit = document.getElementById('mitraUnit').value || '1';
+      const wa = document.getElementById('mitraWa').value.trim();
+      const alertBox = document.getElementById('alertFormMitra');
+
+      if (!nama || !usaha || !wa) {
+        alertBox.classList.remove('hidden');
+        return;
+      }
+      alertBox.classList.add('hidden');
+
+      const kodeUnik = 'MTR-2026-' + Math.floor(100000 + Math.random() * 900000);
+      const tanggalIndo = formatTanggalIndo(tanggal);
+
+      document.getElementById('outKodeMitra').textContent = kodeUnik;
+      document.getElementById('outNamaMitra').textContent = nama;
+      document.getElementById('outUsahaMitra').textContent = usaha;
+      document.getElementById('outWaMitra').textContent = wa;
+      document.getElementById('outSkemaMitra').textContent = skema;
+      document.getElementById('outTanggalMitra').textContent = tanggalIndo;
+      document.getElementById('outUnitMitra').textContent = `${unit} Unit Tenda`;
+
+      const pesanWa =
+        `Halo Admin TeduhAlam.id, saya ingin mendaftarkan usaha rental sebagai Mitra dengan detail berikut:\n\n` +
+        `- Kode Mitra    : ${kodeUnik}\n` +
+        `- Nama Pemilik  : ${nama}\n` +
+        `- Nama Rental   : ${usaha}\n` +
+        `- No. WhatsApp  : ${wa}\n` +
+        `- Skema Paket   : ${skema}\n` +
+        `- Jumlah Armada : ${unit} Unit Tenda\n` +
+        `- Tgl Bergabung : ${tanggalIndo}\n\n` +
+        `Mohon bantuan untuk proses verifikasi akun mitra. Terima kasih.`;
+
+      document.getElementById('btnKonfirmasiWaMitra').href =
+        `https://wa.me/6289637886470?text=${encodeURIComponent(pesanWa)}`;
+
+      stepForm.classList.add('hidden');
+      stepRingkasan.classList.remove('hidden');
+    };
+
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('button, a');
+      if (btn && btn.textContent && btn.textContent.includes('Daftarkan Rental Saya')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        bukaModalDaftarMitra();
+      }
+      if (e.target === modalMitra) {
+        tutupModalDaftarMitra();
+      }
+    }, true);
+  })();
+</script>
+</body>
 </html>
