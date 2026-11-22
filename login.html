@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk ke Portal Admin - teduhalam.id</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-green': '#1B4332',
+                        'brand-dark': '#0C2118',
+                        'brand-sand': '#F6F4EF',
+                        'brand-orange': '#D96B27',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F4F5F7;
+            background-image: 
+                radial-gradient(at 15% 20%, rgba(27, 67, 50, 0.08) 0px, transparent 50%),
+                radial-gradient(at 85% 80%, rgba(217, 107, 39, 0.08) 0px, transparent 50%),
+                url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .bg-overlay {
+            background: linear-gradient(135deg, rgba(246, 248, 250, 0.88) 0%, rgba(242, 246, 244, 0.85) 100%);
+        }
+
+        /* Kartu Login Kaca Tengah (Glassmorphism) */
+        .login-glass {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.76) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 25px 55px -12px rgba(12, 33, 24, 0.16),
+                inset 0 1px 1px rgba(255, 255, 255, 1);
+        }
+
+        /* Menghilangkan kotak putih pada hp.jpeg agar menyatu dengan latar */
+        .hp-realistis-blend {
+            mix-blend-mode: multiply;
+            filter: contrast(1.06) brightness(1.03);
+        }
+
+        /* Optimasi Render GPU untuk Animasi JavaScript */
+        .js-phone-actor {
+            will-change: transform, opacity;
+            transform-style: preserve-3d;
+        }
+
+        .pin-box {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .pin-box:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(27, 67, 50, 0.25);
+        }
+    </style>
+</head>
+<body class="antialiased text-brand-dark min-h-[115vh] relative flex flex-col justify-between">
+
+    <div class="bg-overlay fixed inset-0 -z-10"></div>
+
+    <!-- HEADER ATAS -->
+    <header class="w-full px-5 sm:px-10 py-4 flex items-center justify-between relative z-30">
+        <div class="flex items-center gap-3">
+            <a href="Index.html" class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-green hover:text-brand-orange transition bg-white/85 px-3 py-1.5 rounded-xl border border-gray-200/80">
+                <span>← Kembali</span>
+            </a>
+            <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Portal Keamanan</span>
+                <span class="hidden sm:inline text-gray-400">• Enkripsi End-to-End</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- AREA UTAMA DENGAN GAMBAR HP REALISTIS -->
+    <main class="flex-1 flex items-center justify-center px-4 py-8 relative overflow-hidden">
+
+        <!-- GAMBAR HP REALISTIS KIRI -->
+        <div id="hpKiriActor" class="js-phone-actor hidden md:block fixed -left-4 lg:left-4 xl:left-14 bottom-2 lg:bottom-6 w-[290px] lg:w-[340px] xl:w-[380px] z-10 select-none pointer-events-none">
+            <img id="imgHpKiri" src="hp.jpeg" onerror="cekFallbackGambar(this)" alt="Mockup HP teduhalam.id Kiri" class="w-full h-auto object-contain hp-realistis-blend">
+        </div>
+
+        <!-- KARTU LOGIN KACA DI TENGAH LAYAR -->
+        <div class="login-glass w-full max-w-[420px] rounded-[34px] p-7 sm:p-9 relative z-20">
+            <div class="w-12 h-12 bg-white rounded-2xl shadow-md border border-gray-100 flex items-center justify-center mx-auto mb-4 text-brand-dark">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+            </div>
+
+            <div class="text-center mb-6">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">Masuk ke Portal</h1>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">Masukkan 6-digit PIN dan kata sandi Admin Anda</p>
+            </div>
+
+            <form onsubmit="prosesLoginPortal(event)" class="space-y-4">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold text-gray-700">PIN Keamanan (6 Digit)</label>
+                        <button type="button" onclick="toggleLihatPin()" id="btnTogglePin" class="text-xs font-bold text-brand-orange hover:underline">
+                            Tampilkan PIN
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-6 gap-2" id="pinContainer">
+                        <input type="password" maxlength="1" inputmode="numeric" class="pin-box w-full h-12 text-center text-lg font-extrabold bg-white rounded-2xl border border-gray-200 focus:border-brand-green focus:outline-none" oninput="handlePinInput(this, 0)" onkeydown="handlePinBackspace(event, 0)">
+                        <input type="password" maxlength="1" inputmode="numeric" class="pin-box w-full h-12 text-center text-lg font-extrabold bg-white rounded-2xl border border-gray-200 focus:border-brand-green focus:outline-none" oninput="handlePinInput(this, 1)" onkeydown="handlePinBackspace(event, 1)">
+                        <input type="password" maxlength="1" inputmode="numeric" class="pin-box w-full h-12 text-center text-lg font-extrabold bg-white rounded-2xl border border-gray-200 focus:border-brand-green focus:outline-none" oninput="handlePinInput(this, 2)" onkeydown="handlePinBackspace(event, 2)">
+                        <input type="password" maxlength="1" inputmode="numeric" class="pin-box w-full h-12 text-center text-lg font-extrabold bg-white rounded-2xl border border-gray-200 focus:border-brand-green focus:outline-none" oninput="handlePinInput(this, 3)" onkeydown="handlePinBackspace(event, 3)">
+                        <input type="password" maxlength="1" inputmode="numeric" class="pin-box w-full h-12 text-center text-lg font-extrabold bg-white rounded-2xl border border-gray-200 focus:border-brand-green focus:outline-none" oninput="handlePinInput(this, 4)" onkeydown="handlePinBackspace(event, 4)">
+                        <input type="password" maxlength="1" inputmode="numeric" class="pin-box w-full h-12 text-center text-lg font-extrabold bg-white rounded-2xl border border-gray-200 focus:border-brand-green focus:outline-none" oninput="handlePinInput(this, 5)" onkeydown="handlePinBackspace(event, 5)">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Kata Sandi</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                        </span>
+                        <input type="password" id="passwordPortal" required placeholder="Masukkan kata sandi (min. 8 karakter)" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-gray-200 text-sm font-medium focus:border-brand-green focus:outline-none transition">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs pt-1">
+                    <button type="button" onclick="isiDataDemo()" class="font-bold text-brand-green hover:text-brand-orange transition">
+                        Isi Data Demo
+                    </button>
+                    <span class="text-gray-400 font-medium">Min. 8 karakter sandi</span>
+                </div>
+
+                <p id="errorLogin" class="hidden text-xs text-red-600 font-semibold text-center bg-red-50 py-2 rounded-xl border border-red-200">
+                    PIN harus 6 digit dan kata sandi minimal 8 karakter!
+                </p>
+
+                <button type="submit" class="w-full py-3.5 bg-brand-dark hover:bg-brand-green text-white font-bold rounded-2xl shadow-xl transition duration-300 active:scale-[0.99]">
+                    Masuk
+                </button>
+            </form>
+        </div>
+
+        <!-- GAMBAR HP REALISTIS KANAN -->
+        <div id="hpKananActor" class="js-phone-actor hidden md:block fixed -right-4 lg:right-4 xl:right-14 top-12 lg:top-16 w-[290px] lg:w-[340px] xl:w-[380px] z-10 select-none pointer-events-none">
+            <img id="imgHpKanan" src="hp.jpeg" onerror="cekFallbackGambar(this)" alt="Mockup HP teduhalam.id Kanan" class="w-full h-auto object-contain hp-realistis-blend">
+        </div>
+
+    </main>
+
+    <!-- FOOTER BAWAH (BERSIH TANPA TOMBOL GANTI GAMBAR) -->
+    <footer class="w-full px-6 sm:px-10 py-4 flex justify-between items-center relative z-30 text-xs text-gray-600">
+        <span class="font-semibold">&copy; 2026 teduhalam.id</span>
+    </footer>
+
+    <script>
+        const pinInputs = document.querySelectorAll('.pin-box');
+        const passInput = document.getElementById('passwordPortal');
+        const hpKiri = document.getElementById('hpKiriActor');
+        const hpKanan = document.getElementById('hpKananActor');
+        let pinTerlihat = false;
+
+        // Fallback otomatis jika nama file gambar berbeda
+        function cekFallbackGambar(imgEl) {
+            if (!imgEl.dataset.tried1) {
+                imgEl.dataset.tried1 = 'true';
+                imgEl.src = 'hp.png';
+            } else if (!imgEl.dataset.tried2) {
+                imgEl.dataset.tried2 = 'true';
+                imgEl.src = 'hp-teduhalam.jpeg';
+            } else if (!imgEl.dataset.tried3) {
+                imgEl.dataset.tried3 = 'true';
+                imgEl.src = 'Gemini_Generated_Image_kt0ggkkt0ggkkt0g.jpg.jpeg';
+            }
+        }
+
+        // ============================================================
+        // UNIFIED JAVASCRIPT PHYSICS & TRIGONOMETRY ANIMATION ENGINE
+        // ============================================================
+        let startTime = performance.now();
+        let targetMouseX = 0, targetMouseY = 0;
+        let currentMouseX = 0, currentMouseY = 0;
+        let targetScroll = 0, currentScroll = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            targetMouseX = (e.clientX / window.innerWidth - 0.5) * 32;
+            targetMouseY = (e.clientY / window.innerHeight - 0.5) * 32;
+        }, { passive: true });
+
+        window.addEventListener('scroll', () => {
+            targetScroll = window.scrollY;
+        }, { passive: true });
+
+        function easeOutQuint(t) {
+            return 1 - Math.pow(1 - t, 5);
+        }
+
+        function animatePhones(now) {
+            currentMouseX += (targetMouseX - currentMouseX) * 0.04;
+            currentMouseY += (targetMouseY - currentMouseY) * 0.04;
+            currentScroll += (targetScroll - currentScroll) * 0.05;
+
+            // --- HP KIRI (Durasi Pop-up 2.6 detik) ---
+            const elapsedLeft = Math.max(0, now - startTime);
+            const progressLeft = Math.min(1, elapsedLeft / 2600);
+            const easeLeft = easeOutQuint(progressLeft);
+
+            const riseYLeft = (1 - easeLeft) * 420;
+            const scaleLeft = 0.88 + (0.12 * easeLeft);
+            const entryRotLeft = (1 - easeLeft) * -5;
+            const opacityLeft = Math.min(1, elapsedLeft / 700);
+
+            const floatYLeft = Math.sin(elapsedLeft * 0.0010) * 16 * easeLeft;
+            const floatXLeft = Math.cos(elapsedLeft * 0.00075) * 6 * easeLeft;
+            const floatRotLeft = Math.sin(elapsedLeft * 0.00085) * 2.0 * easeLeft;
+
+            const totalXLeft = floatXLeft + currentMouseX;
+            const totalYLeft = riseYLeft + floatYLeft + currentMouseY - (currentScroll * 0.35);
+            const totalRotZLeft = entryRotLeft + floatRotLeft + (currentMouseX * 0.08);
+            const tiltYLeft = currentMouseX * 0.25;
+            const tiltXLeft = -currentMouseY * 0.25;
+
+            hpKiri.style.opacity = opacityLeft;
+            hpKiri.style.transform = `perspective(1100px) translate3d(${totalXLeft.toFixed(2)}px, ${totalYLeft.toFixed(2)}px, 0) rotateZ(${totalRotZLeft.toFixed(2)}deg) rotateY(${tiltYLeft.toFixed(2)}deg) rotateX(${tiltXLeft.toFixed(2)}deg) scale(${scaleLeft.toFixed(4)})`;
+
+            // --- HP KANAN (Jeda 0.25 detik, Durasi Pop-up 2.8 detik) ---
+            const elapsedRight = Math.max(0, now - (startTime + 250));
+            const progressRight = Math.min(1, elapsedRight / 2800);
+            const easeRight = easeOutQuint(progressRight);
+
+            const riseYRight = (1 - easeRight) * 460;
+            const scaleRight = 0.88 + (0.12 * easeRight);
+            const entryRotRight = (1 - easeRight) * 5;
+            const opacityRight = Math.min(1, elapsedRight / 700);
+
+            const floatYRight = Math.sin(elapsedRight * 0.00095 + 1.2) * 18 * easeRight;
+            const floatXRight = Math.cos(elapsedRight * 0.0007 + 0.8) * 6 * easeRight;
+            const floatRotRight = Math.sin(elapsedRight * 0.0008 + 1.0) * -2.0 * easeRight;
+
+            const totalXRight = floatXRight - currentMouseX;
+            const totalYRight = riseYRight + floatYRight - currentMouseY - (currentScroll * 0.25);
+            const totalRotZRight = entryRotRight + floatRotRight + (currentMouseX * 0.08);
+            const tiltYRight = -currentMouseX * 0.25;
+            const tiltXRight = currentMouseY * 0.25;
+
+            hpKanan.style.opacity = opacityRight;
+            hpKanan.style.transform = `perspective(1100px) translate3d(${totalXRight.toFixed(2)}px, ${totalYRight.toFixed(2)}px, 0) rotateZ(${totalRotZRight.toFixed(2)}deg) rotateY(${tiltYRight.toFixed(2)}deg) rotateX(${tiltXRight.toFixed(2)}deg) scale(${scaleRight.toFixed(4)})`;
+
+            requestAnimationFrame(animatePhones);
+        }
+        requestAnimationFrame(animatePhones);
+
+        // Input PIN
+        function handlePinInput(el, idx) {
+            el.value = el.value.replace(/[^0-9]/g, '');
+            if (el.value && idx < pinInputs.length - 1) {
+                pinInputs[idx + 1].focus();
+            }
+        }
+
+        function handlePinBackspace(e, idx) {
+            if (e.key === 'Backspace' && !pinInputs[idx].value && idx > 0) {
+                pinInputs[idx - 1].focus();
+            }
+        }
+
+        function toggleLihatPin() {
+            pinTerlihat = !pinTerlihat;
+            pinInputs.forEach(inp => inp.type = pinTerlihat ? 'text' : 'password');
+            document.getElementById('btnTogglePin').innerText = pinTerlihat ? 'Sembunyikan PIN' : 'Tampilkan PIN';
+        }
+
+        function isiDataDemo() {
+            const demoPin = ['1', '2', '3', '4', '5', '6'];
+            pinInputs.forEach((inp, i) => inp.value = demoPin[i]);
+            passInput.value = 'teduhalam2026';
+        }
+
+        function prosesLoginPortal(e) {
+            e.preventDefault();
+            let pinGabung = '';
+            pinInputs.forEach(inp => pinGabung += inp.value);
+
+            const errorEl = document.getElementById('errorLogin');
+            if (pinGabung.length === 6 && passInput.value.length >= 8) {
+                errorEl.classList.add('hidden');
+                window.location.href = 'admin.html';
+            } else {
+                errorEl.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
