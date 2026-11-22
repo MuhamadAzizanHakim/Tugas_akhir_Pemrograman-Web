@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel — Pemesanan Tenda Alahan</title>
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter & JetBrains Mono (untuk tampilan struk kasir/thermal) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -25,6 +25,7 @@
           extend: {
             fontFamily: {
               sans: ["Inter", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
             },
             colors: {
               emerald: {
@@ -46,12 +47,64 @@
       };
     </script>
 
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <style>
+      /* Gaya kustom untuk navigasi aktif, scrollbar halus, dan tampilan struk */
+      .nav-btn-active {
+        background-color: rgba(16, 185, 129, 0.14);
+        color: #ffffff;
+        border: 1px solid rgba(16, 185, 129, 0.28);
+      }
+      .nav-btn-inactive {
+        color: #cbd5e1;
+        border: 1px solid transparent;
+      }
+      .nav-btn-inactive:hover {
+        background-color: rgba(30, 41, 59, 0.8);
+        color: #ffffff;
+      }
+
+      /* Efek tepi kertas struk bergerigi halus */
+      .receipt-paper {
+        background: #ffffff;
+        box-shadow:
+          0 20px 35px -10px rgba(15, 23, 42, 0.14),
+          0 0 0 1px rgba(226, 232, 240, 0.9);
+      }
+
+      /* Aturan khusus saat mencetak struk (Ctrl+P / Tombol Cetak Struk) */
+      @media print {
+        body {
+          background: #ffffff !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        #app-shell,
+        #custom-modal,
+        #toast-container,
+        .no-print {
+          display: none !important;
+        }
+        #print-receipt-root {
+          display: block !important;
+          position: static !important;
+          width: 100% !important;
+          max-width: 82mm !important;
+          margin: 0 auto !important;
+          padding: 4mm !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+      }
+    </style>
   </head>
   <body
     class="bg-[#F8FAFC] text-slate-800 antialiased selection:bg-emerald-600 selection:text-white"
   >
-    <div class="min-h-screen flex flex-col lg:flex-row">
+    <!-- Area Khusus Print (Tersembunyi di layar, muncul otomatis saat dicetak) -->
+    <div id="print-receipt-root" class="hidden"></div>
+
+    <!-- Shell Utama Aplikasi Admin -->
+    <div id="app-shell" class="min-h-screen flex flex-col lg:flex-row">
       <!-- Mobile Sidebar Backdrop -->
       <div
         id="sidebar-backdrop"
@@ -102,7 +155,36 @@
           <p
             class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500"
           >
-            Manajemen Utama
+            Operasional Sewa &amp; Struk
+          </p>
+
+          <button
+            onclick="navigate('pesanan')"
+            data-nav="pesanan"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="receipt" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Pesanan &amp; Cetak Struk</span>
+            <span
+              id="sidebar-pending-dp"
+              class="ml-auto text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300"
+              >3</span
+            >
+          </button>
+
+          <button
+            onclick="navigate('laporan')"
+            data-nav="laporan"
+            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
+          >
+            <i data-lucide="wallet" class="w-5 h-5 shrink-0"></i>
+            <span class="truncate">Laporan Keuangan</span>
+          </button>
+
+          <p
+            class="px-3 pt-5 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500"
+          >
+            Manajemen Katalog
           </p>
 
           <button
@@ -112,10 +194,6 @@
           >
             <i data-lucide="upload-cloud" class="w-5 h-5 shrink-0"></i>
             <span class="truncate">Upload &amp; Tambah Tenda</span>
-            <span
-              class="ml-auto text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300"
-              >Utama</span
-            >
           </button>
 
           <button
@@ -139,35 +217,6 @@
           >
             <i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i>
             <span class="truncate">Dashboard Ringkasan</span>
-          </button>
-
-          <p
-            class="px-3 pt-5 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500"
-          >
-            Operasional Sewa
-          </p>
-
-          <button
-            onclick="navigate('pesanan')"
-            data-nav="pesanan"
-            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
-          >
-            <i data-lucide="clipboard-check" class="w-5 h-5 shrink-0"></i>
-            <span class="truncate">Pesanan &amp; Verifikasi DP</span>
-            <span
-              id="sidebar-pending-dp"
-              class="ml-auto text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300"
-              >2</span
-            >
-          </button>
-
-          <button
-            onclick="navigate('laporan')"
-            data-nav="laporan"
-            class="nav-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all"
-          >
-            <i data-lucide="wallet" class="w-5 h-5 shrink-0"></i>
-            <span class="truncate">Laporan Keuangan</span>
           </button>
         </nav>
 
@@ -197,7 +246,7 @@
               <span
                 class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"
               ></span>
-              Katalog Online
+              Sistem Struk Siap
             </span>
             <span class="text-emerald-400 font-medium">Aktif</span>
           </div>
@@ -227,7 +276,7 @@
                     id="header-title"
                     class="text-lg sm:text-xl font-bold text-slate-900 truncate"
                   >
-                    Upload &amp; Tambah Tenda
+                    Pesanan &amp; Struk Bukti Pemesanan
                   </h1>
                   <span
                     class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"
@@ -239,26 +288,25 @@
                   id="header-subtitle"
                   class="text-xs sm:text-sm text-slate-500 truncate mt-0.5"
                 >
-                  Unggah foto unit tenda, atur harga sewa, dan susun deskripsi
-                  promosi untuk pelanggan.
+                  Kelola pesanan pelanggan, verifikasi pembayaran DP/Lunas, dan
+                  cetak struk bukti untuk dikirim ke pelanggan.
                 </p>
               </div>
             </div>
 
             <div class="flex items-center gap-2.5 shrink-0">
               <button
-                id="header-quick-add-btn"
-                onclick="navigate('upload')"
-                class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-sm transition-all cursor-pointer"
+                onclick="openCreateReceiptModal()"
+                class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
               >
-                <i data-lucide="plus" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Tambah Tenda</span>
+                <i data-lucide="printer" class="w-4 h-4"></i>
+                <span>Buat &amp; Cetak Struk</span>
               </button>
               <div
                 class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-[#E2E8F0] text-xs font-medium text-slate-600"
               >
                 <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i>
-                <span id="current-date-label">Sabtu, 14 Nov 2026</span>
+                <span id="current-date-label">Senin, 16 Nov 2026</span>
               </div>
             </div>
           </div>
@@ -274,14 +322,14 @@
       </div>
     </div>
 
-    <!-- Custom Modal Overlay (Confirmation & Proof Preview - Never uses alert/confirm) -->
+    <!-- Custom Modal Overlay (Struk Bukti Pemesanan, Buat Struk Baru, & Konfirmasi) -->
     <div
       id="custom-modal"
-      class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-slate-900/65 backdrop-blur-xs overflow-y-auto"
     >
       <div
         id="custom-modal-card"
-        class="bg-white border border-[#E2E8F0] rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-all"
+        class="bg-white border border-[#E2E8F0] rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl transform transition-all my-auto max-h-[92vh] overflow-y-auto"
       >
         <!-- Modal inner content injected via JS -->
       </div>
@@ -293,6 +341,1705 @@
       class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"
     ></div>
 
-    <script src="./assets/js/app.js"></script>
+    <script>
+      // =========================================================================
+      // STATE & DATA AWAL ADMIN TENDA ALAHAN
+      // =========================================================================
+      const STORE_INFO = {
+        name: "TENDA ALAHAN CAMP",
+        tagline: "Penyewaan Perlengkapan Camping & Outdoor",
+        address: "Jl. Lintas Alahan Panjang - Padang, Kab. Solok, Sumbar",
+        phone: "0812-6600-8899",
+        instagram: "@tendaalahan.camp",
+      };
+
+      let currentPage = "pesanan";
+      let orderFilterStatus = "all";
+      let orderSearchQuery = "";
+
+      // Data Katalog Unit Tenda
+      let tents = [
+        {
+          id: "TND-01",
+          name: "Tenda Dome Borneo 4P Double Layer",
+          capacity: "4 Orang",
+          pricePerNight: 85000,
+          stock: 6,
+          category: "Dome Double Layer",
+          image:
+            "https://placehold.co/600x400/065f46/ffffff?text=Tenda+Borneo+4P",
+          description:
+            "Tahan angin kencang dan hujan lebat khas Alahan Panjang. Dilengkapi teras depan luas untuk memasak.",
+        },
+        {
+          id: "TND-02",
+          name: "Tenda Family Arpenaz 4.1 Ruang Tamu",
+          capacity: "4 - 6 Orang",
+          pricePerNight: 165000,
+          stock: 3,
+          category: "Family Camp",
+          image:
+            "https://placehold.co/600x400/047857/ffffff?text=Arpenaz+4.1+Family",
+          description:
+            "Tenda keluarga tinggi berdiri (190cm) dengan ruang tamu lega dan kamar tidur terpisah.",
+        },
+        {
+          id: "TND-03",
+          name: "Tenda Ultralight Tendaki Java 2 Pro",
+          capacity: "2 Orang",
+          pricePerNight: 65000,
+          stock: 8,
+          category: "Ultralight",
+          image:
+            "https://placehold.co/600x400/0f172a/ffffff?text=Tendaki+Java+2+Pro",
+          description:
+            "Ringan dibawa trekking, frame alloy kokoh, waterproof PU 3000mm ideal untuk cuaca dingin.",
+        },
+      ];
+
+      // Data Pesanan & Pembayaran Pelanggan (Sumber Data Struk Bukti Pemesanan)
+      let orders = [
+        {
+          id: "INV-ALH-261116-001",
+          createdAt: "16 Nov 2026, 09:15 WIB",
+          customerName: "Rizky Pratama",
+          customerPhone: "081267458890",
+          checkIn: "20 Nov 2026",
+          checkOut: "22 Nov 2026",
+          nights: 2,
+          items: [
+            {
+              name: "Tenda Family Arpenaz 4.1 Ruang Tamu",
+              qty: 1,
+              nights: 2,
+              price: 165000,
+            },
+            {
+              name: "Paket Matras Foil + Sleeping Bag",
+              qty: 2,
+              nights: 2,
+              price: 15000,
+            },
+          ],
+          amountPaid: 390000,
+          paymentMethod: "Transfer Bank Nagari",
+          status: "Lunas",
+          notes: "Ambil di basecamp Alahan Panjang jam 15.00 WIB.",
+        },
+        {
+          id: "INV-ALH-261116-002",
+          createdAt: "16 Nov 2026, 09:42 WIB",
+          customerName: "Nadia Putri",
+          customerPhone: "085274112233",
+          checkIn: "21 Nov 2026",
+          checkOut: "23 Nov 2026",
+          nights: 2,
+          items: [
+            {
+              name: "Tenda Dome Borneo 4P Double Layer",
+              qty: 2,
+              nights: 2,
+              price: 85000,
+            },
+          ],
+          amountPaid: 170000,
+          paymentMethod: "QRIS All Payment",
+          status: "DP Terverifikasi",
+          notes: "Pelunasan sisa saat pengambilan unit di lokasi.",
+        },
+        {
+          id: "INV-ALH-261116-003",
+          createdAt: "16 Nov 2026, 10:05 WIB",
+          customerName: "Fajar Ramadhan",
+          customerPhone: "082388901144",
+          checkIn: "21 Nov 2026",
+          checkOut: "24 Nov 2026",
+          nights: 3,
+          items: [
+            {
+              name: "Tenda Ultralight Tendaki Java 2 Pro",
+              qty: 1,
+              nights: 3,
+              price: 65000,
+            },
+            {
+              name: "Kompor Portable + Nesting Set",
+              qty: 1,
+              nights: 3,
+              price: 20000,
+            },
+          ],
+          amountPaid: 120000,
+          paymentMethod: "Transfer BRI",
+          status: "Menunggu Verifikasi",
+          notes: "Bukti transfer DP sudah dikirim via WA.",
+        },
+      ];
+
+      // =========================================================================
+      // HELPER KEUANGAN & FORMATTER
+      // =========================================================================
+      function formatRupiah(num) {
+        return "Rp " + Number(num || 0).toLocaleString("id-ID");
+      }
+
+      function calculateOrderTotal(order) {
+        return order.items.reduce(
+          (sum, item) => sum + item.qty * item.nights * item.price,
+          0,
+        );
+      }
+
+      function getRemainingBalance(order) {
+        const total = calculateOrderTotal(order);
+        return Math.max(0, total - Number(order.amountPaid || 0));
+      }
+
+      function sanitizePhoneForWA(phone) {
+        let clean = String(phone || "").replace(/[^0-9]/g, "");
+        if (clean.startsWith("0")) {
+          clean = "62" + clean.slice(1);
+        } else if (!clean.startsWith("62") && clean.length > 0) {
+          clean = "62" + clean;
+        }
+        return clean;
+      }
+
+      // =========================================================================
+      // NAVIGASI & SIDEBAR RESPONSIVE
+      // =========================================================================
+      const PAGE_META = {
+        pesanan: {
+          title: "Pesanan & Struk Bukti Pemesanan",
+          subtitle:
+            "Kelola pesanan pelanggan, verifikasi DP/Lunas, dan cetak struk bukti pembayaran untuk pelanggan.",
+        },
+        laporan: {
+          title: "Laporan Keuangan & Riwayat Transaksi",
+          subtitle:
+            "Rekap pendapatan sewa tenda, total DP masuk, dan cetak ulang struk transaksi.",
+        },
+        upload: {
+          title: "Upload & Tambah Tenda Baru",
+          subtitle:
+            "Unggah foto unit tenda, atur harga sewa per malam, dan tambahkan ke katalog.",
+        },
+        katalog: {
+          title: "Katalog Unit Tenda",
+          subtitle:
+            "Daftar unit tenda yang tersedia untuk disewa pelanggan beserta stok aktif.",
+        },
+        dashboard: {
+          title: "Dashboard Ringkasan",
+          subtitle: "Pantau performa penyewaan Tenda Alahan secara real-time.",
+        },
+      };
+
+      function toggleSidebar(open) {
+        const sidebar = document.getElementById("sidebar");
+        const backdrop = document.getElementById("sidebar-backdrop");
+        if (open) {
+          sidebar.classList.remove("-translate-x-full");
+          backdrop.classList.remove("hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          backdrop.classList.add("hidden");
+        }
+      }
+
+      function navigate(page) {
+        currentPage = page;
+        toggleSidebar(false);
+
+        // Update header title & subtitle
+        const meta = PAGE_META[page] || PAGE_META.pesanan;
+        document.getElementById("header-title").textContent = meta.title;
+        document.getElementById("header-subtitle").textContent = meta.subtitle;
+
+        // Update sidebar active state
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          const target = btn.getAttribute("data-nav");
+          if (target === page) {
+            btn.classList.add("nav-btn-active");
+            btn.classList.remove("nav-btn-inactive");
+          } else {
+            btn.classList.remove("nav-btn-active");
+            btn.classList.add("nav-btn-inactive");
+          }
+        });
+
+        updateSidebarBadges();
+        renderCurrentPage();
+      }
+
+      function updateSidebarBadges() {
+        const catalogEl = document.getElementById("sidebar-catalog-count");
+        const pendingEl = document.getElementById("sidebar-pending-dp");
+        if (catalogEl) catalogEl.textContent = tents.length;
+        if (pendingEl) pendingEl.textContent = orders.length;
+      }
+
+      function renderCurrentPage() {
+        const container = document.getElementById("main-content");
+        if (currentPage === "pesanan") {
+          container.innerHTML = renderOrdersPage();
+        } else if (currentPage === "laporan") {
+          container.innerHTML = renderFinancePage();
+        } else if (currentPage === "upload") {
+          container.innerHTML = renderUploadPage();
+        } else if (currentPage === "katalog") {
+          container.innerHTML = renderCatalogPage();
+        } else {
+          container.innerHTML = renderDashboardPage();
+        }
+        lucide.createIcons();
+      }
+
+      // =========================================================================
+      // HALAMAN 1: PESANAN & STRUK BUKTI PEMESANAN (UTAMA)
+      // =========================================================================
+      function renderOrdersPage() {
+        const filteredOrders = orders.filter((o) => {
+          const matchStatus =
+            orderFilterStatus === "all" || o.status === orderFilterStatus;
+          const q = orderSearchQuery.toLowerCase();
+          const matchSearch =
+            !q ||
+            o.id.toLowerCase().includes(q) ||
+            o.customerName.toLowerCase().includes(q) ||
+            o.customerPhone.includes(q) ||
+            o.items.some((i) => i.name.toLowerCase().includes(q));
+          return matchStatus && matchSearch;
+        });
+
+        const totalPesanan = orders.length;
+        const totalLunas = orders.filter((o) => o.status === "Lunas").length;
+        const totalDP = orders.filter(
+          (o) => o.status === "DP Terverifikasi",
+        ).length;
+        const totalPending = orders.filter(
+          (o) => o.status === "Menunggu Verifikasi",
+        ).length;
+
+        return `
+          <div class="space-y-6">
+            <!-- Ringkasan Status Pesanan & Struk -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Pesanan</span>
+                  <div class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
+                    <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                  </div>
+                </div>
+                <p class="text-2xl font-extrabold text-slate-900 mt-2">${totalPesanan}</p>
+                <p class="text-xs text-slate-500 mt-1">Siap cetak bukti struk</p>
+              </div>
+
+              <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Lunas</span>
+                  <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <i data-lucide="badge-check" class="w-4 h-4"></i>
+                  </div>
+                </div>
+                <p class="text-2xl font-extrabold text-emerald-600 mt-2">${totalLunas}</p>
+                <p class="text-xs text-slate-500 mt-1">Pembayaran penuh 100%</p>
+              </div>
+
+              <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-blue-700 uppercase tracking-wider">DP Terverifikasi</span>
+                  <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                  </div>
+                </div>
+                <p class="text-2xl font-extrabold text-blue-600 mt-2">${totalDP}</p>
+                <p class="text-xs text-slate-500 mt-1">Uang muka telah diterima</p>
+              </div>
+
+              <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">Perlu Verifikasi</span>
+                  <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                  </div>
+                </div>
+                <p class="text-2xl font-extrabold text-amber-600 mt-2">${totalPending}</p>
+                <p class="text-xs text-slate-500 mt-1">Cek bukti transfer masuk</p>
+              </div>
+            </div>
+
+            <!-- Bar Pencarian, Filter, & Tombol Buat Struk Baru -->
+            <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              <div class="relative flex-1">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                <input
+                  type="text"
+                  value="${orderSearchQuery}"
+                  oninput="handleOrderSearch(this.value)"
+                  placeholder="Cari kode booking, nama pelanggan, atau nama tenda..."
+                  class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
+                />
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                ${["all", "Lunas", "DP Terverifikasi", "Menunggu Verifikasi"]
+                  .map((status) => {
+                    const label = status === "all" ? "Semua" : status;
+                    const active = orderFilterStatus === status;
+                    return `
+                      <button
+                        onclick="setOrderFilter('${status}')"
+                        class="px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                          active
+                            ? "bg-slate-900 text-white"
+                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        }"
+                      >
+                        ${label}
+                      </button>
+                    `;
+                  })
+                  .join("")}
+              </div>
+            </div>
+
+            <!-- Daftar Kartu Pesanan Pelanggan -->
+            <div class="grid grid-cols-1 gap-4">
+              ${
+                filteredOrders.length === 0
+                  ? `
+                <div class="bg-white rounded-2xl border border-[#E2E8F0] p-12 text-center">
+                  <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+                    <i data-lucide="receipt" class="w-6 h-6"></i>
+                  </div>
+                  <h3 class="text-base font-bold text-slate-800">Tidak ada pesanan ditemukan</h3>
+                  <p class="text-sm text-slate-500 mt-1">Coba ubah kata kunci pencarian atau buat struk pemesanan baru.</p>
+                </div>
+              `
+                  : filteredOrders
+                      .map((order) => {
+                        const total = calculateOrderTotal(order);
+                        const sisa = getRemainingBalance(order);
+
+                        let badgeClass =
+                          "bg-amber-50 text-amber-700 border-amber-200";
+                        if (order.status === "Lunas") {
+                          badgeClass =
+                            "bg-emerald-50 text-emerald-700 border-emerald-200";
+                        } else if (order.status === "DP Terverifikasi") {
+                          badgeClass =
+                            "bg-blue-50 text-blue-700 border-blue-200";
+                        }
+
+                        return `
+                    <div class="bg-white rounded-2xl border border-[#E2E8F0] p-5 hover:border-emerald-300 transition-all shadow-2xs">
+                      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                        <div class="space-y-1">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-900 text-white">
+                              ${order.id}
+                            </span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${badgeClass}">
+                              ${order.status}
+                            </span>
+                            <span class="text-xs text-slate-400 flex items-center gap-1">
+                              <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                              ${order.createdAt}
+                            </span>
+                          </div>
+                          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
+                            <h3 class="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                              <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i>
+                              ${order.customerName}
+                            </h3>
+                            <span class="text-xs font-medium text-slate-600 flex items-center gap-1">
+                              <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i>
+                              ${order.customerPhone}
+                            </span>
+                            <span class="text-xs font-medium text-slate-600 flex items-center gap-1">
+                              <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-slate-400"></i>
+                              ${order.checkIn} s/d ${order.checkOut} (${order.nights} Malam)
+                            </span>
+                          </div>
+                        </div>
+
+                        <!-- Tombol Aksi Utama: Lihat & Cetak Struk + Kirim WA -->
+                        <div class="flex flex-wrap items-center gap-2 shrink-0">
+                          ${
+                            order.status === "Menunggu Verifikasi"
+                              ? `
+                            <button
+                              onclick="verifyOrderPayment('${order.id}')"
+                              class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold transition-all cursor-pointer"
+                            >
+                              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                              <span>Verifikasi DP</span>
+                            </button>
+                          `
+                              : ""
+                          }
+
+                          ${
+                            sisa > 0
+                              ? `
+                            <button
+                              onclick="markOrderAsPaid('${order.id}')"
+                              class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 hover:border-emerald-200 text-xs font-semibold transition-all cursor-pointer"
+                            >
+                              <i data-lucide="badge-dollar-sign" class="w-4 h-4"></i>
+                              <span>Lunasi Sisa</span>
+                            </button>
+                          `
+                              : ""
+                          }
+
+                          <button
+                            onclick="openReceiptModal('${order.id}')"
+                            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
+                          >
+                            <i data-lucide="receipt" class="w-4 h-4"></i>
+                            <span>Struk Bukti &amp; Kirim</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Rincian Item Tenda & Ringkasan Pembayaran -->
+                      <div class="pt-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                        <div class="lg:col-span-7 space-y-1.5">
+                          <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                            Unit Tenda &amp; Perlengkapan Disewa
+                          </p>
+                          ${order.items
+                            .map(
+                              (item) => `
+                            <div class="flex items-center justify-between text-sm bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                              <div class="min-w-0 pr-2">
+                                <span class="font-semibold text-slate-800">${item.name}</span>
+                                <span class="text-xs text-slate-500 block sm:inline sm:ml-2">
+                                  (${item.qty} unit × ${item.nights} malam @ ${formatRupiah(item.price)})
+                                </span>
+                              </div>
+                              <span class="font-bold text-slate-900 shrink-0">
+                                ${formatRupiah(item.qty * item.nights * item.price)}
+                              </span>
+                            </div>
+                          `,
+                            )
+                            .join("")}
+                        </div>
+
+                        <div class="lg:col-span-5 bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80 space-y-1.5">
+                          <div class="flex justify-between text-xs text-slate-600">
+                            <span>Total Biaya Sewa</span>
+                            <span class="font-bold text-slate-900">${formatRupiah(total)}</span>
+                          </div>
+                          <div class="flex justify-between text-xs text-emerald-700">
+                            <span>Sudah Dibayar (${order.paymentMethod})</span>
+                            <span class="font-bold">${formatRupiah(order.amountPaid)}</span>
+                          </div>
+                          <div class="pt-1.5 border-t border-slate-200 flex justify-between text-xs">
+                            <span class="font-semibold text-slate-700">Sisa Tagihan</span>
+                            <span class="font-extrabold ${
+                              sisa === 0 ? "text-emerald-600" : "text-rose-600"
+                            }">
+                              ${sisa === 0 ? "Rp 0 (LUNAS)" : formatRupiah(sisa)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                      })
+                      .join("")
+              }
+            </div>
+          </div>
+        `;
+      }
+
+      function handleOrderSearch(val) {
+        orderSearchQuery = val;
+        renderCurrentPage();
+      }
+
+      function setOrderFilter(status) {
+        orderFilterStatus = status;
+        renderCurrentPage();
+      }
+
+      function verifyOrderPayment(orderId) {
+        const order = orders.find((o) => o.id === orderId);
+        if (!order) return;
+        const total = calculateOrderTotal(order);
+        order.status = order.amountPaid >= total ? "Lunas" : "DP Terverifikasi";
+        renderCurrentPage();
+        showToast(
+          "Pembayaran Diverifikasi",
+          `Status pesanan ${order.id} diperbarui menjadi ${order.status}. Struk siap dikirim!`,
+          "success",
+        );
+        openReceiptModal(order.id);
+      }
+
+      function markOrderAsPaid(orderId) {
+        const order = orders.find((o) => o.id === orderId);
+        if (!order) return;
+        order.amountPaid = calculateOrderTotal(order);
+        order.status = "Lunas";
+        renderCurrentPage();
+        showToast(
+          "Pesanan Dilunasi",
+          `Tagihan ${order.id} a.n. ${order.customerName} kini LUNAS 100%.`,
+          "success",
+        );
+        openReceiptModal(order.id);
+      }
+
+      // =========================================================================
+      // MODAL STRUK BUKTI PEMESANAN (CETAK, UNDUH GAMBAR PNG, SALIN & KIRIM WA)
+      // =========================================================================
+      let activeReceiptOrder = null;
+      let receiptPaperFormat = "thermal"; // 'thermal' (80mm) atau 'invoice' (lebar standar)
+
+      function openReceiptModal(orderId) {
+        const order = orders.find((o) => o.id === orderId);
+        if (!order) return;
+        activeReceiptOrder = order;
+        renderReceiptModalContent();
+        const modal = document.getElementById("custom-modal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        lucide.createIcons();
+      }
+
+      function closeCustomModal() {
+        const modal = document.getElementById("custom-modal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+
+      function switchReceiptFormat(fmt) {
+        receiptPaperFormat = fmt;
+        renderReceiptModalContent();
+        lucide.createIcons();
+      }
+
+      function generateReceiptHTML(order, isPrintMode = false) {
+        const total = calculateOrderTotal(order);
+        const sisa = getRemainingBalance(order);
+        const isLunas = sisa === 0;
+        const widthClass =
+          isPrintMode || receiptPaperFormat === "thermal"
+            ? "max-w-[360px] mx-auto"
+            : "max-w-xl mx-auto";
+
+        return `
+          <div class="receipt-paper ${widthClass} p-5 sm:p-6 rounded-xl text-slate-900 font-mono text-xs leading-relaxed border border-slate-200">
+            <!-- Header Toko / Camp -->
+            <div class="text-center pb-3 border-b-2 border-dashed border-slate-300">
+              <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-900 text-white mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></svg>
+              </div>
+              <h2 class="text-base font-extrabold tracking-wider uppercase text-slate-900">
+                ${STORE_INFO.name}
+              </h2>
+              <p class="text-[11px] text-slate-600 mt-0.5">${STORE_INFO.tagline}</p>
+              <p class="text-[10px] text-slate-500 mt-1">${STORE_INFO.address}</p>
+              <p class="text-[10px] font-semibold text-slate-700 mt-0.5">WA Admin: ${STORE_INFO.phone}</p>
+            </div>
+
+            <!-- Judul Struk & Nomor Invoice -->
+            <div class="py-3 border-b border-dashed border-slate-300 space-y-1">
+              <div class="text-center mb-2">
+                <span class="inline-block px-2.5 py-0.5 bg-slate-900 text-white font-bold text-[11px] tracking-widest uppercase rounded">
+                  STRUK BUKTI PEMESANAN
+                </span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">No. Struk</span>
+                <span class="font-bold text-slate-900">${order.id}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Tgl Cetak</span>
+                <span>${order.createdAt}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Pelanggan</span>
+                <span class="font-bold text-slate-900">${order.customerName}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">No. HP/WA</span>
+                <span>${order.customerPhone}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Jadwal Sewa</span>
+                <span class="font-semibold">${order.checkIn} - ${order.checkOut}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Durasi</span>
+                <span class="font-semibold">${order.nights} Malam</span>
+              </div>
+            </div>
+
+            <!-- Rincian Item Tenda & Perlengkapan -->
+            <div class="py-3 border-b border-dashed border-slate-300 space-y-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Rincian Unit &amp; Harga Sewa
+              </p>
+              ${order.items
+                .map((item) => {
+                  const sub = item.qty * item.nights * item.price;
+                  return `
+                    <div class="space-y-0.5">
+                      <div class="font-bold text-slate-900">${item.name}</div>
+                      <div class="flex justify-between text-[11px] text-slate-600">
+                        <span>${item.qty} unit × ${item.nights} mlm × ${formatRupiah(item.price)}</span>
+                        <span class="font-bold text-slate-900">${formatRupiah(sub)}</span>
+                      </div>
+                    </div>
+                  `;
+                })
+                .join("")}
+            </div>
+
+            <!-- Rincian Pembayaran (Total, Dibayar, Sisa) -->
+            <div class="py-3 border-b-2 border-dashed border-slate-300 space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-600">TOTAL TAGIHAN</span>
+                <span class="font-extrabold text-slate-900">${formatRupiah(total)}</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-600">SUDAH DIBAYAR</span>
+                <span class="font-bold text-emerald-700">${formatRupiah(order.amountPaid)}</span>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-500">
+                <span>Metode Bayar</span>
+                <span>${order.paymentMethod}</span>
+              </div>
+              <div class="pt-1.5 mt-1 border-t border-slate-200 flex justify-between text-sm font-extrabold">
+                <span>SISA BAYAR</span>
+                <span class="${isLunas ? "text-emerald-700" : "text-rose-600"}">
+                  ${isLunas ? "Rp 0" : formatRupiah(sisa)}
+                </span>
+              </div>
+
+              <!-- Stempel Status Pembayaran -->
+              <div class="pt-2 text-center">
+                <div class="inline-block px-4 py-1.5 rounded-lg border-2 font-extrabold tracking-widest text-xs uppercase ${
+                  isLunas
+                    ? "border-emerald-600 text-emerald-700 bg-emerald-50/70"
+                    : "border-amber-600 text-amber-700 bg-amber-50/70"
+                }">
+                  STATUS: ${isLunas ? "LUNAS TERVERIFIKASI" : "DP TERVERIFIKASI"}
+                </div>
+              </div>
+            </div>
+
+            <!-- Catatan & Footer Struk -->
+            <div class="pt-3 text-center space-y-1.5 text-[10px] text-slate-500">
+              ${
+                order.notes
+                  ? `<p class="text-slate-700 italic">"Catatan: ${order.notes}"</p>`
+                  : ""
+              }
+              <p>Harap tunjukkan struk bukti ini saat pengambilan unit tenda di Basecamp Alahan Panjang.</p>
+              <p class="font-bold text-slate-800 pt-1">*** TERIMA KASIH &amp; SELAMAT BERKEMAH ***</p>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderReceiptModalContent() {
+        const order = activeReceiptOrder;
+        if (!order) return;
+
+        const card = document.getElementById("custom-modal-card");
+        card.innerHTML = `
+          <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <i data-lucide="receipt" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Struk Bukti Pemesanan</h3>
+                <p class="text-xs text-slate-500">Siap dicetak atau dikirim langsung ke pelanggan</p>
+              </div>
+            </div>
+            <button
+              onclick="closeCustomModal()"
+              class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+            >
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <!-- Pilihan Format Tampilan Struk -->
+          <div class="flex items-center justify-between gap-2 my-3 bg-slate-50 p-2 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-600 pl-2">Ukuran Tampilan:</span>
+            <div class="flex gap-1.5">
+              <button
+                onclick="switchReceiptFormat('thermal')"
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  receiptPaperFormat === "thermal"
+                    ? "bg-slate-900 text-white"
+                    : "bg-white text-slate-600 border border-slate-200"
+                }"
+              >
+                Struk Thermal (80mm)
+              </button>
+              <button
+                onclick="switchReceiptFormat('invoice')"
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  receiptPaperFormat === "invoice"
+                    ? "bg-slate-900 text-white"
+                    : "bg-white text-slate-600 border border-slate-200"
+                }"
+              >
+                Invoice Lebar
+              </button>
+            </div>
+          </div>
+
+          <!-- Pratinjau Struk -->
+          <div class="bg-slate-100/80 p-4 rounded-2xl border border-slate-200/80 my-3 overflow-x-auto">
+            ${generateReceiptHTML(order, false)}
+          </div>
+
+          <!-- Tombol Aksi Kirim & Cetak Struk -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+            <button
+              onclick="printActiveReceipt()"
+              class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
+            >
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              <span>Cetak Struk / Simpan PDF</span>
+            </button>
+
+            <button
+              onclick="downloadReceiptPNG()"
+              class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
+            >
+              <i data-lucide="image-down" class="w-4 h-4"></i>
+              <span>Unduh Gambar Struk (PNG)</span>
+            </button>
+
+            <button
+              onclick="copyReceiptTextToClipboard()"
+              class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-xs sm:text-sm font-semibold transition-all cursor-pointer"
+            >
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span>Salin Teks Struk</span>
+            </button>
+
+            <button
+              onclick="sendReceiptToWhatsApp()"
+              class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
+            >
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Kirim ke WhatsApp Pelanggan</span>
+            </button>
+          </div>
+        `;
+      }
+
+      // 1. Cetak Langsung (Thermal / Save PDF)
+      function printActiveReceipt() {
+        if (!activeReceiptOrder) return;
+        const printRoot = document.getElementById("print-receipt-root");
+        printRoot.innerHTML = generateReceiptHTML(activeReceiptOrder, true);
+        window.print();
+      }
+
+      // 2. Format Teks Struk Rapi untuk WhatsApp / Clipboard
+      function formatReceiptWhatsAppText(order) {
+        const total = calculateOrderTotal(order);
+        const sisa = getRemainingBalance(order);
+        const isLunas = sisa === 0;
+
+        const itemLines = order.items
+          .map(
+            (item, idx) =>
+              `${idx + 1}. *${item.name}*\n   ${item.qty} unit × ${
+                item.nights
+              } malam @ ${formatRupiah(item.price)} = *${formatRupiah(
+                item.qty * item.nights * item.price,
+              )}*`,
+          )
+          .join("\n");
+
+        return [
+          `*STRUK BUKTI PEMESANAN - ${STORE_INFO.name}*`,
+          `_${STORE_INFO.address}_`,
+          `----------------------------------------`,
+          `No. Struk   : *${order.id}*`,
+          `Tanggal     : ${order.createdAt}`,
+          `Pelanggan   : *${order.customerName}* (${order.customerPhone})`,
+          `Jadwal Sewa : ${order.checkIn} s/d ${order.checkOut} (${order.nights} Malam)`,
+          `----------------------------------------`,
+          `*RINCIAN SEWA TENDA:*`,
+          itemLines,
+          `----------------------------------------`,
+          `Total Tagihan : *${formatRupiah(total)}*`,
+          `Sudah Dibayar : *${formatRupiah(order.amountPaid)}* (${
+            order.paymentMethod
+          })`,
+          `Sisa Tagihan  : *${isLunas ? "Rp 0 (LUNAS)" : formatRupiah(sisa)}*`,
+          `Status        : *${
+            isLunas ? "LUNAS TERVERIFIKASI" : "DP TERVERIFIKASI"
+          }*`,
+          `----------------------------------------`,
+          order.notes ? `Catatan: _${order.notes}_\n` : "",
+          `Harap tunjukkan struk bukti ini saat pengambilan unit tenda di Basecamp Alahan Panjang. Terima kasih!`,
+        ]
+          .filter(Boolean)
+          .join("\n");
+      }
+
+      // 3. Salin Teks Struk (Menggunakan document.execCommand agar aman di iFrame)
+      function copyReceiptTextToClipboard() {
+        if (!activeReceiptOrder) return;
+        const text = formatReceiptWhatsAppText(activeReceiptOrder);
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          showToast(
+            "Teks Struk Disalin",
+            "Format struk bukti pembayaran berhasil disalin ke clipboard.",
+            "success",
+          );
+        } catch (err) {
+          showToast(
+            "Gagal Menyalin",
+            "Silakan blok dan salin teks secara manual.",
+            "error",
+          );
+        }
+        document.body.removeChild(textarea);
+      }
+
+      // 4. Kirim Langsung ke WhatsApp Pelanggan
+      function sendReceiptToWhatsApp() {
+        if (!activeReceiptOrder) return;
+        const phone = sanitizePhoneForWA(activeReceiptOrder.customerPhone);
+        const message = encodeURIComponent(
+          formatReceiptWhatsAppText(activeReceiptOrder),
+        );
+        const waUrl = `https://wa.me/${phone}?text=${message}`;
+        window.open(waUrl, "_blank", "noopener,noreferrer");
+        showToast(
+          "Membuka WhatsApp",
+          `Mengirim struk ${activeReceiptOrder.id} ke ${activeReceiptOrder.customerName}.`,
+          "success",
+        );
+      }
+
+      // 5. Unduh Struk sebagai Gambar PNG (Render HD via HTML5 Canvas)
+      function downloadReceiptPNG() {
+        if (!activeReceiptOrder) return;
+        const order = activeReceiptOrder;
+        const total = calculateOrderTotal(order);
+        const sisa = getRemainingBalance(order);
+        const isLunas = sisa === 0;
+
+        const canvas = document.createElement("canvas");
+        const width = 680;
+        const height = 820 + order.items.length * 68;
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+
+        // Latar kertas putih bersih
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, width, height);
+
+        // Bingkai luar halus
+        ctx.strokeStyle = "#CBD5E1";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(18, 18, width - 36, height - 36);
+
+        let y = 72;
+        const centerX = width / 2;
+        const leftX = 48;
+        const rightX = width - 48;
+
+        // Header Brand
+        ctx.fillStyle = "#0F172A";
+        ctx.font = "bold 28px monospace";
+        ctx.textAlign = "center";
+        ctx.fillText(STORE_INFO.name, centerX, y);
+
+        y += 28;
+        ctx.fillStyle = "#475569";
+        ctx.font = "16px monospace";
+        ctx.fillText(STORE_INFO.tagline, centerX, y);
+
+        y += 24;
+        ctx.font = "14px monospace";
+        ctx.fillText(STORE_INFO.address, centerX, y);
+
+        y += 22;
+        ctx.fillStyle = "#059669";
+        ctx.font = "bold 15px monospace";
+        ctx.fillText("WA Admin: " + STORE_INFO.phone, centerX, y);
+
+        // Garis putus-putus
+        y += 26;
+        drawDashedLine(ctx, leftX, rightX, y);
+
+        // Badge Judul Struk
+        y += 36;
+        ctx.fillStyle = "#0F172A";
+        ctx.fillRect(centerX - 170, y - 24, 340, 34);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "bold 17px monospace";
+        ctx.fillText("STRUK BUKTI PEMESANAN", centerX, y - 2);
+
+        // Info Pelanggan & Jadwal
+        y += 40;
+        const metaRows = [
+          ["No. Struk", order.id],
+          ["Tgl Cetak", order.createdAt],
+          ["Pelanggan", order.customerName],
+          ["No. HP/WA", order.customerPhone],
+          ["Jadwal Sewa", `${order.checkIn} - ${order.checkOut}`],
+          ["Durasi Sewa", `${order.nights} Malam`],
+        ];
+
+        metaRows.forEach(([label, val]) => {
+          ctx.textAlign = "left";
+          ctx.fillStyle = "#64748B";
+          ctx.font = "16px monospace";
+          ctx.fillText(label, leftX, y);
+
+          ctx.textAlign = "right";
+          ctx.fillStyle = "#0F172A";
+          ctx.font = "bold 16px monospace";
+          ctx.fillText(val, rightX, y);
+          y += 28;
+        });
+
+        y += 6;
+        drawDashedLine(ctx, leftX, rightX, y);
+
+        // Rincian Unit Tenda
+        y += 30;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#64748B";
+        ctx.font = "bold 14px monospace";
+        ctx.fillText("RINCIAN UNIT TENDA & PERLENGKAPAN", leftX, y);
+        y += 28;
+
+        order.items.forEach((item) => {
+          const sub = item.qty * item.nights * item.price;
+          ctx.textAlign = "left";
+          ctx.fillStyle = "#0F172A";
+          ctx.font = "bold 17px monospace";
+          ctx.fillText(item.name, leftX, y);
+          y += 24;
+
+          ctx.fillStyle = "#475569";
+          ctx.font = "15px monospace";
+          ctx.fillText(
+            `${item.qty} unit x ${item.nights} mlm x ${formatRupiah(item.price)}`,
+            leftX,
+            y,
+          );
+
+          ctx.textAlign = "right";
+          ctx.fillStyle = "#0F172A";
+          ctx.font = "bold 17px monospace";
+          ctx.fillText(formatRupiah(sub), rightX, y);
+          y += 36;
+        });
+
+        drawDashedLine(ctx, leftX, rightX, y);
+
+        // Rincian Pembayaran
+        y += 34;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#475569";
+        ctx.font = "17px monospace";
+        ctx.fillText("TOTAL TAGIHAN", leftX, y);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#0F172A";
+        ctx.font = "bold 19px monospace";
+        ctx.fillText(formatRupiah(total), rightX, y);
+
+        y += 30;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#475569";
+        ctx.font = "17px monospace";
+        ctx.fillText("SUDAH DIBAYAR", leftX, y);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#059669";
+        ctx.font = "bold 19px monospace";
+        ctx.fillText(formatRupiah(order.amountPaid), rightX, y);
+
+        y += 26;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#64748B";
+        ctx.font = "15px monospace";
+        ctx.fillText("Metode Pembayaran", leftX, y);
+        ctx.textAlign = "right";
+        ctx.fillText(order.paymentMethod, rightX, y);
+
+        y += 36;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#0F172A";
+        ctx.font = "bold 20px monospace";
+        ctx.fillText("SISA TAGIHAN", leftX, y);
+        ctx.textAlign = "right";
+        ctx.fillStyle = isLunas ? "#059669" : "#E11D48";
+        ctx.fillText(isLunas ? "Rp 0" : formatRupiah(sisa), rightX, y);
+
+        // Stempel Status
+        y += 46;
+        ctx.strokeStyle = isLunas ? "#059669" : "#D97706";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(centerX - 185, y - 28, 370, 42);
+        ctx.textAlign = "center";
+        ctx.fillStyle = isLunas ? "#047857" : "#B45309";
+        ctx.font = "bold 18px monospace";
+        ctx.fillText(
+          isLunas ? "STATUS: LUNAS TERVERIFIKASI" : "STATUS: DP TERVERIFIKASI",
+          centerX,
+          y - 1,
+        );
+
+        // Footer
+        y += 48;
+        ctx.fillStyle = "#64748B";
+        ctx.font = "14px monospace";
+        ctx.fillText(
+          "Tunjukkan struk ini saat pengambilan tenda di basecamp.",
+          centerX,
+          y,
+        );
+        y += 24;
+        ctx.fillStyle = "#0F172A";
+        ctx.font = "bold 15px monospace";
+        ctx.fillText("*** TERIMA KASIH & SELAMAT BERKEMAH ***", centerX, y);
+
+        // Trigger Download PNG
+        const link = document.createElement("a");
+        link.download = `Struk-Tenda-Alahan-${order.id}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+
+        showToast(
+          "Gambar Struk Diunduh",
+          `File Struk-Tenda-Alahan-${order.id}.png siap dikirim via WhatsApp.`,
+          "success",
+        );
+      }
+
+      function drawDashedLine(ctx, x1, x2, y) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([8, 6]);
+        ctx.strokeStyle = "#94A3B8";
+        ctx.lineWidth = 2;
+        ctx.moveTo(x1, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // =========================================================================
+      // MODAL BUAT STRUK PEMESANAN BARU (INPUT MANUAL / WALK-IN / WHATSAPP)
+      // =========================================================================
+      function openCreateReceiptModal() {
+        const defaultTent = tents[0] || {
+          name: "Tenda Dome Borneo 4P",
+          pricePerNight: 85000,
+        };
+        const modal = document.getElementById("custom-modal");
+        const card = document.getElementById("custom-modal-card");
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center">
+                <i data-lucide="file-plus-2" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Buat &amp; Cetak Struk Pemesanan Baru</h3>
+                <p class="text-xs text-slate-500">Isi data penyewa untuk langsung menerbitkan struk bukti pembayaran</p>
+              </div>
+            </div>
+            <button
+              onclick="closeCustomModal()"
+              class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+            >
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <form onsubmit="submitNewReceiptOrder(event)" class="space-y-4 pt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Pelanggan *</label>
+                <input
+                  type="text"
+                  id="new-cust-name"
+                  required
+                  placeholder="Contoh: Budi Santoso"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp Pelanggan *</label>
+                <input
+                  type="tel"
+                  id="new-cust-phone"
+                  required
+                  placeholder="Contoh: 081234567890"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Ambil / Check-In</label>
+                <input
+                  type="text"
+                  id="new-checkin"
+                  value="21 Nov 2026"
+                  required
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Kembali</label>
+                <input
+                  type="text"
+                  id="new-checkout"
+                  value="23 Nov 2026"
+                  required
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Lama Sewa (Malam) *</label>
+                <input
+                  type="number"
+                  id="new-nights"
+                  min="1"
+                  value="2"
+                  oninput="recalcNewReceiptPreview()"
+                  required
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-600">Pilihan Unit Tenda</p>
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                <div class="sm:col-span-6">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Tenda</label>
+                  <select
+                    id="new-tent-select"
+                    onchange="onSelectTentForReceipt()"
+                    class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-emerald-500"
+                  >
+                    ${tents
+                      .map(
+                        (t) =>
+                          `<option value="${t.id}" data-price="${t.pricePerNight}" data-name="${t.name}">${t.name} (${formatRupiah(t.pricePerNight)}/mlm)</option>`,
+                      )
+                      .join("")}
+                  </select>
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Jumlah</label>
+                  <input
+                    type="number"
+                    id="new-tent-qty"
+                    min="1"
+                    value="1"
+                    oninput="recalcNewReceiptPreview()"
+                    class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Harga / Malam (Rp)</label>
+                  <input
+                    type="number"
+                    id="new-tent-price"
+                    min="0"
+                    value="${defaultTent.pricePerNight}"
+                    oninput="recalcNewReceiptPreview()"
+                    class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
+                <div class="sm:col-span-8">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tambahan Perlengkapan (Opsional)</label>
+                  <input
+                    type="text"
+                    id="new-addon-name"
+                    placeholder="Contoh: Matras + Sleeping Bag"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Biaya Tambahan / Mlm</label>
+                  <input
+                    type="number"
+                    id="new-addon-price"
+                    min="0"
+                    value="0"
+                    oninput="recalcNewReceiptPreview()"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Rincian Pembayaran -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200">
+              <div>
+                <span class="block text-[11px] font-semibold text-emerald-800">Total Tagihan Otomatis</span>
+                <span id="new-total-display" class="text-base font-extrabold text-slate-900 mt-1 block">
+                  ${formatRupiah(defaultTent.pricePerNight * 2)}
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-emerald-800 mb-1">Jumlah Sudah Dibayar (Rp) *</label>
+                <input
+                  type="number"
+                  id="new-amount-paid"
+                  min="0"
+                  value="${defaultTent.pricePerNight * 2}"
+                  oninput="recalcNewReceiptPreview()"
+                  required
+                  class="w-full px-3 py-2 rounded-xl border border-emerald-300 bg-white text-sm font-bold text-slate-900 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-emerald-800 mb-1">Metode Pembayaran</label>
+                <select
+                  id="new-payment-method"
+                  class="w-full px-3 py-2 rounded-xl border border-emerald-300 bg-white text-sm focus:outline-none"
+                >
+                  <option value="Transfer Bank Nagari">Transfer Bank Nagari</option>
+                  <option value="Transfer BRI">Transfer BRI</option>
+                  <option value="Transfer BCA">Transfer BCA</option>
+                  <option value="QRIS All Payment">QRIS All Payment</option>
+                  <option value="Tunai di Basecamp">Tunai di Basecamp</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan Struk (Opsional)</label>
+              <input
+                type="text"
+                id="new-notes"
+                placeholder="Contoh: Pelunasan sisa saat pengambilan unit tenda."
+                class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500"
+              />
+            </div>
+
+            <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onclick="closeCustomModal()"
+                class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs sm:text-sm font-semibold hover:bg-slate-50 cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
+              >
+                <i data-lucide="receipt" class="w-4 h-4"></i>
+                <span>Simpan &amp; Buka Struk</span>
+              </button>
+            </div>
+          </form>
+        `;
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        lucide.createIcons();
+      }
+
+      function onSelectTentForReceipt() {
+        const select = document.getElementById("new-tent-select");
+        const opt = select.options[select.selectedIndex];
+        const price = Number(opt.getAttribute("data-price") || 0);
+        document.getElementById("new-tent-price").value = price;
+        recalcNewReceiptPreview();
+      }
+
+      function recalcNewReceiptPreview() {
+        const nights = Math.max(
+          1,
+          Number(document.getElementById("new-nights")?.value || 1),
+        );
+        const qty = Math.max(
+          1,
+          Number(document.getElementById("new-tent-qty")?.value || 1),
+        );
+        const price = Math.max(
+          0,
+          Number(document.getElementById("new-tent-price")?.value || 0),
+        );
+        const addonPrice = Math.max(
+          0,
+          Number(document.getElementById("new-addon-price")?.value || 0),
+        );
+        const total = nights * (qty * price + addonPrice);
+        const display = document.getElementById("new-total-display");
+        if (display) display.textContent = formatRupiah(total);
+      }
+
+      function submitNewReceiptOrder(e) {
+        e.preventDefault();
+        const customerName = document
+          .getElementById("new-cust-name")
+          .value.trim();
+        const customerPhone = document
+          .getElementById("new-cust-phone")
+          .value.trim();
+        const checkIn = document.getElementById("new-checkin").value.trim();
+        const checkOut = document.getElementById("new-checkout").value.trim();
+        const nights = Math.max(
+          1,
+          Number(document.getElementById("new-nights").value || 1),
+        );
+
+        const select = document.getElementById("new-tent-select");
+        const tentName =
+          select.options[select.selectedIndex].getAttribute("data-name") ||
+          "Unit Tenda";
+        const qty = Math.max(
+          1,
+          Number(document.getElementById("new-tent-qty").value || 1),
+        );
+        const price = Math.max(
+          0,
+          Number(document.getElementById("new-tent-price").value || 0),
+        );
+
+        const addonName = document
+          .getElementById("new-addon-name")
+          .value.trim();
+        const addonPrice = Math.max(
+          0,
+          Number(document.getElementById("new-addon-price").value || 0),
+        );
+
+        const items = [{ name: tentName, qty, nights, price }];
+        if (addonName && addonPrice > 0) {
+          items.push({ name: addonName, qty: 1, nights, price: addonPrice });
+        }
+
+        const total = items.reduce((s, i) => s + i.qty * i.nights * i.price, 0);
+        const amountPaid = Math.max(
+          0,
+          Number(document.getElementById("new-amount-paid").value || 0),
+        );
+        const paymentMethod =
+          document.getElementById("new-payment-method").value;
+        const notes = document.getElementById("new-notes").value.trim();
+
+        const nextNumber = String(orders.length + 1).padStart(3, "0");
+        const newOrder = {
+          id: `INV-ALH-261116-${nextNumber}`,
+          createdAt: "16 Nov 2026, Baru saja",
+          customerName,
+          customerPhone,
+          checkIn,
+          checkOut,
+          nights,
+          items,
+          amountPaid,
+          paymentMethod,
+          status: amountPaid >= total ? "Lunas" : "DP Terverifikasi",
+          notes,
+        };
+
+        orders.unshift(newOrder);
+        updateSidebarBadges();
+        if (currentPage === "pesanan" || currentPage === "laporan") {
+          renderCurrentPage();
+        }
+        showToast(
+          "Struk Berhasil Dibuat",
+          `Struk ${newOrder.id} a.n. ${customerName} siap dicetak atau dikirim.`,
+          "success",
+        );
+        openReceiptModal(newOrder.id);
+      }
+
+      // =========================================================================
+      // HALAMAN LAINNYA (LAPORAN, UPLOAD TENDA, KATALOG, DASHBOARD)
+      // =========================================================================
+      function renderFinancePage() {
+        const totalOmzet = orders.reduce(
+          (sum, o) => sum + calculateOrderTotal(o),
+          0,
+        );
+        const totalMasuk = orders.reduce(
+          (sum, o) => sum + Number(o.amountPaid || 0),
+          0,
+        );
+        const totalPiutang = totalOmzet - totalMasuk;
+
+        return `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0]">
+                <span class="text-xs font-semibold text-slate-500 uppercase">Total Nilai Booking</span>
+                <p class="text-2xl font-extrabold text-slate-900 mt-2">${formatRupiah(totalOmzet)}</p>
+                <p class="text-xs text-slate-500 mt-1">Akumulasi seluruh pesanan aktif</p>
+              </div>
+              <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0]">
+                <span class="text-xs font-semibold text-emerald-700 uppercase">Kas &amp; DP Diterima</span>
+                <p class="text-2xl font-extrabold text-emerald-600 mt-2">${formatRupiah(totalMasuk)}</p>
+                <p class="text-xs text-slate-500 mt-1">Dana terverifikasi masuk</p>
+              </div>
+              <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0]">
+                <span class="text-xs font-semibold text-amber-700 uppercase">Sisa Pelunasan</span>
+                <p class="text-2xl font-extrabold text-amber-600 mt-2">${formatRupiah(totalPiutang)}</p>
+                <p class="text-xs text-slate-500 mt-1">Dibayar saat pengambilan unit</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                <h2 class="text-base font-bold text-slate-900">Riwayat Transaksi &amp; Cetak Ulang Struk</h2>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 text-[11px] font-bold uppercase text-slate-500 border-b border-slate-200">
+                      <th class="py-3.5 px-4">No. Struk</th>
+                      <th class="py-3.5 px-4">Pelanggan</th>
+                      <th class="py-3.5 px-4">Total</th>
+                      <th class="py-3.5 px-4">Dibayar</th>
+                      <th class="py-3.5 px-4">Status</th>
+                      <th class="py-3.5 px-4 text-right">Aksi Struk</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-sm">
+                    ${orders
+                      .map((o) => {
+                        const tot = calculateOrderTotal(o);
+                        return `
+                        <tr class="hover:bg-slate-50/70">
+                          <td class="py-3.5 px-4 font-mono text-xs font-bold text-slate-900">${o.id}</td>
+                          <td class="py-3.5 px-4">
+                            <p class="font-semibold text-slate-800">${o.customerName}</p>
+                            <p class="text-xs text-slate-500">${o.paymentMethod}</p>
+                          </td>
+                          <td class="py-3.5 px-4 font-semibold">${formatRupiah(tot)}</td>
+                          <td class="py-3.5 px-4 font-bold text-emerald-600">${formatRupiah(o.amountPaid)}</td>
+                          <td class="py-3.5 px-4">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
+                              o.status === "Lunas"
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "bg-amber-50 text-amber-700"
+                            }">${o.status}</span>
+                          </td>
+                          <td class="py-3.5 px-4 text-right">
+                            <button
+                              onclick="openReceiptModal('${o.id}')"
+                              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-semibold transition-all cursor-pointer"
+                            >
+                              <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                              <span>Cetak Struk</span>
+                            </button>
+                          </td>
+                        </tr>
+                      `;
+                      })
+                      .join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderUploadPage() {
+        return `
+          <div class="max-w-2xl bg-white rounded-2xl border border-[#E2E8F0] p-6 shadow-2xs">
+            <h2 class="text-base font-bold text-slate-900 mb-1">Tambah Unit Tenda ke Katalog</h2>
+            <p class="text-xs text-slate-500 mb-5">Unit tenda baru otomatis tersedia saat pembuatan struk pemesanan.</p>
+            <form onsubmit="handleAddTent(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Unit Tenda *</label>
+                <input type="text" id="tent-name" required placeholder="Contoh: Tenda Quechua Arpenaz 3P" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Kapasitas</label>
+                  <input type="text" id="tent-cap" value="3 - 4 Orang" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Harga Sewa / Malam (Rp) *</label>
+                  <input type="number" id="tent-price" required min="10000" placeholder="95000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah Stok</label>
+                  <input type="number" id="tent-stock" value="4" min="1" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Deskripsi Singkat</label>
+                <textarea id="tent-desc" rows="3" placeholder="Keunggulan bahan, ketahanan hujan, dll..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm"></textarea>
+              </div>
+              <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold cursor-pointer">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Simpan Unit Tenda</span>
+              </button>
+            </form>
+          </div>
+        `;
+      }
+
+      function handleAddTent(e) {
+        e.preventDefault();
+        const name = document.getElementById("tent-name").value.trim();
+        const capacity = document.getElementById("tent-cap").value.trim();
+        const pricePerNight = Number(
+          document.getElementById("tent-price").value,
+        );
+        const stock = Number(document.getElementById("tent-stock").value);
+        const description =
+          document.getElementById("tent-desc").value.trim() ||
+          "Siap pakai dan bersih untuk camping di Alahan Panjang.";
+
+        tents.push({
+          id: "TND-0" + (tents.length + 1),
+          name,
+          capacity,
+          pricePerNight,
+          stock,
+          category: "Camping Tent",
+          image: `https://placehold.co/600x400/059669/ffffff?text=${encodeURIComponent(
+            name.slice(0, 18),
+          )}`,
+          description,
+        });
+
+        updateSidebarBadges();
+        showToast(
+          "Tenda Ditambahkan",
+          `${name} berhasil masuk ke katalog.`,
+          "success",
+        );
+        navigate("katalog");
+      }
+
+      function renderCatalogPage() {
+        return `
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            ${tents
+              .map(
+                (t) => `
+              <div class="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden flex flex-col">
+                <img src="${t.image}" alt="${t.name}" class="w-full h-44 object-cover bg-slate-100" />
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                  <div>
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700">${t.capacity}</span>
+                      <span class="text-xs font-medium text-slate-500">Stok: ${t.stock} unit</span>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 mt-2">${t.name}</h3>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">${t.description}</p>
+                  </div>
+                  <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <div>
+                      <span class="text-xs text-slate-400 block">Harga Sewa</span>
+                      <span class="text-base font-extrabold text-emerald-600">${formatRupiah(t.pricePerNight)}<span class="text-xs font-normal text-slate-500">/mlm</span></span>
+                    </div>
+                    <button
+                      onclick="openCreateReceiptModal()"
+                      class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-semibold transition-all cursor-pointer"
+                    >
+                      Buat Struk Sewa
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `,
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      function renderDashboardPage() {
+        return `
+          <div class="bg-white rounded-2xl border border-[#E2E8F0] p-6 space-y-4">
+            <h2 class="text-lg font-bold text-slate-900">Ringkasan Operasional Tenda Alahan</h2>
+            <p class="text-sm text-slate-600">
+              Saat ini terdapat <strong>${tents.length} jenis unit tenda</strong> aktif dan <strong>${orders.length} transaksi pemesanan</strong> yang siap dicetak struk bukti pembayarannya.
+            </p>
+            <div class="flex flex-wrap gap-3 pt-2">
+              <button onclick="navigate('pesanan')" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold cursor-pointer">
+                Kelola Pesanan &amp; Cetak Struk
+              </button>
+              <button onclick="openCreateReceiptModal()" class="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-semibold cursor-pointer">
+                Buat Struk Baru
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // =========================================================================
+      // TOAST NOTIFICATION SYSTEM
+      // =========================================================================
+      function showToast(title, message, type = "success") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        const borderClass =
+          type === "success" ? "border-emerald-200" : "border-rose-200";
+        const iconColor =
+          type === "success" ? "text-emerald-600" : "text-rose-600";
+
+        toast.className = `pointer-events-auto bg-white border ${borderClass} rounded-2xl p-4 shadow-xl flex items-start gap-3 transition-all`;
+        toast.innerHTML = `
+          <div class="${iconColor} mt-0.5 shrink-0">
+            <i data-lucide="${
+              type === "success" ? "check-circle-2" : "alert-circle"
+            }" class="w-5 h-5"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-900">${title}</p>
+            <p class="text-xs text-slate-500 mt-0.5">${message}</p>
+          </div>
+        `;
+        container.appendChild(toast);
+        lucide.createIcons();
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          setTimeout(() => toast.remove(), 300);
+        }, 3500);
+      }
+
+      // Inisialisasi saat halaman dimuat
+      window.addEventListener("DOMContentLoaded", () => {
+        navigate("pesanan");
+      });
+    </script>
   </body>
 </html>
